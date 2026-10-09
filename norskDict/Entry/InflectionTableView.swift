@@ -53,6 +53,13 @@ private struct TableCard<Content: View>: View {
 
 private struct GroupHeaderCell: View {
     var title: String
+    /// `false` for a cell that has no group membership at all (e.g. "Plural"'s sub-header
+    /// slot, which never splits further) — it should read as blank space, not a stray grey
+    /// box. Blank *continuation* cells that are part of a wider label's span (see
+    /// `AdjectiveInflectionTable`, which avoids `Grid`'s multi-column spanning for header
+    /// backgrounds — it visibly fails to paint the spanned cell's leading column, see commit
+    /// history) still want the fill, so this defaults to `true`.
+    var showBackground: Bool = true
     @Environment(\.appTheme) private var theme
 
     var body: some View {
@@ -62,10 +69,7 @@ private struct GroupHeaderCell: View {
             .frame(maxWidth: .infinity)
             .multilineTextAlignment(.center)
             .padding(.vertical, 8)
-            // An empty title is a blank continuation cell (e.g. under a column-group header
-            // that doesn't need its own sub-header). Skip the fill so it reads as blank space,
-            // not a stray grey box with nothing in it.
-            .background(title.isEmpty ? Color.clear : theme.fill)
+            .background(showBackground ? theme.fill : Color.clear)
     }
 }
 
@@ -143,9 +147,9 @@ private enum TableLabel {
         case ("comparative", .en): "Comparative"
         case ("comparative", .zh): "比较级"
         case ("superlativeIndefinite", .en): "Superlative\nindefinite"
-        case ("superlativeIndefinite", .zh): "最高级\n不定形"
+        case ("superlativeIndefinite", .zh): "最高级不定态"
         case ("superlativeDefinite", .en): "Superlative\ndefinite"
-        case ("superlativeDefinite", .zh): "最高级\n定形"
+        case ("superlativeDefinite", .zh): "最高级限定态"
         case ("pastParticiple", .en): "Past participle"
         case ("pastParticiple", .zh): "过去分词"
         case ("presentParticiple", .en): "Present participle"
@@ -193,8 +197,12 @@ struct NounInflectionTable: View {
         TableCard {
             Grid(horizontalSpacing: 0, verticalSpacing: 0) {
                 GridRow {
-                    GroupHeaderCell(title: strings.singular).gridCellColumns(2)
-                    GroupHeaderCell(title: strings.plural).gridCellColumns(2)
+                    // Non-spanning, same reason as AdjectiveInflectionTable: Grid doesn't
+                    // paint a spanning cell's background over its leading column.
+                    GroupHeaderCell(title: strings.singular)
+                    GroupHeaderCell(title: "")
+                    GroupHeaderCell(title: strings.plural)
+                    GroupHeaderCell(title: "")
                 }
                 Hairline()
                 GridRow {
@@ -239,7 +247,13 @@ struct AdjectiveInflectionTable: View {
             TableCard {
                 Grid(horizontalSpacing: 0, verticalSpacing: 0) {
                     GridRow {
-                        GroupHeaderCell(title: strings.singular).gridCellColumns(3)
+                        // Not `.gridCellColumns(3)`: Grid fails to paint a spanning cell's
+                        // background over its leading column (confirmed visually — the grey
+                        // fill left a white gap under column 1), so this uses 4 equal,
+                        // non-spanning cells instead, with "Singular" only in the first.
+                        GroupHeaderCell(title: strings.singular)
+                        GroupHeaderCell(title: "")
+                        GroupHeaderCell(title: "")
                         GroupHeaderCell(title: strings.plural)
                     }
                     Hairline()
@@ -247,7 +261,7 @@ struct AdjectiveInflectionTable: View {
                         GroupHeaderCell(title: TableLabel.text("masculineFeminine", ui: ui))
                         GroupHeaderCell(title: TableLabel.text("neuter", ui: ui))
                         GroupHeaderCell(title: TableLabel.text("definiteForm", ui: ui))
-                        GroupHeaderCell(title: "")
+                        GroupHeaderCell(title: "", showBackground: false)
                     }
                     Hairline()
                     GridRow {
@@ -262,7 +276,13 @@ struct AdjectiveInflectionTable: View {
             if hasComparison {
                 TableCard {
                     Grid(horizontalSpacing: 0, verticalSpacing: 0) {
-                        GridRow { GroupHeaderCell(title: TableLabel.text("comparison", ui: ui)).gridCellColumns(3) }
+                        // Same reason as above: 3 equal non-spanning cells instead of one
+                        // `.gridCellColumns(3)` cell, so the grey fill paints correctly.
+                        GridRow {
+                            GroupHeaderCell(title: TableLabel.text("comparison", ui: ui))
+                            GroupHeaderCell(title: "")
+                            GroupHeaderCell(title: "")
+                        }
                         Hairline()
                         GridRow {
                             GroupHeaderCell(title: TableLabel.text("comparative", ui: ui))

@@ -282,3 +282,28 @@ more issues:
   session's rate limit mid-check; both changes are simple, low-risk (a block move + 3 literal
   string replacements) and compiled/tested cleanly, but should get a quick visual glance next
   time the app is run.
+
+### 2026-10-10 (final round) — Grid background-span bug; more ZH terminology
+Two more fixes, both from screenshots: the adjective table's "Comparison" header and the main
+table's "Singular"/"Plural" header had a visible white gap in the grey band (should be solid).
+- **Root cause**: SwiftUI's `Grid` doesn't correctly paint a `.gridCellColumns(n)`-spanning
+  cell's background over its leading column — confirmed by removing the span entirely.
+  **Fix**: every header cell that used to span multiple columns (`Singular`/`Plural` in both
+  the noun and adjective tables, and `Comparison` in the gradbøying table) is now N individual
+  non-spanning `GroupHeaderCell`s instead, with the label text only in the first and blank
+  (still grey-filled) continuation cells after it. `GroupHeaderCell` gained a `showBackground`
+  flag so the *other* kind of blank cell — one with no group membership at all, like the
+  adjective table's trailing cell under "Plural", which should stay blank/white — can still
+  opt out explicitly. This trades perfectly-centered span labels for guaranteed-correct grey
+  bands; given the choice is between a cosmetic nicety and an actual rendering bug, correctness
+  won.
+- **More Chinese terminology**: adjective table's "Superlative indefinite"/"Superlative
+  definite" column headers changed from two-line "最高级\n不定形"/"最高级\n定形" to single-line
+  "最高级不定态"/"最高级限定态", per the same 态-not-形 convention adopted earlier.
+- **Process note**: the first verification pass of this fix reported the Comparison table's
+  grey gap and old Chinese text as still broken. Grepping the source confirmed the fix *was*
+  there — the subagent had tested a stale installed build. A forced fresh reinstall
+  (`DeviceInteractionInstallAndRun`) and re-verification confirmed everything was actually
+  correct. Recorded in memory: when a verification result looks surprising, check the source
+  for the literal reported strings before concluding a fix failed.
+- 22 unit tests pass (no regressions); both fixes verified against a confirmed-fresh build.
