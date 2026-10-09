@@ -165,3 +165,15 @@ struct Entry: Sendable, Identifiable, Hashable {
 
     var id: Int64 { rowid }
 }
+
+/// Content breakdown shown on the Sources screen, e.g. "186,912 articles (bm 90,865 /
+/// nn 96,047), 265,871 senses, 198,741 examples, 21,135 fixed expressions, 843,725 forms."
+struct ContentStats: Sendable {
+    var totalArticles: Int
+    var bmArticles: Int
+    var nnArticles: Int
+    var senses: Int
+    var examples: Int
+    var idioms: Int
+    var forms: Int
+}

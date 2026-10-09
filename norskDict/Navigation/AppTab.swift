@@ -24,4 +24,10 @@ enum AppTab: String, CaseIterable, Identifiable, Hashable {
         case .settings: "gearshape"
         }
     }
+
+    /// Tab order for the given hand preference: `.left` keeps Search first/leading (the app's
+    /// original order); `.right` reverses it so Search ends up last/trailing.
+    static func ordered(for hand: NavigationHand) -> [AppTab] {
+        hand == .left ? allCases : allCases.reversed()
+    }
 }

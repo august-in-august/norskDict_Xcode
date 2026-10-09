@@ -5,6 +5,14 @@ enum AppearanceMode: String, Codable, Sendable, CaseIterable {
     case system, light, dark
 }
 
+/// Which side the primary navigation (the iPhone tab bar / iPad sidebar order) favors for the
+/// user's dominant hand. `.left` keeps Search as the first/leading item (the app's original,
+/// unchanged layout — kept as the default so existing users don't see their tab order flip);
+/// `.right` reverses the order so Search ends up last/trailing, closer to a right thumb's reach.
+enum NavigationHand: String, Codable, Sendable, CaseIterable {
+    case left, right
+}
+
 /// All user preferences that must survive relaunch, read before the UI renders so there's no
 /// flicker (per the product plan's architecture notes).
 ///
@@ -27,6 +35,7 @@ final class AppSettings {
     var appearance: AppearanceMode { didSet { UserDefaults.standard.set(appearance.rawValue, forKey: Keys.appearance) } }
     var textSizeIndex: Int { didSet { UserDefaults.standard.set(textSizeIndex, forKey: Keys.textSizeIndex) } }
     var uiLanguage: UILanguage { didSet { UserDefaults.standard.set(uiLanguage.rawValue, forKey: Keys.uiLanguage) } }
+    var navigationHand: NavigationHand { didSet { UserDefaults.standard.set(navigationHand.rawValue, forKey: Keys.navigationHand) } }
 
     var textScale: Double {
         Self.textScales[min(max(textSizeIndex, 0), Self.textScales.count - 1)]
@@ -45,6 +54,7 @@ final class AppSettings {
         appearance = AppearanceMode(rawValue: d.string(forKey: Keys.appearance) ?? "") ?? .system
         textSizeIndex = d.object(forKey: Keys.textSizeIndex) as? Int ?? 1
         uiLanguage = UILanguage(rawValue: d.string(forKey: Keys.uiLanguage) ?? "") ?? .en
+        navigationHand = NavigationHand(rawValue: d.string(forKey: Keys.navigationHand) ?? "") ?? .left
     }
 
     func resolvedIsDark(systemColorScheme: ColorScheme) -> Bool {
@@ -65,5 +75,6 @@ final class AppSettings {
         static let appearance = "appearance"
         static let textSizeIndex = "textSizeIndex"
         static let uiLanguage = "uiLanguage"
+        static let navigationHand = "navigationHand"
     }
 }

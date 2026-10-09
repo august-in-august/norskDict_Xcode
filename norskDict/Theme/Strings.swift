@@ -37,6 +37,9 @@ struct Strings {
     var dark: String
     var system: String
     var appIcon: String
+    var navigationHand: String
+    var leftHanded: String
+    var rightHanded: String
     var translationsHeader: String
     var translationsFooter: String
     var englishName: String
@@ -47,6 +50,9 @@ struct Strings {
     var about: String
     var sources: String
     var articles: String
+    var senses: String
+    var examples: String
+    var searchableForms: String
     var version: String
     var clearHistoryTitle: String
     var clearHistoryMessage: String
@@ -94,12 +100,14 @@ struct Strings {
                 infinitive: "Infinitive", present: "Present", past: "Past", perfect: "Perfect",
                 appearance: "Appearance", theme: "Theme", light: "Light", dark: "Dark", system: "System",
                 appIcon: "App Icon",
+                navigationHand: "Navigation Layout", leftHanded: "Left-handed", rightHanded: "Right-handed",
                 translationsHeader: "Show translations by default",
                 translationsFooter: "Translations appear under each definition and example. "
                     + "You can also switch them on any entry.",
                 englishName: "English", chineseName: "中文 Chinese", interfaceLanguage: "Interface language",
                 textSize: "Text size", sampleTranslation: "a good friend of mine", about: "About",
-                sources: "Sources", articles: "Articles", version: "Version",
+                sources: "Sources", articles: "articles", senses: "senses", examples: "examples",
+                searchableForms: "searchable forms", version: "Version",
                 clearHistoryTitle: "Clear history?",
                 clearHistoryMessage: "All recent lookups will be removed from this device.",
                 today: "Today", yesterday: "Yesterday", remove: "Remove",
@@ -119,11 +127,14 @@ struct Strings {
                 reported: "报告已保存，将在联网后发送。", see: "参见", singular: "单数", plural: "复数",
                 indefinite: "不定形", definite: "定形", infinitive: "不定式", present: "现在时", past: "过去时",
                 perfect: "完成时", appearance: "外观", theme: "主题", light: "浅色", dark: "深色",
-                system: "跟随系统", appIcon: "应用图标", translationsHeader: "默认显示翻译",
+                system: "跟随系统", appIcon: "应用图标",
+                navigationHand: "导航布局", leftHanded: "左手", rightHanded: "右手",
+                translationsHeader: "默认显示翻译",
                 translationsFooter: "翻译显示在每条释义和例句下方。也可以在任意词条页中切换。",
                 englishName: "English 英语", chineseName: "中文", interfaceLanguage: "界面语言",
                 textSize: "字体大小", sampleTranslation: "我的一个好朋友", about: "关于", sources: "数据来源",
-                articles: "词条数", version: "版本", clearHistoryTitle: "清除历史记录？",
+                articles: "词条", senses: "释义", examples: "例句", searchableForms: "可搜索词形",
+                version: "版本", clearHistoryTitle: "清除历史记录？",
                 clearHistoryMessage: "此设备上的所有查询记录都将被删除。", today: "今天", yesterday: "昨天",
                 remove: "移除", bookmarksHint: "向左轻扫单词即可移除。", bookmarksEmpty: "还没有收藏",
                 historyEmpty: "没有历史记录", selectWord: "搜索单词以查看词条", noEntriesIn: "没有词条：",

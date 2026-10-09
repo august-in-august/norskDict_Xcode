@@ -58,7 +58,7 @@ private struct CompactRootView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            ForEach(AppTab.allCases) { tab in
+            ForEach(AppTab.ordered(for: settings.navigationHand)) { tab in
                 NavigationStack(path: path(for: tab)) {
                     tabRoot(tab)
                         .navigationDestination(for: AppRoute.self) { route in
@@ -114,7 +114,7 @@ private struct RegularRootView: View {
     }
 
     private var sidebar: some View {
-        List(AppTab.allCases, selection: $selectedTab) { tab in
+        List(AppTab.ordered(for: settings.navigationHand), selection: $selectedTab) { tab in
             Label(tab.title(settings.strings), systemImage: tab.systemImage)
                 .tag(tab)
         }

@@ -13,12 +13,15 @@ struct SettingsView: View {
             Section(strings.appearance) {
                 VStack(alignment: .leading, spacing: 14) {
                     Text(strings.theme).font(.system(size: 17))
-                    HStack {
-                        ForEach(ThemePalette.allCases) { palette in
-                            ThemeSwatch(palette: palette, isSelected: settings.theme == palette) {
-                                settings.theme = palette
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 4) {
+                            ForEach(ThemePalette.allCases) { palette in
+                                ThemeSwatch(palette: palette, isSelected: settings.theme == palette) {
+                                    settings.theme = palette
+                                }
                             }
                         }
+                        .padding(.vertical, 2)
                     }
                 }
                 .padding(.vertical, 4)
@@ -27,6 +30,14 @@ struct SettingsView: View {
                     get: { settings.appearance }, set: { settings.appearance = $0 }
                 )) { mode in
                     Text(label(for: mode))
+                }
+            }
+
+            Section(strings.navigationHand) {
+                SegmentedPill(items: NavigationHand.allCases, selection: Binding(
+                    get: { settings.navigationHand }, set: { settings.navigationHand = $0 }
+                )) { hand in
+                    Text(hand == .left ? strings.leftHanded : strings.rightHanded)
                 }
             }
 
@@ -93,11 +104,6 @@ struct SettingsView: View {
                         Spacer()
                         Image(systemName: "chevron.right").font(.system(size: 12, weight: .semibold)).foregroundStyle(theme.ink3)
                     }
-                }
-                HStack {
-                    Text(strings.articles)
-                    Spacer()
-                    Text("\(DictionaryDatabase.shared.totalArticleCount())").foregroundStyle(theme.ink2)
                 }
                 HStack {
                     Text(strings.version)

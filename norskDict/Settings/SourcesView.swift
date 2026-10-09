@@ -86,12 +86,34 @@ struct SourcesView: View {
                 }
                 .padding(.vertical, 4)
             }
-            if let built = DictionaryDatabase.shared.dataBuildDate() {
-                Text("\(strings.version) \(built)").font(.system(size: 12)).foregroundStyle(theme.ink3)
+            if let stats = DictionaryDatabase.shared.contentStats() {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(statsText(stats)).font(.system(size: 13)).foregroundStyle(theme.ink2)
+                    if let built = DictionaryDatabase.shared.dataBuildDate() {
+                        Text("\(strings.version) \(built)").font(.system(size: 12)).foregroundStyle(theme.ink3)
+                    }
+                }
+                .padding(.vertical, 4)
             }
         }
         .scrollContentBackground(.hidden)
         .background(theme.grp)
         .navigationTitle(strings.sources)
+    }
+
+    private static let groupedNumberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.groupingSeparator = ","
+        return formatter
+    }()
+
+    private func statsText(_ stats: ContentStats) -> String {
+        func n(_ value: Int) -> String {
+            Self.groupedNumberFormatter.string(from: NSNumber(value: value)) ?? "\(value)"
+        }
+        return "\(n(stats.totalArticles)) \(strings.articles) (bm \(n(stats.bmArticles)) / nn \(n(stats.nnArticles))), "
+            + "\(n(stats.senses)) \(strings.senses), \(n(stats.examples)) \(strings.examples), "
+            + "\(n(stats.idioms)) \(strings.fixed.lowercased()), \(n(stats.forms)) \(strings.searchableForms)."
     }
 }

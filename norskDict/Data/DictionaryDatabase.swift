@@ -30,6 +30,34 @@ final class DictionaryDatabase: Sendable {
         }) ?? 0
     }
 
+    /// Full content breakdown for the Sources screen, combining `meta.stats` (article/sense/
+    /// example/idiom/form totals, per DATABASE.md) with a per-dictionary article split.
+    func contentStats() -> ContentStats? {
+        try? dbQueue.read { db in
+            guard let statsJSON = try String.fetchOne(db, sql: "SELECT value FROM meta WHERE key = 'stats'"),
+                  let data = statsJSON.data(using: .utf8),
+                  let raw = try? JSONDecoder().decode([String: Int].self, from: data)
+            else { return nil }
+
+            var bmArticles = 0
+            var nnArticles = 0
+            for row in try Row.fetchAll(db, sql: "SELECT dict, count(*) AS n FROM article GROUP BY dict") {
+                let n: Int = row["n"]
+                if row["dict"] == "bm" { bmArticles = n } else if row["dict"] == "nn" { nnArticles = n }
+            }
+
+            return ContentStats(
+                totalArticles: raw["article"] ?? 0,
+                bmArticles: bmArticles,
+                nnArticles: nnArticles,
+                senses: raw["sense"] ?? 0,
+                examples: raw["example"] ?? 0,
+                idioms: raw["idiom"] ?? 0,
+                forms: raw["form"] ?? 0
+            )
+        }
+    }
+
     // MARK: - Search
 
     /// Form lookup: exact + prefix match on the folded query, per DATABASE.md query 1.

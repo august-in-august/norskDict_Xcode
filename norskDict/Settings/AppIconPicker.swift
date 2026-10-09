@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// The Settings section for picking a Home Screen icon, grouped by style (Simple/Cute/Modern)
-/// with a horizontal scroll row per group — one of the 9 icons from the Claude Design handoff.
+/// The Settings section for picking a Home Screen icon: a single horizontally-scrollable row
+/// of all 9 icons from the Claude Design handoff, each just a preview tile and its name.
 struct AppIconSection: View {
     @State private var manager = AppIconManager()
     @Environment(AppSettings.self) private var settings
@@ -10,20 +10,12 @@ struct AppIconSection: View {
 
     var body: some View {
         Section(strings.appIcon) {
-            ForEach(AppIconOption.Style.allCases, id: \.self) { style in
-                VStack(alignment: .leading, spacing: 10) {
-                    Text(style.label(ui: settings.uiLanguage))
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 14) {
-                            ForEach(AppIconOption.allCases.filter { $0.style == style }) { icon in
-                                IconTile(icon: icon, isSelected: manager.current == icon) {
-                                    Task { await manager.set(icon) }
-                                }
-                            }
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 14) {
+                    ForEach(AppIconOption.allCases) { icon in
+                        IconTile(icon: icon, isSelected: manager.current == icon) {
+                            Task { await manager.set(icon) }
                         }
-                        .padding(.vertical, 4)
                     }
                 }
                 .padding(.vertical, 4)

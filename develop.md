@@ -156,13 +156,35 @@ parallel with Norwegian form lookup; see "Decisions made" above.)
     picker.
   - Verified in the simulator: all 9 tiles render real previews grouped correctly into
     Simple(2)/Cute(3)/Modern(4), primary icon shows selected by default.
-  - **⚠️ Action needed (can't be done by the agent):** tapping a different icon currently
-    no-ops — `UIApplication.supportsAlternateIcons` is `false` until the generated Info.plist
-    actually declares the alternate icons, which requires a build setting the agent can't set:
-    Xcode was open, and editing `project.pbxproj` directly while Xcode has it open risks
-    crashing/corrupting it. **In Xcode:** select the `norskDict` target → Build Settings →
-    search "Include All App Icon Assets" → set it to **Yes** for both Debug and Release (or
-    search "Alternate App Icon Sets" and list the 8 names: `AppIcon-SpeechA AppIcon-Moose
-    AppIcon-HappyBook AppIcon-Greetings AppIcon-ThemeSplit AppIcon-CardStack AppIcon-FlagLens
-    AppIcon-Lookup`). After that, rebuild and the picker should work — switching icons will
-    show iOS's native "You have changed the icon" confirmation, which can't be suppressed.
+  - **Resolved 2026-10-10**: the agent couldn't set `ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS`
+    via Xcode's build-setting UI (not listed as a standard searchable setting in this Xcode
+    version) or via the MCP build-setting tool (rejected as an unknown key) or by editing
+    `project.pbxproj` directly (blocked — Xcode was open, and direct pbxproj edits with Xcode
+    open risk crashing/corrupting it). The user added it manually as a **user-defined build
+    setting**, name `ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS`, value `YES` — confirmed
+    working on a physical device (icon switching shows iOS's native "You have changed the icon"
+    confirmation, as expected).
+
+### 2026-10-10 — Settings UI adjustments
+- **Icon picker simplified**: removed the Simple/Cute/Modern style grouping (`AppIconOption.Style`
+  deleted — it was unused once the grouping UI was dropped). `AppIconSection` is now a single
+  horizontally-scrolling row of all 9 icons, each just a preview tile + name, no category headers.
+- **4 new theme palettes**: Blush, Slate, Lavender, Butter (joining White/Paper/Grey/Sage/Mist —
+  9 total), following the same light/dark bg-grp-card pattern as the original 5. The theme swatch
+  row in Settings now scrolls horizontally instead of a fixed `HStack` (9 swatches no longer fit
+  on screen at once).
+- **Left/right-hand navigation layout**: new `NavigationHand` setting (`.left`/`.right`) in
+  `AppSettings`, surfaced as a segmented control in a new Settings section between Appearance and
+  App Icon. `.left` (default, preserves the original unchanged tab order — Search
+  first/leading) keeps Search closest to a left thumb's reach; `.right` reverses the order
+  (`AppTab.ordered(for:)`) so Search ends up last/trailing, closer to a right thumb. Applied to
+  both the iPhone `TabView` and the iPad sidebar `List`.
+- **Content stats moved from Settings → About to the Sources screen**: removed the flat
+  "Articles: 186,912" row from Settings; added `DictionaryDatabase.contentStats()` (reads
+  `meta.stats` JSON + a `GROUP BY dict` query for the bm/nn split) and a new `ContentStats`
+  model. Sources now shows a full breakdown — "186,912 articles (bm 90,865 / nn 96,047),
+  265,871 senses, 198,741 examples, 21,135 fixed expressions, 843,725 searchable forms." —
+  above the existing build-date/version line.
+- All 17 unit tests still pass; all 4 changes verified together in the simulator (theme scroll
+  + selection, hand-order reversal on the live tab bar, single-row icon picker, Sources stats
+  line with live DB counts).

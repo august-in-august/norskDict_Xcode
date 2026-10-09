@@ -16,29 +16,6 @@ enum AppIconOption: String, CaseIterable, Identifiable, Sendable {
 
     var id: String { rawValue }
 
-    enum Style: CaseIterable, Sendable {
-        case simple, cute, modern
-
-        func label(ui: UILanguage) -> String {
-            switch (self, ui) {
-            case (.simple, .en): "Simple"
-            case (.simple, .zh): "简约"
-            case (.cute, .en): "Cute"
-            case (.cute, .zh): "可爱"
-            case (.modern, .en): "Modern"
-            case (.modern, .zh): "现代"
-            }
-        }
-    }
-
-    var style: Style {
-        switch self {
-        case .aTile, .speechA: .simple
-        case .moose, .happyBook, .greetings: .cute
-        case .themeSplit, .cardStack, .flagLens, .lookup: .modern
-        }
-    }
-
     func displayName(ui: UILanguage) -> String {
         switch (self, ui) {
         case (.aTile, .en): "Å Tile"

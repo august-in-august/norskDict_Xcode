@@ -15,7 +15,7 @@ extension Color {
 
 /// The 5 background themes from the design (diagonal light/dark swatches in Settings).
 enum ThemePalette: String, CaseIterable, Codable, Sendable, Identifiable {
-    case white, paper, grey, sage, mist
+    case white, paper, grey, sage, mist, blush, slate, lavender, butter
 
     var id: String { rawValue }
 
@@ -28,6 +28,10 @@ enum ThemePalette: String, CaseIterable, Codable, Sendable, Identifiable {
         case .grey: Shades(bg: Color(hex: "#F3F3F4"), grp: Color(hex: "#E8E8EA"), card: Color(hex: "#FCFCFC"))
         case .sage: Shades(bg: Color(hex: "#EDF4F1"), grp: Color(hex: "#E0EBE6"), card: Color(hex: "#F9FCFA"))
         case .mist: Shades(bg: Color(hex: "#EEF2F8"), grp: Color(hex: "#E1E7F0"), card: Color(hex: "#F9FAFD"))
+        case .blush: Shades(bg: Color(hex: "#FAF1F0"), grp: Color(hex: "#F3E3E1"), card: Color(hex: "#FFFBFA"))
+        case .slate: Shades(bg: Color(hex: "#EFF2F5"), grp: Color(hex: "#E2E7EC"), card: Color(hex: "#FAFBFC"))
+        case .lavender: Shades(bg: Color(hex: "#F3F0F9"), grp: Color(hex: "#E8E2F1"), card: Color(hex: "#FCFBFE"))
+        case .butter: Shades(bg: Color(hex: "#FBF7EA"), grp: Color(hex: "#F3EBD3"), card: Color(hex: "#FFFDF5"))
         }
     }
 
@@ -38,6 +42,10 @@ enum ThemePalette: String, CaseIterable, Codable, Sendable, Identifiable {
         case .grey: Shades(bg: Color(hex: "#1C1C1E"), grp: Color(hex: "#121213"), card: Color(hex: "#2C2C2E"))
         case .sage: Shades(bg: Color(hex: "#121B18"), grp: Color(hex: "#0D1412"), card: Color(hex: "#1E2B27"))
         case .mist: Shades(bg: Color(hex: "#131821"), grp: Color(hex: "#0E1219"), card: Color(hex: "#1F2632"))
+        case .blush: Shades(bg: Color(hex: "#1E1313"), grp: Color(hex: "#170E0E"), card: Color(hex: "#2B1C1C"))
+        case .slate: Shades(bg: Color(hex: "#12161B"), grp: Color(hex: "#0C0F13"), card: Color(hex: "#1E242B"))
+        case .lavender: Shades(bg: Color(hex: "#181420"), grp: Color(hex: "#110E17"), card: Color(hex: "#241F2E"))
+        case .butter: Shades(bg: Color(hex: "#1C1810"), grp: Color(hex: "#15120A"), card: Color(hex: "#2A2419"))
         }
     }
 
@@ -53,6 +61,14 @@ enum ThemePalette: String, CaseIterable, Codable, Sendable, Identifiable {
         case (.sage, .zh): "青绿"
         case (.mist, .en): "Mist"
         case (.mist, .zh): "雾蓝"
+        case (.blush, .en): "Blush"
+        case (.blush, .zh): "粉红"
+        case (.slate, .en): "Slate"
+        case (.slate, .zh): "蓝灰"
+        case (.lavender, .en): "Lavender"
+        case (.lavender, .zh): "薰衣草"
+        case (.butter, .en): "Butter"
+        case (.butter, .zh): "奶油黄"
         }
     }
 }
