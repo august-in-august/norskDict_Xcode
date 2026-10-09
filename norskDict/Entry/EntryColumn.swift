@@ -74,7 +74,8 @@ struct EntryColumn: View {
             } content: {
                 if !entry.paradigms.isEmpty {
                     InflectionTableView(
-                        pos: entry.pos, paradigms: entry.paradigms, searchedForm: searchedForm, ui: settings.uiLanguage
+                        pos: entry.pos, dict: entry.dict, paradigms: entry.paradigms,
+                        searchedForm: searchedForm, ui: settings.uiLanguage
                     )
                     .padding(.bottom, 8)
                 }

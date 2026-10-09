@@ -240,3 +240,29 @@ screenshot of "dusje" showing grey italic function-word markers and usage hints)
   like adjectives when used attributively).
 - 20 unit tests pass (19 + 1 new); re-verified in the simulator against the exact row-by-row
   expectations from the user's screenshots.
+
+### 2026-10-10 (even later) — Noun table row-splitting, dict-aware articles, empty grey cell
+Another close comparison against ordbøkene.no (searching "drittsekk" and "pen") surfaced two
+more issues:
+- **Noun cells got cramped/confusing for words with multiple full spelling variants.**
+  "drittsekk, dritsekk" has two standard paradigms with *different* `lemma`s ("drittsekk" and
+  "dritsekk"), each a complete independent declension — unlike "hus", where both paradigms
+  share the same lemma and differ in only one tag. The old flat merge treated both cases the
+  same way, producing "en dritsekk, en drittsekk" / "dritsekker, drittsekker" / ... crammed
+  into quarter-width cells with nowhere good to wrap. **Fix**: `Paradigm.standardGroups(from:)`
+  groups standard paradigms by `lemma` first, merging only within each group; the noun table
+  now renders one shared header + one data row *per lemma group* — "hus" still gets one row
+  (same lemma, "husa, husene" merged), but "drittsekk, dritsekk" now gets two clean rows, one
+  per spelling. Added 2 regression tests (divergent-lemma split, same-lemma merge preserved).
+- **The indefinite article hint ("en"/"et"/"ei") was Bokmål-only and unstyled.** Nynorsk uses
+  different forms for masculine/neuter ("ein"/"eit" vs Bokmål's "en"/"et"; feminine "ei" is
+  shared) — `NounInflectionTable` now takes `dict` and picks the right set. The article prefix
+  (and the verb table's "å"/"har"/"den/det" markers, already fixed) now share one helper,
+  `joinedFormsText`, so every marker renders in grey italics distinct from the (highlightable)
+  word — previously the noun article was just plain-concatenated text.
+- **Adjective table had a visible empty grey box.** The sub-header row's 4th cell (a blank
+  continuation under "Plural", which only spans 1 column so doesn't need its own sub-header)
+  still got the grey `fill` background from `GroupHeaderCell` despite having no text — reading
+  as a stray empty rectangle. Fixed: `GroupHeaderCell` skips the fill when its title is empty.
+- 22 unit tests pass (20 + 2 new); all three fixes (plus a bonus Nynorsk "eit hus" check)
+  verified in the simulator.

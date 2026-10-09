@@ -152,6 +152,42 @@ struct ParadigmTests {
         let merged = Paradigm.mergedStandardRows(from: Paradigm.decodeArray(json))
         #expect(merged.forms("Adj <PerfPart> Def Sing") == ["dusja", "dusjede", "dusjete"])
     }
+
+    @Test func standardGroupsSeparatesFullyDivergentLemmas() {
+        // Real "drittsekk, dritsekk" data: two standard paradigms with different lemmas
+        // ("drittsekk" vs "dritsekk"), each a complete independent declension. ordbøkene.no
+        // shows these as two separate rows, not merged per-cell into "en dritsekk, en
+        // drittsekk" / "dritsekker, drittsekker" (which doesn't fit a quarter-width column and
+        // loses which spelling pairs with which).
+        let json = """
+        [{"lemma":"drittsekk","tags":["NOUN","Masc"],"std":"S",
+          "forms":[["Sing Ind","drittsekk"],["Sing Def","drittsekken"],
+                    ["Plur Ind","drittsekker"],["Plur Def","drittsekkene"]]},
+         {"lemma":"dritsekk","tags":["NOUN","Masc"],"std":"S",
+          "forms":[["Sing Ind","dritsekk"],["Sing Def","dritsekken"],
+                    ["Plur Ind","dritsekker"],["Plur Def","dritsekkene"]]}]
+        """
+        let groups = Paradigm.standardGroups(from: Paradigm.decodeArray(json))
+        #expect(groups.count == 2)
+        #expect(groups[0].lemma == "drittsekk")
+        #expect(groups[0].rows.forms("Sing Ind") == ["drittsekk"])
+        #expect(groups[1].lemma == "dritsekk")
+        #expect(groups[1].rows.forms("Sing Ind") == ["dritsekk"])
+    }
+
+    @Test func standardGroupsMergesSameLemmaParadigms() {
+        // Real "hus" data: two standard paradigms, both lemma "hus", differing only in
+        // Plur Def ("husa" vs "husene") — should stay one group with both forms merged.
+        let json = """
+        [{"lemma":"hus","tags":["NOUN","Neuter"],"std":"S",
+          "forms":[["Sing Ind","hus"],["Plur Def","husa"]]},
+         {"lemma":"hus","tags":["NOUN","Neuter"],"std":"S",
+          "forms":[["Sing Ind","hus"],["Plur Def","husene"]]}]
+        """
+        let groups = Paradigm.standardGroups(from: Paradigm.decodeArray(json))
+        #expect(groups.count == 1)
+        #expect(groups[0].rows.forms("Plur Def") == ["husa", "husene"])
+    }
 }
 
 struct LabelsTests {

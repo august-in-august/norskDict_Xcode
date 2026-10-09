@@ -157,10 +157,40 @@ struct Paradigm: Sendable, Hashable {
     /// is `Plur Def`: "husa" vs "husene"). ordbøkene.no displays these merged into one table
     /// ("husa, husene"), not as separate tables — picking only the first standard paradigm
     /// would silently drop the second spelling.
+    ///
+    /// This flattens across *all* standard paradigms regardless of `lemma`, which is correct
+    /// for verbs/adjectives but can over-merge nouns with genuinely different headword spellings
+    /// — see `standardGroups(from:)` for that case.
     static func mergedStandardRows(from paradigms: [Paradigm]) -> MergedParadigmRows {
+        mergeRows(paradigms.filter(\.isStandard))
+    }
+
+    /// Groups standard paradigms by `lemma`, merging only within each group, preserving
+    /// first-seen lemma order. Some words have multiple *fully divergent* standard paradigms —
+    /// different complete spellings throughout, not just one differing tag — e.g. the article
+    /// "drittsekk, dritsekk" has two paradigms with lemma "drittsekk" and "dritsekk"
+    /// respectively, each a complete self-consistent declension. ordbøkene.no shows these as
+    /// separate rows under one shared header ("en dritsekk"/"en drittsekk", each with its own
+    /// full ubestemt/bestemt × entall/flertall values), not comma-merged per cell — merging
+    /// per cell would produce confusing cross-pairings like "dritsekk, drittsekk" in one column
+    /// and "dritsekkene, drittsekkene" in another, with no way to tell which belongs together.
+    /// Paradigms that share the same lemma (e.g. "hus"'s two paradigms, or alternate plural
+    /// endings within one spelling) still merge into a single group as before.
+    static func standardGroups(from paradigms: [Paradigm]) -> [(lemma: String, rows: MergedParadigmRows)] {
+        var order: [String] = []
+        var byLemma: [String: [Paradigm]] = [:]
+        for paradigm in paradigms where paradigm.isStandard {
+            if byLemma[paradigm.lemma] == nil { order.append(paradigm.lemma) }
+            byLemma[paradigm.lemma, default: []].append(paradigm)
+        }
+        return order.map { lemma in (lemma: lemma, rows: mergeRows(byLemma[lemma] ?? [])) }
+    }
+
+    /// Shared merge: assumes every paradigm passed in is already standard.
+    private static func mergeRows(_ standardParadigms: [Paradigm]) -> MergedParadigmRows {
         var tagOrder: [[String]] = []
         var formsByKey: [String: [String]] = [:]
-        for paradigm in paradigms where paradigm.isStandard {
+        for paradigm in standardParadigms {
             for row in paradigm.rows {
                 let key = row.tags.joined(separator: " ")
                 if formsByKey[key] == nil {

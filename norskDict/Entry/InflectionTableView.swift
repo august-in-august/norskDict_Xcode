@@ -10,6 +10,7 @@ import SwiftUI
 /// ordbøkene.no shows these merged into one table ("husa, husene"), not as separate tables.
 struct InflectionTableView: View {
     var pos: String
+    var dict: Dict
     var paradigms: [Paradigm]
     var searchedForm: String?
     var ui: UILanguage
@@ -19,7 +20,7 @@ struct InflectionTableView: View {
     var body: some View {
         let m = merged
         if pos.hasPrefix("NOUN"), !m.forms("Sing Ind").isEmpty || !m.forms("Plur Ind").isEmpty {
-            NounInflectionTable(pos: pos, merged: m, searchedForm: searchedForm, ui: ui)
+            NounInflectionTable(pos: pos, dict: dict, paradigms: paradigms, searchedForm: searchedForm, ui: ui)
         } else if pos.hasPrefix("ADJ"), !m.forms("Pos Masc/Fem Ind Sing").isEmpty {
             AdjectiveInflectionTable(merged: m, searchedForm: searchedForm, ui: ui)
         } else if pos.hasPrefix("VERB"), !m.forms("Inf").isEmpty {
@@ -61,8 +62,40 @@ private struct GroupHeaderCell: View {
             .frame(maxWidth: .infinity)
             .multilineTextAlignment(.center)
             .padding(.vertical, 8)
-            .background(theme.fill)
+            // An empty title is a blank continuation cell (e.g. under a column-group header
+            // that doesn't need its own sub-header). Skip the fill so it reads as blank space,
+            // not a stray grey box with nothing in it.
+            .background(title.isEmpty ? Color.clear : theme.fill)
     }
+}
+
+/// Builds one cell's text: forms joined by ", ", each optionally wrapped in a grey-italic
+/// prefix/suffix marker (Norwegian function words like "en"/"har"/"den/det", or usage hints
+/// like " + noun" — never translated except the hint word itself) and highlighted
+/// independently if it matches the searched form.
+private func joinedFormsText(
+    _ forms: [String], prefix: String, suffix: String, searchedForm: String?, theme: AppTheme, size: CGFloat
+) -> Text {
+    guard !forms.isEmpty else {
+        return Text("–").font(.system(size: size)).foregroundStyle(theme.ink3)
+    }
+    var result = Text("")
+    for (index, form) in forms.enumerated() {
+        if index > 0 {
+            result = result + Text(", ").font(.system(size: size)).foregroundStyle(theme.ink)
+        }
+        let highlighted = isHighlighted([form], searchedForm)
+        if !prefix.isEmpty {
+            result = result + Text(prefix).font(.system(size: size)).italic().foregroundStyle(theme.ink3)
+        }
+        result = result + Text(form)
+            .font(.system(size: size, weight: highlighted ? .semibold : .regular))
+            .foregroundStyle(highlighted ? theme.tint : theme.ink)
+        if !suffix.isEmpty {
+            result = result + Text(suffix).font(.system(size: size)).italic().foregroundStyle(theme.ink3)
+        }
+    }
+    return result
 }
 
 private struct DataCell: View {
@@ -76,13 +109,13 @@ private struct DataCell: View {
     private var highlighted: Bool { isHighlighted(forms, searchedForm) }
 
     var body: some View {
-        Text(forms.isEmpty ? "–" : forms.map { prefix + $0 + suffix }.joined(separator: ", "))
-            .font(.system(size: 16 * textScale, weight: highlighted ? .semibold : .regular))
-            .foregroundStyle(highlighted ? theme.tint : theme.ink)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 9)
-            .background(highlighted ? theme.tintBg : Color.clear)
+        joinedFormsText(
+            forms, prefix: prefix, suffix: suffix, searchedForm: searchedForm, theme: theme, size: 16 * textScale
+        )
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 9)
+        .background(highlighted ? theme.tintBg : Color.clear)
     }
 }
 
@@ -127,24 +160,36 @@ private enum TableLabel {
 // MARK: - Noun
 
 /// Singular/Plural × Indefinite/Definite, e.g. "hus": et hus | huset | hus | husa, husene.
+///
+/// One data row per *lemma group* (`Paradigm.standardGroups(from:)`), sharing one header:
+/// most nouns have a single group (one spelling, possibly with alternate inflection endings
+/// merged into the same cell, e.g. "husa, husene"), but a word with genuinely different
+/// accepted spellings throughout — "drittsekk, dritsekk" has two complete, independent
+/// declensions — gets one row per spelling instead of cramming both into every cell
+/// ("en dritsekk, en drittsekk" / "dritsekker, drittsekker" / ...), which ordbøkene.no avoids
+/// and which doesn't fit comfortably in a quarter-width column anyway.
 struct NounInflectionTable: View {
     var pos: String
-    var merged: MergedParadigmRows
+    var dict: Dict
+    var paradigms: [Paradigm]
     var searchedForm: String?
     var ui: UILanguage
 
+    /// The Norwegian indefinite article matching this noun's gender and dictionary — "en"/
+    /// "ei"/"et" in Bokmål, "ein"/"ei"/"eit" in Nynorsk (feminine "ei" is shared).
     private var article: String? {
         let hasFem = pos.contains("Fem")
         let hasMasc = pos.contains("Masc")
         let hasNeuter = pos.contains("Neuter")
-        if hasNeuter, !hasMasc, !hasFem { return "et" }
+        if hasNeuter, !hasMasc, !hasFem { return dict == .nn ? "eit" : "et" }
         if hasFem, !hasMasc { return "ei" }
-        if hasMasc { return "en" }
+        if hasMasc { return dict == .nn ? "ein" : "en" }
         return nil
     }
 
     var body: some View {
         let strings = Strings.for(ui)
+        let groups = Paradigm.standardGroups(from: paradigms)
         TableCard {
             Grid(horizontalSpacing: 0, verticalSpacing: 0) {
                 GridRow {
@@ -158,12 +203,17 @@ struct NounInflectionTable: View {
                     GroupHeaderCell(title: strings.indefinite)
                     GroupHeaderCell(title: strings.definite)
                 }
-                Hairline()
-                GridRow {
-                    DataCell(forms: merged.forms("Sing Ind"), searchedForm: searchedForm, prefix: article.map { "\($0) " } ?? "")
-                    DataCell(forms: merged.forms("Sing Def"), searchedForm: searchedForm)
-                    DataCell(forms: merged.forms("Plur Ind"), searchedForm: searchedForm)
-                    DataCell(forms: merged.forms("Plur Def"), searchedForm: searchedForm)
+                ForEach(Array(groups.enumerated()), id: \.offset) { index, group in
+                    Hairline()
+                    GridRow {
+                        DataCell(
+                            forms: group.rows.forms("Sing Ind"), searchedForm: searchedForm,
+                            prefix: article.map { "\($0) " } ?? ""
+                        )
+                        DataCell(forms: group.rows.forms("Sing Def"), searchedForm: searchedForm)
+                        DataCell(forms: group.rows.forms("Plur Ind"), searchedForm: searchedForm)
+                        DataCell(forms: group.rows.forms("Plur Def"), searchedForm: searchedForm)
+                    }
                 }
             }
         }
