@@ -117,6 +117,8 @@ private enum TableLabel {
         case ("pastParticiple", .zh): "过去分词"
         case ("presentParticiple", .en): "Present participle"
         case ("presentParticiple", .zh): "现在分词"
+        case ("noun", .en): "noun"
+        case ("noun", .zh): "名词"
         default: key
         }
     }
@@ -247,6 +249,7 @@ struct VerbInflectionTable: View {
 
     var body: some View {
         let strings = Strings.for(ui)
+        let nounSuffix = " + " + TableLabel.text("noun", ui: ui)
         TableCard {
             LabeledRow(label: strings.infinitive, forms: merged.forms("Inf"), searchedForm: searchedForm, prefix: "å ")
             Hairline()
@@ -259,7 +262,10 @@ struct VerbInflectionTable: View {
                 prefix: "har "
             )
             Hairline()
-            LabeledRow(label: Labels.inflectionTag(["Imp"], ui: ui), forms: merged.forms("Imp"), searchedForm: searchedForm)
+            LabeledRow(
+                label: Labels.inflectionTag(["Imp"], ui: ui), forms: merged.forms("Imp"), searchedForm: searchedForm,
+                suffix: "!"
+            )
 
             if hasPerfectParticiple {
                 Hairline()
@@ -267,20 +273,24 @@ struct VerbInflectionTable: View {
                 Hairline()
                 LabeledRow(
                     label: TableLabel.text("masculineFeminine", ui: ui),
-                    forms: merged.forms("Adj <PerfPart> Masc/Fem Ind Sing"), searchedForm: searchedForm
+                    forms: merged.forms("Adj <PerfPart> Masc/Fem Ind Sing"), searchedForm: searchedForm,
+                    suffix: nounSuffix
                 )
                 Hairline()
                 LabeledRow(
                     label: TableLabel.text("neuter", ui: ui),
-                    forms: merged.forms("Adj <PerfPart> Neuter Ind Sing"), searchedForm: searchedForm
+                    forms: merged.forms("Adj <PerfPart> Neuter Ind Sing"), searchedForm: searchedForm,
+                    suffix: nounSuffix
                 )
                 Hairline()
                 LabeledRow(
-                    label: strings.definite, forms: merged.forms("Adj <PerfPart> Def Sing"), searchedForm: searchedForm
+                    label: strings.definite, forms: merged.forms("Adj <PerfPart> Def Sing"), searchedForm: searchedForm,
+                    prefix: "den/det ", suffix: nounSuffix
                 )
                 Hairline()
                 LabeledRow(
-                    label: strings.plural, forms: merged.forms("Adj <PerfPart> Plur"), searchedForm: searchedForm
+                    label: strings.plural, forms: merged.forms("Adj <PerfPart> Plur"), searchedForm: searchedForm,
+                    suffix: nounSuffix
                 )
             }
 
@@ -296,12 +306,16 @@ struct VerbInflectionTable: View {
 
 /// One verb-table row: a fixed-width label, then the row's forms divided evenly across
 /// equal-width cells (not joined with "/" — ordbøkene shows alternative forms as separate
-/// cells for these rows).
+/// cells for these rows). `prefix`/`suffix` are Norwegian function-word markers (e.g. "å ",
+/// "har ", "den/det ") or usage hints (" + noun") shown in grey italics around the form, as
+/// ordbøkene.no does — these are never translated, they're part of the Norwegian grammar being
+/// illustrated, except the usage-hint word itself which is localized (see `TableLabel`).
 private struct LabeledRow: View {
     var label: String
     var forms: [String]
     var searchedForm: String?
     var prefix: String = ""
+    var suffix: String = ""
 
     @Environment(\.appTheme) private var theme
     @Environment(\.textScale) private var textScale
@@ -319,9 +333,7 @@ private struct LabeledRow: View {
                 ForEach(Array(forms.enumerated()), id: \.offset) { index, form in
                     if index > 0 { Hairline(vertical: true) }
                     let highlighted = isHighlighted([form], searchedForm)
-                    Text(prefix + form)
-                        .font(.system(size: 16 * textScale, weight: highlighted ? .semibold : .regular))
-                        .foregroundStyle(highlighted ? theme.tint : theme.ink)
+                    cellText(form: form, highlighted: highlighted)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 9)
                         .background(highlighted ? theme.tintBg : Color.clear)
@@ -331,6 +343,21 @@ private struct LabeledRow: View {
                 }
             }
         }
+    }
+
+    private func cellText(form: String, highlighted: Bool) -> Text {
+        let size = 16 * textScale
+        var text = Text("")
+        if !prefix.isEmpty {
+            text = text + Text(prefix).font(.system(size: size)).italic().foregroundStyle(theme.ink3)
+        }
+        text = text + Text(form)
+            .font(.system(size: size, weight: highlighted ? .semibold : .regular))
+            .foregroundStyle(highlighted ? theme.tint : theme.ink)
+        if !suffix.isEmpty {
+            text = text + Text(suffix).font(.system(size: size)).italic().foregroundStyle(theme.ink3)
+        }
+        return text
     }
 }
 

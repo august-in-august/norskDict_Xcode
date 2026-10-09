@@ -139,6 +139,19 @@ struct ParadigmTests {
         let merged = Paradigm.mergedStandardRows(from: Paradigm.decodeArray(json))
         #expect(merged.forms("Inf") == ["x"])
     }
+
+    @Test func mergedFormsAreSortedAlphabeticallyNotByJSONOrder() {
+        // Real "dusje" data: 3 standard bm paradigms whose "Adj <PerfPart> Def Sing" values
+        // appear in raw JSON order dusja, dusjete, dusjede — but ordbøkene.no (and this table)
+        // show them alphabetically sorted: dusja, dusjede, dusjete.
+        let json = """
+        [{"lemma":"dusje","tags":["VERB"],"std":"S","forms":[["Adj <PerfPart> Def Sing","dusja"]]},
+         {"lemma":"dusje","tags":["VERB"],"std":"S","forms":[["Adj <PerfPart> Def Sing","dusjete"]]},
+         {"lemma":"dusje","tags":["VERB"],"std":"S","forms":[["Adj <PerfPart> Def Sing","dusjede"]]}]
+        """
+        let merged = Paradigm.mergedStandardRows(from: Paradigm.decodeArray(json))
+        #expect(merged.forms("Adj <PerfPart> Def Sing") == ["dusja", "dusjede", "dusjete"])
+    }
 }
 
 struct LabelsTests {

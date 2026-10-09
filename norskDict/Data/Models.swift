@@ -148,7 +148,9 @@ struct Paradigm: Sendable, Hashable {
     }
 
     /// Merges every standard (`std = "S"`) paradigm in the array into one tag -> forms lookup,
-    /// deduping values and preserving first-seen order of both tags and forms.
+    /// deduping values and sorting each tag's forms alphabetically (matching ordbøkene.no,
+    /// e.g. "dusja, dusjede, dusjete" — verified against the live site; raw JSON array order
+    /// is not alphabetical and would show "dusja, dusjete, dusjede" instead).
     ///
     /// A word can have several standard paradigms representing alternative accepted spellings
     /// of the *same* inflected forms (e.g. "hus" has two paradigm entries whose only difference
@@ -169,6 +171,9 @@ struct Paradigm: Sendable, Hashable {
                     formsByKey[key, default: []].append(form)
                 }
             }
+        }
+        for key in formsByKey.keys {
+            formsByKey[key]?.sort()
         }
         return MergedParadigmRows(tagOrder: tagOrder, formsByKey: formsByKey)
     }

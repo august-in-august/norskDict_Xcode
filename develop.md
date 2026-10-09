@@ -215,3 +215,28 @@ parallel with Norwegian form lookup; see "Decisions made" above.)
     only one paradigm and silently dropped the other spelling. Added 2 regression tests for this.
   - 19 unit tests pass (17 + 2 new); all three POS layouts verified pixel-by-pixel against the
     user's ordbøkene.no reference screenshots in the simulator.
+
+### 2026-10-10 (later still) — Verb table correctness + styling, per closer ordbøkene comparison
+The user compared the live app against ordbøkene.no more closely (a cleaner reference
+screenshot of "dusje" showing grey italic function-word markers and usage hints) and found:
+- **Variant form ordering was wrong**: "Past participle" → Definite/Plural showed
+  "dusja, dusjete, dusjede" but ordbøkene shows "dusja, dusjede, dusjete". Root cause: merged
+  forms were kept in raw JSON-array-arrival order, which isn't alphabetical. **Fix**:
+  `Paradigm.mergedStandardRows(from:)` now sorts each tag's forms alphabetically after merging —
+  verified this also matches every other previously-checked example ("dusja, dusjet";
+  "dusj, dusja, dusje"; "husa, husene"), so it's a general rule, not a one-off. Added a
+  regression test (`mergedFormsAreSortedAlphabeticallyNotByJSONOrder`).
+- **Function-word markers weren't visually distinguished**: "å dusje", "har dusja" rendered as
+  one uniform-styled string. `LabeledRow` (the verb table's row renderer) now takes optional
+  `prefix`/`suffix` strings rendered in grey italics via `Text` concatenation, separate from the
+  (highlightable) form text — matching ordbøkene's own grey-italic treatment of "å"/"har"/
+  "den/det".
+- **Imperative forms were missing their "!"**: added `suffix: "!"` to the imperative row.
+- **Added "+ noun" usage hints to the past-participle-as-adjective rows** (Masculine/feminine,
+  Neuter, Plural get a grey-italic " + noun"/" + 名词" suffix; Definite additionally gets a
+  grey-italic "den/det " prefix) — this is new content beyond what was there before, following
+  a third reference screenshot the user provided showing ordbøkene annotates these forms with
+  how they're used (participle + a following noun, since Norwegian past participles decline
+  like adjectives when used attributively).
+- 20 unit tests pass (19 + 1 new); re-verified in the simulator against the exact row-by-row
+  expectations from the user's screenshots.
