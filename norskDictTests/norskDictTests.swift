@@ -116,6 +116,29 @@ struct ParadigmTests {
         let paradigm = try! #require(Paradigm.decodeArray(json).first)
         #expect(!paradigm.isStandard)
     }
+
+    @Test func mergesFormsAcrossMultipleStandardParadigms() {
+        // "hus" has two standard paradigms whose only difference is Plur Def: "husa" vs
+        // "husene". ordbøkene.no displays both merged into one cell, not as separate tables.
+        let json = """
+        [{"lemma":"hus","tags":["NOUN","Neuter"],"std":"S",
+          "forms":[["Sing Ind","hus"],["Sing Def","huset"],["Plur Ind","hus"],["Plur Def","husa"]]},
+         {"lemma":"hus","tags":["NOUN","Neuter"],"std":"S",
+          "forms":[["Sing Ind","hus"],["Sing Def","huset"],["Plur Ind","hus"],["Plur Def","husene"]]}]
+        """
+        let merged = Paradigm.mergedStandardRows(from: Paradigm.decodeArray(json))
+        #expect(merged.forms("Plur Def") == ["husa", "husene"])
+        #expect(merged.forms("Sing Def") == ["huset"])
+    }
+
+    @Test func mergeIgnoresNonStandardParadigms() {
+        let json = """
+        [{"lemma":"x","tags":["VERB"],"std":"S","forms":[["Inf","x"]]},
+         {"lemma":"x","tags":["VERB"],"std":"R","forms":[["Inf","y"]]}]
+        """
+        let merged = Paradigm.mergedStandardRows(from: Paradigm.decodeArray(json))
+        #expect(merged.forms("Inf") == ["x"])
+    }
 }
 
 struct LabelsTests {

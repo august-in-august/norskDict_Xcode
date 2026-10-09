@@ -188,3 +188,30 @@ parallel with Norwegian form lookup; see "Decisions made" above.)
 - All 17 unit tests still pass; all 4 changes verified together in the simulator (theme scroll
   + selection, hand-order reversal on the live tab bar, single-row icon picker, Sources stats
   line with live DB counts).
+
+### 2026-10-10 (later) — Visual polish + real inflection tables
+- **Theme swatch gap widened** (4pt → 18pt spacing) and the **icon picker's two longest names
+  shortened** ("Hei · Hi · 你好" → "Greetings"/"问候语", "Lookup Arrow" → "Lookup"/"查词") plus a
+  wider label frame and trailing scroll padding, so the last tile in the row isn't clipped.
+- **Sources stats sentence** now spells out "Bokmål"/"Nynorsk" instead of "bm"/"nn" abbreviations.
+- **Inflection tables rebuilt to match ordbøkene.no's layout**, verified against its actual
+  rendering for "dusje" (verb), "pen" (adjective), "hus" (noun) — screenshots the user provided.
+  This replaces the generic label/forms list (kept only as a fallback for parts of speech
+  without a dedicated layout — pronouns, determiners, adverbs, etc.):
+  - **Noun**: Singular/Plural × Indefinite/Definite 4-cell grid, with the correct indefinite
+    article ("et"/"ei"/"en") prefixed onto the singular-indefinite form based on gender.
+  - **Adjective**: a Singular(masc/fem, neuter, definite)/Plural grid, plus a separate
+    "Comparison" card (comparative, superlative indefinite/definite) shown only when the
+    adjective actually inflects for degree.
+  - **Verb**: infinitive/present/past/perfect/imperative rows, then a "Past participle"
+    sub-section broken out by gender/number/definiteness (a Norwegian past participle inflects
+    like an adjective) and a "Present participle" row — matching ordbøkene's own section
+    structure exactly (verified against the real `dusje` paradigm JSON).
+  - **Root-cause fix enabling all of this**: `Paradigm.mergedStandardRows(from:)` merges forms
+    across *every* standard (`std = "S"`) paradigm of a word, not just the first. A word can
+    have several standard paradigms differing only in an accepted spelling variant — "hus" has
+    two paradigms whose sole difference is `Plur Def`: "husa" vs "husene" — and ordbøkene merges
+    these into one cell ("husa, husene"); the old code's `paradigms.first { isStandard }` picked
+    only one paradigm and silently dropped the other spelling. Added 2 regression tests for this.
+  - 19 unit tests pass (17 + 2 new); all three POS layouts verified pixel-by-pixel against the
+    user's ordbøkene.no reference screenshots in the simulator.

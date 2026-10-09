@@ -15,9 +15,7 @@ struct EntryColumn: View {
 
     private var strings: Strings { settings.strings }
 
-    private var standardParadigm: Paradigm? {
-        entry.paradigms.first { $0.isStandard } ?? entry.paradigms.first
-    }
+    private var mergedParadigmRows: MergedParadigmRows { Paradigm.mergedStandardRows(from: entry.paradigms) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -74,9 +72,11 @@ struct EntryColumn: View {
             ) {
                 settings.openInflection.toggle()
             } content: {
-                if let paradigm = standardParadigm {
-                    InflectionTableView(paradigm: paradigm, searchedForm: searchedForm, ui: settings.uiLanguage)
-                        .padding(.bottom, 8)
+                if !entry.paradigms.isEmpty {
+                    InflectionTableView(
+                        pos: entry.pos, paradigms: entry.paradigms, searchedForm: searchedForm, ui: settings.uiLanguage
+                    )
+                    .padding(.bottom, 8)
                 }
             }
 
@@ -89,8 +89,8 @@ struct EntryColumn: View {
     }
 
     private var inflectionPreview: String? {
-        guard let paradigm = standardParadigm, !settings.openInflection else { return nil }
-        return paradigm.rows.map { $0.forms.joined(separator: "/") }.joined(separator: " · ")
+        guard !settings.openInflection, !mergedParadigmRows.isEmpty else { return nil }
+        return mergedParadigmRows.rows.map { $0.forms.joined(separator: "/") }.joined(separator: " · ")
     }
 }
 

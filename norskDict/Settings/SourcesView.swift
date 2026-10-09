@@ -52,7 +52,7 @@ struct SourcesView: View {
                     body: "书面挪威语的释义、例句和固定表达。由挪威语言委员会（Språkrådet）与卑尔根大学编纂。",
                     licence: nil
                 ),
-                Source(title: "Nynorskordboka", body: "新挪威语的释义、例句和固定表达。由 Språkrådet 与卑尔根大学编纂。", licence: nil),
+                Source(title: "Nynorskordboka", body: "新挪威语的释义、例句和固定表达。由挪威语言委员会（Språkrådet） 与卑尔根大学编纂。", licence: nil),
                 Source(
                     title: "Norsk ordbank",
                     body: "词形变化数据，用于从你输入的任意词形找到原形。Språkrådet 与卑尔根大学。",
@@ -112,7 +112,8 @@ struct SourcesView: View {
         func n(_ value: Int) -> String {
             Self.groupedNumberFormatter.string(from: NSNumber(value: value)) ?? "\(value)"
         }
-        return "\(n(stats.totalArticles)) \(strings.articles) (bm \(n(stats.bmArticles)) / nn \(n(stats.nnArticles))), "
+        return "\(n(stats.totalArticles)) \(strings.articles) "
+            + "(\(strings.bokmaal) \(n(stats.bmArticles)) / \(strings.nynorsk) \(n(stats.nnArticles))), "
             + "\(n(stats.senses)) \(strings.senses), \(n(stats.examples)) \(strings.examples), "
             + "\(n(stats.idioms)) \(strings.fixed.lowercased()), \(n(stats.forms)) \(strings.searchableForms)."
     }

@@ -26,16 +26,16 @@ enum AppIconOption: String, CaseIterable, Identifiable, Sendable {
         case (.moose, .zh): "驼鹿"
         case (.happyBook, .en): "Happy Book"
         case (.happyBook, .zh): "开心书本"
-        case (.greetings, .en): "Hei · Hi · 你好"
-        case (.greetings, .zh): "Hei · Hi · 你好"
+        case (.greetings, .en): "Greetings"
+        case (.greetings, .zh): "问候语"
         case (.themeSplit, .en): "Theme Split"
         case (.themeSplit, .zh): "主题分色"
         case (.cardStack, .en): "Card Stack"
         case (.cardStack, .zh): "卡片堆叠"
         case (.flagLens, .en): "Flag Lens"
         case (.flagLens, .zh): "国旗放大镜"
-        case (.lookup, .en): "Lookup Arrow"
-        case (.lookup, .zh): "查词箭头"
+        case (.lookup, .en): "Lookup"
+        case (.lookup, .zh): "查词"
         }
     }
 

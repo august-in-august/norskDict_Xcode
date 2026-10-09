@@ -19,6 +19,7 @@ struct AppIconSection: View {
                     }
                 }
                 .padding(.vertical, 4)
+                .padding(.trailing, 10)
             }
         }
         .disabled(!manager.isSupported)
@@ -49,7 +50,8 @@ private struct IconTile: View {
                     .font(.caption2.weight(isSelected ? .semibold : .regular))
                     .foregroundStyle(isSelected ? theme.ink : theme.ink2)
                     .lineLimit(1)
-                    .frame(width: 72)
+                    .minimumScaleFactor(0.8)
+                    .frame(width: 80)
             }
             .padding(4)
         }

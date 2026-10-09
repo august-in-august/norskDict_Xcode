@@ -146,6 +146,49 @@ struct Paradigm: Sendable, Hashable {
             return Paradigm(lemma: p.lemma, tags: p.tags, isStandard: p.std == "S", rows: rows)
         }
     }
+
+    /// Merges every standard (`std = "S"`) paradigm in the array into one tag -> forms lookup,
+    /// deduping values and preserving first-seen order of both tags and forms.
+    ///
+    /// A word can have several standard paradigms representing alternative accepted spellings
+    /// of the *same* inflected forms (e.g. "hus" has two paradigm entries whose only difference
+    /// is `Plur Def`: "husa" vs "husene"). ordbøkene.no displays these merged into one table
+    /// ("husa, husene"), not as separate tables — picking only the first standard paradigm
+    /// would silently drop the second spelling.
+    static func mergedStandardRows(from paradigms: [Paradigm]) -> MergedParadigmRows {
+        var tagOrder: [[String]] = []
+        var formsByKey: [String: [String]] = [:]
+        for paradigm in paradigms where paradigm.isStandard {
+            for row in paradigm.rows {
+                let key = row.tags.joined(separator: " ")
+                if formsByKey[key] == nil {
+                    tagOrder.append(row.tags)
+                    formsByKey[key] = []
+                }
+                for form in row.forms where !(formsByKey[key]?.contains(form) ?? false) {
+                    formsByKey[key, default: []].append(form)
+                }
+            }
+        }
+        return MergedParadigmRows(tagOrder: tagOrder, formsByKey: formsByKey)
+    }
+}
+
+/// Lookup over forms merged across every standard paradigm of a word — see
+/// `Paradigm.mergedStandardRows(from:)`.
+struct MergedParadigmRows: Sendable {
+    fileprivate var tagOrder: [[String]]
+    fileprivate var formsByKey: [String: [String]]
+
+    var isEmpty: Bool { tagOrder.isEmpty }
+
+    /// Forms for an exact tag combination, e.g. `forms("Sing Def")` or `forms("Adj <PerfPart> Plur")`.
+    func forms(_ tagKey: String) -> [String] { formsByKey[tagKey] ?? [] }
+
+    /// All rows in first-seen order, for the generic fallback table.
+    var rows: [Paradigm.Row] {
+        tagOrder.map { tags in Paradigm.Row(tags: tags, forms: formsByKey[tags.joined(separator: " ")] ?? []) }
+    }
 }
 
 /// A full dictionary entry for the entry screen.

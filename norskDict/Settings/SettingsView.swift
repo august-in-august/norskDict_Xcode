@@ -14,7 +14,7 @@ struct SettingsView: View {
                 VStack(alignment: .leading, spacing: 14) {
                     Text(strings.theme).font(.system(size: 17))
                     ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 4) {
+                        HStack(spacing: 18) {
                             ForEach(ThemePalette.allCases) { palette in
                                 ThemeSwatch(palette: palette, isSelected: settings.theme == palette) {
                                     settings.theme = palette
