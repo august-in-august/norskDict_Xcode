@@ -266,3 +266,19 @@ more issues:
   as a stray empty rectangle. Fixed: `GroupHeaderCell` skips the fill when its title is empty.
 - 22 unit tests pass (20 + 2 new); all three fixes (plus a bonus Nynorsk "eit hus" check)
   verified in the simulator.
+
+### 2026-10-10 (yet later) — Entry section order, Chinese grammar terminology
+- **Reordered `EntryColumn`'s sections**: Inflection now comes first (right after the
+  headword/POS header), then the numbered senses/meaning, then Fixed expressions, then the
+  source line — previously it was meaning → fixed expressions → inflection.
+- **Chinese grammar terms for noun/adjective (and the verb table's past-participle "Definite"
+  row, which shares the same string)**: "不定形" → "不定态" and "定形" → "限定态" for
+  indefinite/definite form labels. Changed both `Strings.indefinite`/`.definite` (used by the
+  noun table's Indefinite/Definite headers and the verb table's past-participle Definite row)
+  and the adjective table's separate `TableLabel` "definiteForm" entry, so the terminology is
+  consistent everywhere it appears, not just the two places explicitly mentioned.
+- Build clean, 22 unit tests pass (unaffected by these changes — no test covers UI copy/order
+  directly). Visual re-verification in the simulator was skipped this round due to hitting the
+  session's rate limit mid-check; both changes are simple, low-risk (a block move + 3 literal
+  string replacements) and compiled/tested cleanly, but should get a quick visual glance next
+  time the app is run.

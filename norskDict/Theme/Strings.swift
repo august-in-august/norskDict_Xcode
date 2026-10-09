@@ -125,7 +125,7 @@ struct Strings {
                 noResults: "没有找到结果。请检查拼写，或尝试输入原形。", swipeHint: "左右轻扫切换词典",
                 fixed: "固定表达", infl: "词形变化", machineTranslated: "机器翻译", report: "报告错误",
                 reported: "报告已保存，将在联网后发送。", see: "参见", singular: "单数", plural: "复数",
-                indefinite: "不定形", definite: "定形", infinitive: "不定式", present: "现在时", past: "过去时",
+                indefinite: "不定态", definite: "限定态", infinitive: "不定式", present: "现在时", past: "过去时",
                 perfect: "完成时", appearance: "外观", theme: "主题", light: "浅色", dark: "深色",
                 system: "跟随系统", appIcon: "应用图标",
                 navigationHand: "导航布局", leftHanded: "左手", rightHanded: "右手",

@@ -137,7 +137,7 @@ private enum TableLabel {
         case ("neuter", .en): "Neuter"
         case ("neuter", .zh): "中性"
         case ("definiteForm", .en): "Definite form"
-        case ("definiteForm", .zh): "定形"
+        case ("definiteForm", .zh): "限定态"
         case ("comparison", .en): "Comparison"
         case ("comparison", .zh): "比较级变化"
         case ("comparative", .en): "Comparative"

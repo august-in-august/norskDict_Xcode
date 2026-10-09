@@ -33,6 +33,22 @@ struct EntryColumn: View {
                 .padding(.bottom, 4)
             }
 
+            DisclosureSection(
+                title: strings.infl,
+                preview: inflectionPreview,
+                isExpanded: settings.openInflection
+            ) {
+                settings.openInflection.toggle()
+            } content: {
+                if !entry.paradigms.isEmpty {
+                    InflectionTableView(
+                        pos: entry.pos, dict: entry.dict, paradigms: entry.paradigms,
+                        searchedForm: searchedForm, ui: settings.uiLanguage
+                    )
+                    .padding(.bottom, 8)
+                }
+            }
+
             ForEach(entry.senses) { sense in
                 SenseRowView(sense: sense, onOpenCrossReference: onOpenCrossReference)
                     .padding(.vertical, 16)
@@ -62,22 +78,6 @@ struct EntryColumn: View {
                         .padding(.vertical, 11)
                         .overlay(alignment: .top) { Rectangle().fill(theme.sep).frame(height: 0.5) }
                     }
-                }
-            }
-
-            DisclosureSection(
-                title: strings.infl,
-                preview: inflectionPreview,
-                isExpanded: settings.openInflection
-            ) {
-                settings.openInflection.toggle()
-            } content: {
-                if !entry.paradigms.isEmpty {
-                    InflectionTableView(
-                        pos: entry.pos, dict: entry.dict, paradigms: entry.paradigms,
-                        searchedForm: searchedForm, ui: settings.uiLanguage
-                    )
-                    .padding(.bottom, 8)
                 }
             }
 
