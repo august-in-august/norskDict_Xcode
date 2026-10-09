@@ -30,6 +30,8 @@ struct SettingsView: View {
                 }
             }
 
+            AppIconSection()
+
             Section {
                 Toggle(strings.englishName, isOn: Binding(get: { settings.showEnglish }, set: { settings.showEnglish = $0 }))
                 Toggle(strings.chineseName, isOn: Binding(get: { settings.showChinese }, set: { settings.showChinese = $0 }))

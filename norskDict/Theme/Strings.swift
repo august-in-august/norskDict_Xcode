@@ -36,6 +36,7 @@ struct Strings {
     var light: String
     var dark: String
     var system: String
+    var appIcon: String
     var translationsHeader: String
     var translationsFooter: String
     var englishName: String
@@ -92,6 +93,7 @@ struct Strings {
                 see: "see", singular: "Singular", plural: "Plural", indefinite: "Indefinite", definite: "Definite",
                 infinitive: "Infinitive", present: "Present", past: "Past", perfect: "Perfect",
                 appearance: "Appearance", theme: "Theme", light: "Light", dark: "Dark", system: "System",
+                appIcon: "App Icon",
                 translationsHeader: "Show translations by default",
                 translationsFooter: "Translations appear under each definition and example. "
                     + "You can also switch them on any entry.",
@@ -117,7 +119,7 @@ struct Strings {
                 reported: "报告已保存，将在联网后发送。", see: "参见", singular: "单数", plural: "复数",
                 indefinite: "不定形", definite: "定形", infinitive: "不定式", present: "现在时", past: "过去时",
                 perfect: "完成时", appearance: "外观", theme: "主题", light: "浅色", dark: "深色",
-                system: "跟随系统", translationsHeader: "默认显示翻译",
+                system: "跟随系统", appIcon: "应用图标", translationsHeader: "默认显示翻译",
                 translationsFooter: "翻译显示在每条释义和例句下方。也可以在任意词条页中切换。",
                 englishName: "English 英语", chineseName: "中文", interfaceLanguage: "界面语言",
                 textSize: "字体大小", sampleTranslation: "我的一个好朋友", about: "关于", sources: "数据来源",

@@ -141,3 +141,28 @@ parallel with Norwegian form lookup; see "Decisions made" above.)
 - **Next**: plan phases 6–7 — performance testing on iPhone XS-class hardware (50ms/keystroke,
   5ms form lookup targets from the plan), accessibility pass (Dynamic Type, VoiceOver labels,
   contrast per theme), TestFlight beta, App Store listing/screenshots/privacy label.
+
+### 2026-10-09 (later) — App icon picker
+- Merged the 9-icon set from `../NorskDict app development/AppIcons/` (Claude Design handoff:
+  Å Tile/Speech å "Simple", Moose/Happy Book/Greetings "Cute", Theme Split/Card Stack/Flag
+  Lens/Lookup Arrow "Modern" — each with light/dark/tinted appearances) into
+  `Assets.xcassets`: 9 `.appiconset`s + 9 `IconPreview-*.imageset`s (180pt previews for the
+  in-app picker, since alternate app icons can't be loaded with `Image(_:)`).
+  - Adapted the handoff's `AppIconOption.swift`/`AppIconPicker.swift` to this codebase's
+    conventions: `@Observable AppIconManager` instead of `ObservableObject`/`@Published`;
+    bilingual `displayName(ui:)`/`Style.label(ui:)` instead of English-only strings, matching
+    `ThemePalette.displayName(ui:)`; `theme.tint`/`theme.ink` instead of `.accentColor`/
+    `.primary`. Added `AppIconSection()` to `SettingsView.swift` right after the theme-color
+    picker.
+  - Verified in the simulator: all 9 tiles render real previews grouped correctly into
+    Simple(2)/Cute(3)/Modern(4), primary icon shows selected by default.
+  - **⚠️ Action needed (can't be done by the agent):** tapping a different icon currently
+    no-ops — `UIApplication.supportsAlternateIcons` is `false` until the generated Info.plist
+    actually declares the alternate icons, which requires a build setting the agent can't set:
+    Xcode was open, and editing `project.pbxproj` directly while Xcode has it open risks
+    crashing/corrupting it. **In Xcode:** select the `norskDict` target → Build Settings →
+    search "Include All App Icon Assets" → set it to **Yes** for both Debug and Release (or
+    search "Alternate App Icon Sets" and list the 8 names: `AppIcon-SpeechA AppIcon-Moose
+    AppIcon-HappyBook AppIcon-Greetings AppIcon-ThemeSplit AppIcon-CardStack AppIcon-FlagLens
+    AppIcon-Lookup`). After that, rebuild and the picker should work — switching icons will
+    show iOS's native "You have changed the icon" confirmation, which can't be suppressed.
