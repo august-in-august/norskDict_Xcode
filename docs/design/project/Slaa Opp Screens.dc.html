@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/modernist-aa0cf8e8-030b-4bf9-b8a0-f21b8e8e5d01/styles.css">
+<script src="_ds/modernist-aa0cf8e8-030b-4bf9-b8a0-f21b8e8e5d01/_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--color-bg)}a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}</style>
+</helmet>
+<div style="font-family:var(--font-body);color:var(--color-text);background:var(--color-bg);min-width:1400px">
+<header style="padding:64px 64px 40px;border-bottom:2px solid var(--color-text);display:grid;grid-template-columns:minmax(0,1.1fr) repeat(3,minmax(0,1fr));gap:40px;align-items:start">
+  <div>
+    <div style="font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-700)">iOS &amp; iPadOS 18 · Interface</div>
+    <h1 style="font-size:88px;line-height:.95;margin:14px 0 0;letter-spacing:-.03em">Slå opp</h1>
+    <p style="font-size:17px;line-height:1.5;margin:16px 0 0;max-width:460px">An offline learner’s dictionary built on Bokmålsordboka and Nynorskordboka. 186 912 articles, with English and Chinese translations.</p>
+  </div>
+  <div style="border-top:2px solid var(--color-text);padding-top:12px;margin-top:118px;font-size:14px;line-height:1.55"><div style="font-weight:700;margin-bottom:6px">Native first</div>SF Pro and PingFang, iOS system greys, grouped lists, segmented controls and switches. The one custom colour is the accent, taken from the red in the brand system.</div>
+  <div style="border-top:2px solid var(--color-text);padding-top:12px;margin-top:118px;font-size:14px;line-height:1.55"><div style="font-weight:700;margin-bottom:6px">Norwegian leads</div>Definitions at 17pt ink; translations at 15pt secondary grey with a small EN / 中 marker. Sense numbers in the accent, in their own column, so long entries scan.</div>
+  <div style="border-top:2px solid var(--color-text);padding-top:12px;margin-top:118px;font-size:14px;line-height:1.55"><div style="font-weight:700;margin-bottom:6px">BM / NN</div>A warm red tag for Bokmål and a blue tag for Nynorsk, used the same way in results, entries, bookmarks and history.</div>
+</header>
+<section id="s1" data-screen-label="01 iPhone · Light" style="padding:48px 64px 64px;border-bottom:2px solid var(--color-text)">
+  <div style="display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;margin-bottom:36px;align-items:baseline">
+    <div style="font-size:44px;font-weight:700;color:var(--color-accent);line-height:1">01</div>
+    <div><h2 style="font-size:32px;margin:0">iPhone · Light</h2><p style="font-size:15px;line-height:1.5;margin:8px 0 0;max-width:760px;color:var(--color-neutral-700)">White theme. Every frame is live: type, tap results, toggle EN/中文, collapse sections, swipe between Bokmål and Nynorsk.</p></div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:48px 40px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:70px"><div style="font-size:14px;font-weight:700">1 · Search, empty</div><div style="font-size:13px;line-height:1.45;color:var(--color-neutral-700);margin-top:3px">Search field on top, recent lookups below with the base word each form resolved to.</div></div>
+      <dc-import name="SlaOppApp" tab="search" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:70px"><div style="font-size:14px;font-weight:700">2 · Search as you type</div><div style="font-size:13px;line-height:1.45;color:var(--color-neutral-700);margin-top:3px">“bøker”. Grouped by dictionary, with a match note; near spellings under Similar headwords.</div></div>
+      <dc-import name="SlaOppApp" tab="search" query="bøker" show-en="{{ true }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:70px"><div style="font-size:14px;font-weight:700">2b · Similar headwords</div><div style="font-size:13px;line-height:1.45;color:var(--color-neutral-700);margin-top:3px">“bøkker” matches the Bokmål word and suggests bøkkar (NN).</div></div>
+      <dc-import name="SlaOppApp" tab="search" query="bøkker" show-en="{{ true }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:70px"><div style="font-size:14px;font-weight:700">3 · Results, Bokmål tab</div><div style="font-size:13px;line-height:1.45;color:var(--color-neutral-700);margin-top:3px">After Return. Segmented control shows counts (Nynorsk has 1); swipe switches tabs; the last tab is remembered.</div></div>
+      <dc-import name="SlaOppApp" tab="search" query="bøker" submitted="{{ true }}" dict-tab="bm" show-en="{{ true }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:70px"><div style="font-size:14px;font-weight:700">4a · Entry, translations off</div><div style="font-size:13px;line-height:1.45;color:var(--color-neutral-700);margin-top:3px">Norwegian only. Fixed expressions and Inflection collapsed; the inflection header previews the forms.</div></div>
+      <dc-import name="SlaOppApp" tab="search" entry="venn" dict-tab="bm" searched="venn" show-en="{{ false }}" show-zh="{{ false }}" open-fixed="{{ false }}" open-infl="{{ false }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:70px"><div style="font-size:14px;font-weight:700">4b · Entry, EN + 中文 on</div><div style="font-size:13px;line-height:1.45;color:var(--color-neutral-700);margin-top:3px">Translations sit under each definition and example in a quieter style. Machine-translated label with Report error.</div></div>
+      <dc-import name="SlaOppApp" tab="search" entry="venn" dict-tab="bm" searched="venn" show-en="{{ true }}" show-zh="{{ true }}" open-fixed="{{ true }}" open-infl="{{ true }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:70px"><div style="font-size:14px;font-weight:700">4c · Entry, sections expanded</div><div style="font-size:13px;line-height:1.45;color:var(--color-neutral-700);margin-top:3px">Same entry scrolled down: fixed expressions and the inflection table, searched form highlighted.</div></div>
+      <dc-import name="SlaOppApp" tab="search" entry="venn" dict-tab="bm" searched="venn" show-en="{{ true }}" show-zh="{{ true }}" open-fixed="{{ true }}" open-infl="{{ true }}" scroll-top="{{ 1200 }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:70px"><div style="font-size:14px;font-weight:700">4d · Entry, Nynorsk tab</div><div style="font-size:13px;line-height:1.45;color:var(--color-neutral-700);margin-top:3px">ven, venn — both lemma variants in one table. Reached from “vennen” so that form is highlighted.</div></div>
+      <dc-import name="SlaOppApp" tab="search" entry="venn" dict-tab="nn" searched="vennen" show-en="{{ true }}" show-zh="{{ false }}" open-fixed="{{ false }}" open-infl="{{ true }}" scroll-top="{{ 400 }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:70px"><div style="font-size:14px;font-weight:700">4e · Verb entry from “gikk”</div><div style="font-size:13px;line-height:1.45;color:var(--color-neutral-700);margin-top:3px">Sub-senses (1.1) and a verb inflection row: gå · går · gikk · har gått.</div></div>
+      <dc-import name="SlaOppApp" tab="history" entry="gå" dict-tab="bm" searched="gikk" show-en="{{ true }}" open-infl="{{ true }}" open-fixed="{{ false }}" scroll-top="{{ 560 }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:70px"><div style="font-size:14px;font-weight:700">5 · Bookmarks</div><div style="font-size:13px;line-height:1.45;color:var(--color-neutral-700);margin-top:3px">Short EN and 中文 gloss with BM/NN badge. Swipe left to remove (first row shown mid-swipe).</div></div>
+      <dc-import name="SlaOppApp" tab="bookmarks" revealed="bok|bm" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:70px"><div style="font-size:14px;font-weight:700">6 · History</div><div style="font-size:13px;line-height:1.45;color:var(--color-neutral-700);margin-top:3px">Grouped by day. Clear asks for confirmation.</div></div>
+      <dc-import name="SlaOppApp" tab="history" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:70px"><div style="font-size:14px;font-weight:700">7 · Settings</div><div style="font-size:13px;line-height:1.45;color:var(--color-neutral-700);margin-top:3px">Theme swatches (each half shows the light and dark variant), appearance, default translations, language, text size.</div></div>
+      <dc-import name="SlaOppApp" tab="settings" show-en="{{ true }}" show-zh="{{ true }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:70px"><div style="font-size:14px;font-weight:700">7b · Sources</div><div style="font-size:13px;line-height:1.45;color:var(--color-neutral-700);margin-top:3px">Licence credits and the machine-translation note.</div></div>
+      <dc-import name="SlaOppApp" tab="settings" settings-sub="sources" hint-size="413px,872px"></dc-import>
+    </div>
+  </div>
+</section>
+<section id="s2" data-screen-label="02 iPhone · Dark" style="padding:48px 64px 64px;border-bottom:2px solid var(--color-text)">
+  <div style="display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;margin-bottom:36px;align-items:baseline">
+    <div style="font-size:44px;font-weight:700;color:var(--color-accent);line-height:1">02</div>
+    <div><h2 style="font-size:32px;margin:0">iPhone · Dark</h2><p style="font-size:15px;line-height:1.5;margin:8px 0 0;max-width:760px;color:var(--color-neutral-700)">Same screens with the system dark palette. BM/NN tags and the accent are lifted for contrast on black.</p></div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:48px 40px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">2 · Search as you type</div></div>
+      <dc-import name="SlaOppApp" dark="{{ true }}" tab="search" query="bøker" show-en="{{ true }}" show-zh="{{ true }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">3 · Results, Nynorsk tab</div></div>
+      <dc-import name="SlaOppApp" dark="{{ true }}" tab="search" query="bøker" submitted="{{ true }}" dict-tab="nn" show-en="{{ true }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">4b · Entry, EN + 中文 on</div></div>
+      <dc-import name="SlaOppApp" dark="{{ true }}" tab="search" entry="venn" dict-tab="bm" searched="venn" show-en="{{ true }}" show-zh="{{ true }}" open-fixed="{{ true }}" open-infl="{{ true }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">4c · Sections expanded</div></div>
+      <dc-import name="SlaOppApp" dark="{{ true }}" tab="search" entry="venn" dict-tab="bm" searched="venn" show-en="{{ true }}" show-zh="{{ true }}" open-fixed="{{ true }}" open-infl="{{ true }}" scroll-top="{{ 1200 }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">5 · Bookmarks</div></div>
+      <dc-import name="SlaOppApp" dark="{{ true }}" tab="bookmarks" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">6 · History</div></div>
+      <dc-import name="SlaOppApp" dark="{{ true }}" tab="history" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">7 · Settings</div></div>
+      <dc-import name="SlaOppApp" dark="{{ true }}" tab="settings" show-en="{{ true }}" hint-size="413px,872px"></dc-import>
+    </div>
+  </div>
+</section>
+<section id="s3" data-screen-label="03 Background themes" style="padding:48px 64px 64px;border-bottom:2px solid var(--color-text)">
+  <div style="display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;margin-bottom:36px;align-items:baseline">
+    <div style="font-size:44px;font-weight:700;color:var(--color-accent);line-height:1">03</div>
+    <div><h2 style="font-size:32px;margin:0">Background themes</h2><p style="font-size:15px;line-height:1.5;margin:8px 0 0;max-width:760px;color:var(--color-neutral-700)">Four tinted grounds beyond White, each with a dark variant. Only the ground and card surfaces change; ink, accent and BM/NN tags stay constant.</p></div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:48px 40px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Paper · light</div></div>
+      <dc-import name="SlaOppApp" theme="paper" tab="search" entry="bok" dict-tab="bm" searched="bøker" show-en="{{ true }}" open-fixed="{{ false }}" open-infl="{{ false }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Paper · dark</div></div>
+      <dc-import name="SlaOppApp" dark="{{ true }}" theme="paper" tab="search" entry="bok" dict-tab="bm" searched="bøker" show-en="{{ true }}" open-fixed="{{ false }}" open-infl="{{ false }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Grey · light</div></div>
+      <dc-import name="SlaOppApp" theme="grey" tab="search" entry="bok" dict-tab="bm" searched="bøker" show-en="{{ true }}" open-fixed="{{ false }}" open-infl="{{ false }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Grey · dark</div></div>
+      <dc-import name="SlaOppApp" dark="{{ true }}" theme="grey" tab="search" entry="bok" dict-tab="bm" searched="bøker" show-en="{{ true }}" open-fixed="{{ false }}" open-infl="{{ false }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Sage · light</div></div>
+      <dc-import name="SlaOppApp" theme="sage" tab="search" entry="bok" dict-tab="bm" searched="bøker" show-en="{{ true }}" open-fixed="{{ false }}" open-infl="{{ false }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Sage · dark</div></div>
+      <dc-import name="SlaOppApp" dark="{{ true }}" theme="sage" tab="search" entry="bok" dict-tab="bm" searched="bøker" show-en="{{ true }}" open-fixed="{{ false }}" open-infl="{{ false }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Mist · light</div></div>
+      <dc-import name="SlaOppApp" theme="mist" tab="search" entry="bok" dict-tab="bm" searched="bøker" show-en="{{ true }}" open-fixed="{{ false }}" open-infl="{{ false }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Mist · dark</div></div>
+      <dc-import name="SlaOppApp" dark="{{ true }}" theme="mist" tab="search" entry="bok" dict-tab="bm" searched="bøker" show-en="{{ true }}" open-fixed="{{ false }}" open-infl="{{ false }}" hint-size="413px,872px"></dc-import>
+    </div>
+  </div>
+</section>
+<section id="s4" data-screen-label="04 Chinese interface" style="padding:48px 64px 64px;border-bottom:2px solid var(--color-text)">
+  <div style="display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;margin-bottom:36px;align-items:baseline">
+    <div style="font-size:44px;font-weight:700;color:var(--color-accent);line-height:1">04</div>
+    <div><h2 style="font-size:32px;margin:0">Chinese interface</h2><p style="font-size:15px;line-height:1.5;margin:8px 0 0;max-width:760px;color:var(--color-neutral-700)">UI strings in Simplified Chinese with the system CJK font. Norwegian stays primary; Chinese translations sit under it.</p></div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:48px 40px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Entry · 中文 on</div></div>
+      <dc-import name="SlaOppApp" ui="zh" tab="search" entry="venn" dict-tab="bm" searched="venn" show-en="{{ false }}" show-zh="{{ true }}" open-fixed="{{ true }}" open-infl="{{ false }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Search · augo</div></div>
+      <dc-import name="SlaOppApp" ui="zh" tab="search" query="augo" show-en="{{ false }}" show-zh="{{ true }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Settings</div></div>
+      <dc-import name="SlaOppApp" ui="zh" tab="settings" show-en="{{ false }}" show-zh="{{ true }}" hint-size="413px,872px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:413px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">History</div></div>
+      <dc-import name="SlaOppApp" ui="zh" dark="{{ true }}" tab="history" hint-size="413px,872px"></dc-import>
+    </div>
+  </div>
+</section>
+<section id="s5" data-screen-label="05 iPad" style="padding:48px 64px 64px;border-bottom:2px solid var(--color-text)">
+  <div style="display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;margin-bottom:36px;align-items:baseline">
+    <div style="font-size:44px;font-weight:700;color:var(--color-accent);line-height:1">05</div>
+    <div><h2 style="font-size:32px;margin:0">iPad</h2><p style="font-size:15px;line-height:1.5;margin:8px 0 0;max-width:760px;color:var(--color-neutral-700)">The four tabs become a sidebar (NavigationSplitView). Results or lists sit in the content column; the entry shows Bokmål and Nynorsk side by side.</p></div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:48px 40px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:14px;width:1218px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Search · venn, light</div></div>
+      <dc-import name="SlaOppApp" device="pad" tab="search" query="venn" submitted="{{ true }}" entry="venn" searched="venn" show-en="{{ true }}" show-zh="{{ true }}" open-fixed="{{ true }}" open-infl="{{ true }}" hint-size="1218px,858px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:1218px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Search · venn, dark, translations off</div></div>
+      <dc-import name="SlaOppApp" device="pad" dark="{{ true }}" tab="search" query="venn" entry="venn" searched="venn" show-en="{{ false }}" show-zh="{{ false }}" open-fixed="{{ false }}" open-infl="{{ false }}" hint-size="1218px,858px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:1218px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Bookmarks → gå, sage theme</div></div>
+      <dc-import name="SlaOppApp" device="pad" theme="sage" tab="bookmarks" entry="gå" searched="gå" show-en="{{ true }}" open-fixed="{{ true }}" open-infl="{{ true }}" hint-size="1218px,858px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:1218px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Settings → Sources, dark</div></div>
+      <dc-import name="SlaOppApp" device="pad" dark="{{ true }}" tab="settings" show-en="{{ true }}" show-zh="{{ true }}" hint-size="1218px,858px"></dc-import>
+    </div>
+  </div>
+</section>
+<section id="s6" data-screen-label="06 Components" style="padding:48px 64px 64px;border-bottom:2px solid var(--color-text)">
+  <div style="display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;margin-bottom:36px;align-items:baseline">
+    <div style="font-size:44px;font-weight:700;color:var(--color-accent);line-height:1">06</div>
+    <div><h2 style="font-size:32px;margin:0">Components</h2><p style="font-size:15px;line-height:1.5;margin:8px 0 0;max-width:760px;color:var(--color-neutral-700)">Search field, result row, BM/NN badge, translation chip, segmented control, sense block, example rows, collapsible header, inflection table, theme swatch.</p></div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:48px 40px;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;gap:14px;width:860px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Light</div></div>
+      <dc-import name="SlaOppApp" device="kit" hint-size="860px,600px"></dc-import>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;width:860px">
+      <div style="border-top:2px solid var(--color-text);padding-top:8px;min-height:28px"><div style="font-size:14px;font-weight:700">Dark</div></div>
+      <dc-import name="SlaOppApp" device="kit" dark="{{ true }}" hint-size="860px,600px"></dc-import>
+    </div>
+  </div>
+</section>
+<footer style="padding:32px 64px 64px;font-size:13px;line-height:1.55;color:var(--color-neutral-700);max-width:900px">Sample definitions are paraphrased from the dictionaries for layout purposes; translations are illustrative. Every frame is one live component, so state such as the EN/中文 toggles, section expansion and the last-used dictionary tab carries across entries within a frame.</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

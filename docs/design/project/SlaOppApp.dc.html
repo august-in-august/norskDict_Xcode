@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="{{ rootStyle }}">
+<sc-if value="{{ isKit }}">
+<div style="width:860px;padding:36px;background:var(--bg);color:var(--ink);font-family:var(--f);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px 36px;-webkit-font-smoothing:antialiased">
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.4px;color:var(--ink3);text-transform:uppercase">Search field</div>
+    <div style="display:flex;align-items:center;gap:6px;height:38px;border-radius:10px;background:var(--fill);padding:0 8px;color:var(--ink2)">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7.5"></circle><path d="m20.5 20.5-4.2-4.2"></path></svg>
+      <span style="font-size:17px;color:var(--ink3)">{{ t.placeholder }}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="flex:1;display:flex;align-items:center;gap:6px;height:38px;border-radius:10px;background:var(--fill);padding:0 8px;color:var(--ink2)">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7.5"></circle><path d="m20.5 20.5-4.2-4.2"></path></svg>
+        <span style="font-size:17px;color:var(--ink);flex:1">bøker</span>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" style="color:var(--ink3)"><circle cx="12" cy="12" r="10"></circle><path d="m9 9 6 6m0-6-6 6" stroke="var(--bg)" stroke-width="2" stroke-linecap="round"></path></svg>
+      </div>
+      <span style="font-size:17px;color:var(--tint)">{{ t.cancel }}</span>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.4px;color:var(--ink3);text-transform:uppercase">BM / NN badge · Translation chips · Segmented</div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <span style="font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:5px;background:var(--bmBg);color:var(--bm)">BM</span>
+      <span style="font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:5px;background:var(--nnBg);color:var(--nn)">NN</span>
+      <span style="width:12px"></span>
+      <span style="{{ chipOff }}">EN</span>
+      <span style="{{ chipOn }}">EN</span>
+      <span style="{{ chipOff }}">中文</span>
+      <span style="{{ chipOn }}">中文</span>
+    </div>
+    <div style="display:flex;background:var(--fill);border-radius:9px;padding:2px;height:32px">
+      <span style="{{ segOnStyle }}">Bokmål <span style="color:var(--ink2);font-weight:400">2</span></span>
+      <span style="{{ segOffStyle }}">Nynorsk <span style="color:var(--ink2);font-weight:400">1</span></span>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.4px;color:var(--ink3);text-transform:uppercase">Result row</div>
+    <div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:0.5px solid var(--sep);border-top:0.5px solid var(--sep)">
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+        <div style="display:flex;align-items:center;gap:8px"><span style="font-size:17px;font-weight:600">bok</span><span style="font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:5px;background:var(--bmBg);color:var(--bm)">BM</span><span style="font-size:13px;color:var(--ink2)">{{ kitPos }}</span></div>
+        <div style="font-size:14px;color:var(--ink2)">bøker → <span style="color:var(--ink);font-weight:600">bok</span> · {{ kitLabel }}</div>
+        <div style="font-size:15px;color:var(--ink2)">book · 书</div>
+      </div>
+      <svg width="9" height="15" viewBox="0 0 9 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink3)"><path d="m1.5 1.5 6 6-6 6"></path></svg>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.4px;color:var(--ink3);text-transform:uppercase">Collapsible section header</div>
+    <div style="display:flex;align-items:center;gap:8px;padding:12px 0;border-top:0.5px solid var(--sep)">
+      <span style="font-size:17px;font-weight:600">{{ t.fixed }}</span><span style="font-size:15px;color:var(--ink3)">3</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto;color:var(--ink3)"><path d="m9 18 6-6-6-6"></path></svg>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;padding:12px 0;border-top:0.5px solid var(--sep);border-bottom:0.5px solid var(--sep)">
+      <span style="font-size:17px;font-weight:600">{{ t.infl }}</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto;color:var(--ink3);transform:rotate(90deg)"><path d="m9 18 6-6-6-6"></path></svg>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.4px;color:var(--ink3);text-transform:uppercase">Sense block + example rows</div>
+    <div style="display:grid;grid-template-columns:28px minmax(0,1fr);column-gap:4px;padding:12px 0;border-top:0.5px solid var(--sep);border-bottom:0.5px solid var(--sep)">
+      <div style="font-size:17px;font-weight:700;color:var(--tint);line-height:1.42">1</div>
+      <div>
+        <div style="font-size:17px;line-height:1.42;text-wrap:pretty">person som en har et nært forhold til</div>
+        <div style="display:grid;grid-template-columns:24px minmax(0,1fr);margin-top:3px;font-size:15px;line-height:1.42;color:var(--ink2)"><span style="font-size:10px;font-weight:700;letter-spacing:.3px;color:var(--ink3);padding-top:4px">EN</span><span>person one is close to; friend, pal</span></div>
+        <div style="display:grid;grid-template-columns:24px minmax(0,1fr);margin-top:2px;font-size:15px;line-height:1.5;color:var(--ink2)"><span style="font-size:10px;font-weight:700;color:var(--ink3);padding-top:4px">中</span><span>关系亲近的人；朋友</span></div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:1px">
+          <div style="font-size:16px;font-style:italic;line-height:1.42">en god venn av meg</div>
+          <div style="font-size:14px;line-height:1.42;color:var(--ink2)">a good friend of mine</div>
+          <div style="font-size:14px;line-height:1.5;color:var(--ink2)">我的一个好朋友</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.4px;color:var(--ink3);text-transform:uppercase">Inflection table · searched form highlighted</div>
+    <div style="border:0.5px solid var(--sep2);border-radius:12px;overflow:hidden">
+      <div style="{{ kitTable.grid }}">
+        <sc-for list="{{ kitTable.cells }}" as="k" hint-placeholder-count="9">
+          <sc-if value="{{ k.isHead }}"><div style="padding:8px 10px;font-size:12px;font-weight:600;color:var(--ink2);background:var(--fill)">{{ k.label }}</div></sc-if>
+          <sc-if value="{{ k.isLabel }}"><div style="padding:10px;font-size:13px;color:var(--ink2);border-top:0.5px solid var(--sep)">{{ k.label }}</div></sc-if>
+          <sc-if value="{{ k.isCell }}"><div style="padding:9px 10px;font-size:16px;border-top:0.5px solid var(--sep)"><sc-for list="{{ k.lines }}" as="ln"><div>{{ ln }}</div></sc-for></div></sc-if>
+          <sc-if value="{{ k.isHl }}"><div style="padding:9px 10px;font-size:16px;font-weight:600;color:var(--tint);background:var(--tintBg);border-top:0.5px solid var(--sep)"><sc-for list="{{ k.lines }}" as="ln"><div>{{ ln }}</div></sc-for></div></sc-if>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;grid-column:1 / -1">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.4px;color:var(--ink3);text-transform:uppercase">Theme swatches (light / dark halves) · switch · cross-reference</div>
+    <div style="display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap">
+      <sc-for list="{{ swatches }}" as="w" hint-placeholder-count="5">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:52px">
+          <span style="{{ w.st }}"></span>
+          <span style="font-size:12px;color:var(--ink2)">{{ w.name }}</span>
+        </div>
+      </sc-for>
+      <span style="width:20px"></span>
+      <span style="{{ swOn }}"><span style="{{ knobOn }}"></span></span>
+      <span style="{{ swOff }}"><span style="{{ knobOff }}"></span></span>
+      <span style="width:20px"></span>
+      <span style="display:flex;align-items:center;gap:4px;font-size:15px;color:var(--tint);padding-top:4px">{{ t.see }}: <span style="text-decoration:underline;text-underline-offset:3px">stilling</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isDevice }}" hint-placeholder-val="{{ true }}">
+<div style="{{ frameStyle }}">
+  <sc-if value="{{ isPhone }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;top:0;left:0;right:0;height:54px;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:6px 32px 0 52px;font-weight:600;font-size:17px;color:var(--ink);pointer-events:none;background:var(--statusMat);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)">
+      <span>9:41</span>
+      <div style="display:flex;gap:7px;align-items:center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"></path></svg>
+        <div style="display:flex;align-items:center;gap:1px"><div style="width:25px;height:12px;border-radius:4px;border:1px solid var(--ink3);padding:1.5px"><div style="width:80%;height:100%;border-radius:2px;background:var(--ink)"></div></div><div style="width:1.5px;height:4px;border-radius:1px;background:var(--ink3)"></div></div>
+      </div>
+    </div>
+    <div style="position:absolute;top:11px;left:50%;transform:translateX(-50%);width:124px;height:36px;border-radius:20px;background:#000;z-index:31"></div>
+  </sc-if>
+  <sc-if value="{{ isPad }}">
+    <div style="position:absolute;top:0;left:0;right:0;height:26px;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-weight:600;font-size:13px;color:var(--ink);pointer-events:none">
+      <span>9:41 <span style="font-weight:500">{{ t.date }}</span></span>
+      <div style="display:flex;gap:6px;align-items:center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"></path></svg>
+        <span style="font-weight:500">80%</span>
+        <div style="width:23px;height:11px;border-radius:3.5px;border:1px solid var(--ink3);padding:1.5px"><div style="width:80%;height:100%;border-radius:1.5px;background:var(--ink)"></div></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex">
+    <sc-if value="{{ isPad }}">
+      <div style="width:250px;flex:none;height:100%;background:var(--grp);border-right:0.5px solid var(--sep);padding:40px 10px 20px;display:flex;flex-direction:column;gap:2px">
+        <div style="font-size:28px;font-weight:700;letter-spacing:.2px;padding:6px 12px 14px">Slå opp</div>
+        <button onClick="{{ goSearch }}" style="{{ nav.search }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7.5"></circle><path d="m20.5 20.5-4.2-4.2"></path></svg>{{ t.search }}</button>
+        <button onClick="{{ goBook }}" style="{{ nav.bookmarks }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>{{ t.bookmarks }}</button>
+        <button onClick="{{ goHist }}" style="{{ nav.history }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M12 7v5l4 2"></path></svg>{{ t.history }}</button>
+        <button onClick="{{ goSet }}" style="{{ nav.settings }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>{{ t.settings }}</button>
+        <div style="margin-top:auto;padding:0 12px;font-size:12px;line-height:1.45;color:var(--ink3)">{{ t.offline }}</div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ showList }}" hint-placeholder-val="{{ true }}">
+      <div style="width:var(--listW);flex:none;height:100%;overflow-y:auto;background:var(--listBg);border-right:var(--listBorder);scrollbar-width:none">
+        <div style="padding:var(--top) 0 var(--bot)">
+
+          <sc-if value="{{ onSearch }}" hint-placeholder-val="{{ true }}">
+            <sc-if value="{{ sHome }}" hint-placeholder-val="{{ true }}">
+              <div style="padding:10px 16px 6px;font-size:34px;font-weight:700;letter-spacing:.3px">{{ t.appTitle }}</div>
+            </sc-if>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 16px 10px">
+              <div style="flex:1;min-width:0;display:flex;align-items:center;gap:6px;height:38px;border-radius:10px;background:var(--fill);padding:0 8px;color:var(--ink2)">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" style="flex:none"><circle cx="11" cy="11" r="7.5"></circle><path d="m20.5 20.5-4.2-4.2"></path></svg>
+                <input value="{{ query }}" onChange="{{ onQuery }}" onKeyDown="{{ onKey }}" placeholder="{{ t.placeholder }}" style="flex:1;min-width:0;border:0;outline:0;background:transparent;font-family:inherit;font-size:17px;color:var(--ink);padding:0">
+                <sc-if value="{{ hasQuery }}">
+                  <button onClick="{{ clearQuery }}" style="border:0;background:transparent;padding:0;display:flex;cursor:pointer;color:var(--ink3)"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle><path d="m9 9 6 6m0-6-6 6" stroke="var(--listBg)" stroke-width="2" stroke-linecap="round"></path></svg></button>
+                </sc-if>
+              </div>
+              <sc-if value="{{ hasQuery }}">
+                <button onClick="{{ clearQuery }}" style="border:0;background:transparent;padding:0;font-family:inherit;font-size:17px;color:var(--tint);cursor:pointer">{{ t.cancel }}</button>
+              </sc-if>
+            </div>
+
+            <sc-if value="{{ sHome }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;padding:14px 16px 4px">
+                <span style="font-size:20px;font-weight:700">{{ t.recent }}</span>
+                <button onClick="{{ askClear }}" style="border:0;background:transparent;padding:0;font-family:inherit;font-size:15px;color:var(--tint);cursor:pointer">{{ t.clear }}</button>
+              </div>
+              <sc-for list="{{ recent }}" as="r" hint-placeholder-count="5">
+                <button onClick="{{ r.open }}" style="display:flex;width:100%;align-items:center;gap:12px;padding:0 0 0 16px;height:48px;border:0;background:transparent;font-family:inherit;text-align:left;color:var(--ink);cursor:pointer" style-active="background:var(--fill)">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink3);flex:none"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M12 7v5l4 2"></path></svg>
+                  <div style="flex:1;display:flex;align-items:center;gap:6px;height:100%;border-bottom:0.5px solid var(--sep);padding-right:16px">
+                    <span style="font-size:17px">{{ r.form }}</span>
+                    <sc-if value="{{ r.hasHw }}"><span style="font-size:15px;color:var(--ink2);white-space:nowrap">→ {{ r.hw }}</span></sc-if>
+                    <span style="margin-left:auto;display:flex">
+                      <sc-if value="{{ r.isBm }}"><span style="font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:5px;background:var(--bmBg);color:var(--bm)">BM</span></sc-if>
+                      <sc-if value="{{ r.isNn }}"><span style="font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:5px;background:var(--nnBg);color:var(--nn)">NN</span></sc-if>
+                    </span>
+                  </div>
+                </button>
+              </sc-for>
+              <div style="padding:18px 16px;font-size:14px;line-height:1.5;color:var(--ink2);text-wrap:pretty">{{ t.tip }}</div>
+            </sc-if>
+
+            <sc-if value="{{ sTyping }}">
+              <sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
+                <div style="display:flex;align-items:baseline;gap:8px;padding:16px 16px 4px">
+                  <span style="font-size:15px;font-weight:600;color:var(--ink)">{{ g.title }}</span>
+                  <span style="font-size:13px;color:var(--ink3)">{{ g.sub }}</span>
+                </div>
+                <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="2">
+                  <button onClick="{{ r.open }}" style="display:flex;width:100%;padding:0 0 0 16px;border:0;background:transparent;text-align:left;font-family:inherit;color:var(--ink);cursor:pointer" style-active="background:var(--fill)">
+                    <div style="flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:10px 16px 10px 0;border-bottom:0.5px solid var(--sep)">
+                      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                          <span style="font-size:17px;font-weight:600">{{ r.hw }}</span>
+                          <sc-if value="{{ r.isBm }}"><span style="font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:5px;background:var(--bmBg);color:var(--bm)">BM</span></sc-if>
+                          <sc-if value="{{ r.isNn }}"><span style="font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:5px;background:var(--nnBg);color:var(--nn)">NN</span></sc-if>
+                          <span style="font-size:13px;color:var(--ink2)">{{ r.pos }}</span>
+                        </div>
+                        <sc-if value="{{ r.hasNote }}"><div style="font-size:14px;color:var(--ink2)">{{ r.nform }} → <span style="color:var(--ink);font-weight:600">{{ r.nhw }}</span> · {{ r.nlabel }}</div></sc-if>
+                        <sc-if value="{{ r.hasGloss }}"><div style="font-size:15px;color:var(--ink2)">{{ r.gloss }}</div></sc-if>
+                      </div>
+                      <svg width="8" height="14" viewBox="0 0 9 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink3);flex:none"><path d="m1.5 1.5 6 6-6 6"></path></svg>
+                    </div>
+                  </button>
+                </sc-for>
+              </sc-for>
+              <sc-if value="{{ noResults }}"><div style="padding:40px 16px;font-size:15px;color:var(--ink2)">{{ t.noResults }}</div></sc-if>
+            </sc-if>
+
+            <sc-if value="{{ sResults }}">
+              <div style="padding:2px 16px 6px">
+                <div style="display:flex;background:var(--fill);border-radius:9px;padding:2px;height:32px">
+                  <button onClick="{{ pickBm }}" style="{{ segBm }}">Bokmål <span style="color:var(--ink2);font-weight:400">{{ countBm }}</span></button>
+                  <button onClick="{{ pickNn }}" style="{{ segNn }}">Nynorsk <span style="color:var(--ink2);font-weight:400">{{ countNn }}</span></button>
+                </div>
+              </div>
+              <div onPointerDown="{{ swDown }}" onPointerUp="{{ swUp }}" style="min-height:560px;touch-action:pan-y">
+                <sc-for list="{{ resRows }}" as="r" hint-placeholder-count="2">
+                  <button onClick="{{ r.open }}" style="display:flex;width:100%;padding:0 0 0 16px;border:0;background:transparent;text-align:left;font-family:inherit;color:var(--ink);cursor:pointer" style-active="background:var(--fill)">
+                    <div style="flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:12px 16px 12px 0;border-bottom:0.5px solid var(--sep)">
+                      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                          <span style="font-size:20px;font-weight:600">{{ r.hw }}</span>
+                          <sc-if value="{{ r.isBm }}"><span style="font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:5px;background:var(--bmBg);color:var(--bm)">BM</span></sc-if>
+                          <sc-if value="{{ r.isNn }}"><span style="font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:5px;background:var(--nnBg);color:var(--nn)">NN</span></sc-if>
+                          <span style="font-size:13px;color:var(--ink2)">{{ r.pos }}</span>
+                        </div>
+                        <sc-if value="{{ r.hasNote }}"><div style="font-size:14px;color:var(--ink2)">{{ r.nform }} → <span style="color:var(--ink);font-weight:600">{{ r.nhw }}</span> · {{ r.nlabel }}</div></sc-if>
+                        <div style="font-size:15px;line-height:1.4;color:var(--ink);text-wrap:pretty">{{ r.def1 }}</div>
+                        <sc-if value="{{ r.hasGloss }}"><div style="font-size:15px;color:var(--ink2)">{{ r.gloss }}</div></sc-if>
+                      </div>
+                      <svg width="8" height="14" viewBox="0 0 9 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink3);flex:none"><path d="m1.5 1.5 6 6-6 6"></path></svg>
+                    </div>
+                  </button>
+                </sc-for>
+                <sc-if value="{{ resEmpty }}"><div style="padding:40px 16px;font-size:15px;color:var(--ink2)">{{ resEmptyMsg }}</div></sc-if>
+                <div style="display:flex;justify-content:center;gap:6px;padding:18px 0 4px">
+                  <span style="{{ dotBm }}"></span><span style="{{ dotNn }}"></span>
+                </div>
+                <div style="text-align:center;font-size:12px;color:var(--ink3)">{{ t.swipeHint }}</div>
+              </div>
+            </sc-if>
+          </sc-if>
+
+          <sc-if value="{{ onBook }}">
+            <div style="padding:10px 16px 8px;font-size:34px;font-weight:700;letter-spacing:.3px">{{ t.bookmarks }}</div>
+            <sc-for list="{{ bmRows }}" as="r" hint-placeholder-count="5">
+              <div style="position:relative;overflow:hidden">
+                <button onClick="{{ r.remove }}" style="position:absolute;right:0;top:0;bottom:0;width:88px;background:#FF3B30;color:#fff;border:0;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;padding-left:14px">{{ t.remove }}</button>
+                <div onPointerDown="{{ r.down }}" onPointerMove="{{ r.move }}" onPointerUp="{{ r.up }}" style="{{ r.st }}">
+                  <div style="flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:11px 16px 11px 0;border-bottom:0.5px solid var(--sep)">
+                    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+                      <div style="display:flex;align-items:center;gap:8px">
+                        <span style="font-size:17px;font-weight:600">{{ r.hw }}</span>
+                        <sc-if value="{{ r.isBm }}"><span style="font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:5px;background:var(--bmBg);color:var(--bm)">BM</span></sc-if>
+                        <sc-if value="{{ r.isNn }}"><span style="font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:5px;background:var(--nnBg);color:var(--nn)">NN</span></sc-if>
+                      </div>
+                      <div style="display:flex;gap:10px;font-size:15px;color:var(--ink2)"><span>{{ r.en }}</span><span style="color:var(--ink3)">·</span><span>{{ r.zh }}</span></div>
+                    </div>
+                    <svg width="8" height="14" viewBox="0 0 9 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink3);flex:none"><path d="m1.5 1.5 6 6-6 6"></path></svg>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ bmEmpty }}"><div style="padding:60px 16px;font-size:15px;color:var(--ink2)">{{ t.bmEmpty }}</div></sc-if>
+            <div style="padding:14px 16px;font-size:13px;color:var(--ink3)">{{ t.bmHint }}</div>
+          </sc-if>
+
+          <sc-if value="{{ onHist }}">
+            <div style="display:flex;justify-content:flex-end;padding:8px 16px 0;height:36px">
+              <sc-if value="{{ hasHist }}"><button onClick="{{ askClear }}" style="border:0;background:transparent;padding:0;font-family:inherit;font-size:17px;color:var(--tint);cursor:pointer">{{ t.clear }}</button></sc-if>
+            </div>
+            <div style="padding:0 16px 4px;font-size:34px;font-weight:700;letter-spacing:.3px">{{ t.history }}</div>
+            <sc-for list="{{ histGroups }}" as="g" hint-placeholder-count="3">
+              <div style="padding:18px 16px 4px;font-size:15px;font-weight:600;color:var(--ink2)">{{ g.day }}</div>
+              <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="2">
+                <button onClick="{{ r.open }}" style="display:flex;width:100%;padding:0 0 0 16px;border:0;background:transparent;text-align:left;font-family:inherit;color:var(--ink);cursor:pointer" style-active="background:var(--fill)">
+                  <div style="flex:1;display:flex;align-items:center;gap:8px;height:48px;padding-right:16px;border-bottom:0.5px solid var(--sep)">
+                    <span style="font-size:17px">{{ r.form }}</span>
+                    <sc-if value="{{ r.hasHw }}"><span style="font-size:15px;color:var(--ink2);white-space:nowrap">→ {{ r.hw }}</span></sc-if>
+                    <sc-if value="{{ r.isBm }}"><span style="font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:5px;background:var(--bmBg);color:var(--bm)">BM</span></sc-if>
+                    <sc-if value="{{ r.isNn }}"><span style="font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:5px;background:var(--nnBg);color:var(--nn)">NN</span></sc-if>
+                    <span style="margin-left:auto;font-size:15px;color:var(--ink3);font-variant-numeric:tabular-nums">{{ r.time }}</span>
+                  </div>
+                </button>
+              </sc-for>
+            </sc-for>
+            <sc-if value="{{ histEmpty }}"><div style="padding:60px 16px;font-size:15px;color:var(--ink2)">{{ t.histEmpty }}</div></sc-if>
+          </sc-if>
+
+          <sc-if value="{{ onSet }}">
+            <div style="padding:10px 16px 12px;font-size:34px;font-weight:700;letter-spacing:.3px">{{ t.settings }}</div>
+
+            <div style="padding:8px 32px 6px;font-size:13px;color:var(--ink2);text-transform:uppercase;letter-spacing:.2px">{{ t.appearance }}</div>
+            <div style="margin:0 16px;border-radius:10px;background:var(--card);overflow:hidden">
+              <div style="padding:14px 16px 12px;border-bottom:0.5px solid var(--sep)">
+                <div style="font-size:17px;margin-bottom:12px">{{ t.theme }}</div>
+                <div style="display:flex;justify-content:space-between">
+                  <sc-for list="{{ swatches }}" as="w" hint-placeholder-count="5">
+                    <button onClick="{{ w.pick }}" style="display:flex;flex-direction:column;align-items:center;gap:6px;border:0;background:transparent;padding:0;font-family:inherit;cursor:pointer;width:56px">
+                      <span style="{{ w.st }}"></span>
+                      <span style="{{ w.lbl }}">{{ w.name }}</span>
+                    </button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="padding:10px 16px">
+                <div style="display:flex;background:var(--fill);border-radius:9px;padding:2px;height:32px">
+                  <button onClick="{{ apL }}" style="{{ segL }}">{{ t.light }}</button>
+                  <button onClick="{{ apD }}" style="{{ segD }}">{{ t.dark }}</button>
+                  <button onClick="{{ apS }}" style="{{ segS }}">{{ t.system }}</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding:24px 32px 6px;font-size:13px;color:var(--ink2);text-transform:uppercase;letter-spacing:.2px">{{ t.trHead }}</div>
+            <div style="margin:0 16px;border-radius:10px;background:var(--card);overflow:hidden">
+              <div style="display:flex;align-items:center;min-height:44px;padding:0 16px;border-bottom:0.5px solid var(--sep)">
+                <span style="font-size:17px;flex:1">{{ t.enName }}</span>
+                <button onClick="{{ toggleEN }}" style="{{ swEN }}"><span style="{{ knobEN }}"></span></button>
+              </div>
+              <div style="display:flex;align-items:center;min-height:44px;padding:0 16px">
+                <span style="font-size:17px;flex:1">{{ t.zhName }}</span>
+                <button onClick="{{ toggleZH }}" style="{{ swZH }}"><span style="{{ knobZH }}"></span></button>
+              </div>
+            </div>
+            <div style="padding:6px 32px 0;font-size:13px;line-height:1.4;color:var(--ink2);text-wrap:pretty">{{ t.trFoot }}</div>
+
+            <div style="padding:24px 32px 6px;font-size:13px;color:var(--ink2);text-transform:uppercase;letter-spacing:.2px">{{ t.uiLang }}</div>
+            <div style="margin:0 16px;border-radius:10px;background:var(--card);overflow:hidden">
+              <button onClick="{{ uiToEn }}" style="display:flex;width:100%;align-items:center;min-height:44px;padding:0 16px;border:0;border-bottom:0.5px solid var(--sep);background:transparent;font-family:inherit;font-size:17px;color:var(--ink);text-align:left;cursor:pointer"><span style="flex:1">English</span><sc-if value="{{ uiEn }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--tint)"><path d="M20 6 9 17l-5-5"></path></svg></sc-if></button>
+              <button onClick="{{ uiToZh }}" style="display:flex;width:100%;align-items:center;min-height:44px;padding:0 16px;border:0;background:transparent;font-family:inherit;font-size:17px;color:var(--ink);text-align:left;cursor:pointer"><span style="flex:1">简体中文</span><sc-if value="{{ uiZh }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--tint)"><path d="M20 6 9 17l-5-5"></path></svg></sc-if></button>
+            </div>
+
+            <div style="padding:24px 32px 6px;font-size:13px;color:var(--ink2);text-transform:uppercase;letter-spacing:.2px">{{ t.textSize }}</div>
+            <div style="margin:0 16px;border-radius:10px;background:var(--card);overflow:hidden">
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:0.5px solid var(--sep)">
+                <span style="font-size:13px">A</span>
+                <input type="range" min="0" max="4" step="1" value="{{ tsIdx }}" onChange="{{ onTs }}" style="flex:1;accent-color:var(--tint)">
+                <span style="font-size:22px">A</span>
+              </div>
+              <div style="padding:12px 16px 14px">
+                <div style="font-size:calc(17px*var(--ts));font-style:italic">en god venn av meg</div>
+                <div style="font-size:calc(14px*var(--ts));color:var(--ink2);margin-top:2px">{{ t.sampleTr }}</div>
+              </div>
+            </div>
+
+            <div style="padding:24px 32px 6px;font-size:13px;color:var(--ink2);text-transform:uppercase;letter-spacing:.2px">{{ t.about }}</div>
+            <div style="margin:0 16px 24px;border-radius:10px;background:var(--card);overflow:hidden">
+              <button onClick="{{ openSources }}" style="display:flex;width:100%;align-items:center;min-height:44px;padding:0 16px;border:0;border-bottom:0.5px solid var(--sep);background:transparent;font-family:inherit;font-size:17px;color:var(--ink);text-align:left;cursor:pointer"><span style="flex:1">{{ t.sources }}</span><svg width="8" height="14" viewBox="0 0 9 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink3)"><path d="m1.5 1.5 6 6-6 6"></path></svg></button>
+              <div style="display:flex;align-items:center;min-height:44px;padding:0 16px;border-bottom:0.5px solid var(--sep);font-size:17px"><span style="flex:1">{{ t.articles }}</span><span style="color:var(--ink2)">186 912</span></div>
+              <div style="display:flex;align-items:center;min-height:44px;padding:0 16px;font-size:17px"><span style="flex:1">{{ t.version }}</span><span style="color:var(--ink2)">1.0</span></div>
+            </div>
+          </sc-if>
+
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ showDetail }}">
+      <div ref="{{ detailRef }}" style="flex:1;min-width:0;height:100%;overflow-y:auto;background:var(--detailBg);scrollbar-width:none">
+
+        <sc-if value="{{ showEntry }}">
+          <div onPointerDown="{{ swDown }}" onPointerUp="{{ swUp }}" style="padding:var(--top) 0 var(--bot);touch-action:pan-y">
+            <sc-if value="{{ isPhone }}">
+              <div style="height:44px;display:flex;align-items:center;padding:0 8px">
+                <button onClick="{{ back }}" style="display:flex;align-items:center;gap:4px;border:0;background:transparent;padding:0 8px;font-family:inherit;font-size:17px;color:var(--tint);cursor:pointer"><svg width="12" height="20" viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2 2 10l8 8"></path></svg>{{ backLabel }}</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ isPad }}"><div style="height:24px"></div></sc-if>
+            <div style="display:flex;align-items:flex-start;gap:10px;padding:4px var(--padX) 0">
+              <div style="flex:1;min-width:0">
+                <div style="font-size:calc(34px*var(--ts));font-weight:700;letter-spacing:-.2px;line-height:1.12">{{ e.title }}</div>
+                <div style="display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;margin-top:6px;font-size:15px;color:var(--ink2)"><span>{{ e.pos }}</span><span style="color:var(--ink3)">{{ e.ipa }}</span></div>
+              </div>
+              <button onClick="{{ speak }}" aria-label="Pronounce" style="{{ speakSt }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 5a10 10 0 0 1 0 14"></path></svg></button>
+              <button onClick="{{ toggleMark }}" aria-label="Bookmark" style="{{ markSt }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="{{ markFill }}" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg></button>
+            </div>
+            <sc-if value="{{ showEntrySeg }}">
+              <div style="padding:16px var(--padX) 0">
+                <div style="display:flex;background:var(--fill);border-radius:9px;padding:2px;height:32px">
+                  <button onClick="{{ pickBm }}" style="{{ segBm }}">Bokmål</button>
+                  <button onClick="{{ pickNn }}" style="{{ segNn }}">Nynorsk</button>
+                </div>
+              </div>
+            </sc-if>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:14px var(--padX) 2px">
+              <button onClick="{{ toggleEN }}" style="{{ chipEN }}">EN</button>
+              <button onClick="{{ toggleZH }}" style="{{ chipZH }}">中文</button>
+              <sc-if value="{{ anyTr }}">
+                <span style="margin-left:auto;display:flex;align-items:center;gap:10px;font-size:12px">
+                  <span style="color:var(--ink2);padding:2px 6px;border-radius:5px;background:var(--fill)">{{ t.mt }}</span>
+                  <button onClick="{{ report }}" style="border:0;background:transparent;padding:0;font-family:inherit;font-size:12px;color:var(--tint);cursor:pointer">{{ t.report }}</button>
+                </span>
+              </sc-if>
+            </div>
+
+            <div style="display:flex;align-items:flex-start">
+              <sc-for list="{{ cols }}" as="c" hint-placeholder-count="1">
+                <div style="{{ c.colStyle }}">
+                  <sc-if value="{{ c.head }}">
+                    <div style="display:flex;align-items:center;gap:8px;padding:18px 0 4px;border-bottom:2px solid var(--ink)">
+                      <sc-if value="{{ c.isBm }}"><span style="font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:5px;background:var(--bmBg);color:var(--bm)">BM</span></sc-if>
+                      <sc-if value="{{ c.isNn }}"><span style="font-size:11px;font-weight:700;letter-spacing:.4px;padding:2px 5px;border-radius:5px;background:var(--nnBg);color:var(--nn)">NN</span></sc-if>
+                      <span style="font-size:20px;font-weight:600">{{ c.hw }}</span>
+                      <span style="margin-left:auto;font-size:13px;color:var(--ink2)">{{ c.dictName }}</span>
+                    </div>
+                  </sc-if>
+                  <sc-for list="{{ c.senses }}" as="s" hint-placeholder-count="3">
+                    <div style="display:grid;grid-template-columns:30px minmax(0,1fr);column-gap:2px;padding:16px 0;border-bottom:0.5px solid var(--sep)">
+                      <div style="font-size:calc(17px*var(--ts));font-weight:700;color:var(--tint);line-height:1.42;font-variant-numeric:tabular-nums">{{ s.n }}</div>
+                      <div style="min-width:0">
+                        <div style="font-size:calc(17px*var(--ts));line-height:1.42;text-wrap:pretty">{{ s.def }}</div>
+                        <sc-if value="{{ s.showEn }}"><div style="display:grid;grid-template-columns:24px minmax(0,1fr);margin-top:3px;font-size:calc(15px*var(--ts));line-height:1.42;color:var(--ink2)"><span style="font-size:10px;font-weight:700;letter-spacing:.3px;color:var(--ink3);padding-top:4px">EN</span><span style="text-wrap:pretty">{{ s.en }}</span></div></sc-if>
+                        <sc-if value="{{ s.showZh }}"><div style="display:grid;grid-template-columns:24px minmax(0,1fr);margin-top:2px;font-size:calc(15px*var(--ts));line-height:1.5;color:var(--ink2)"><span style="font-size:10px;font-weight:700;color:var(--ink3);padding-top:4px">中</span><span>{{ s.zh }}</span></div></sc-if>
+                        <sc-for list="{{ s.ex }}" as="x" hint-placeholder-count="1">
+                          <div style="margin-top:10px;display:flex;flex-direction:column;gap:1px">
+                            <div style="font-size:calc(16px*var(--ts));font-style:italic;line-height:1.42">{{ x.no }}</div>
+                            <sc-if value="{{ x.showEn }}"><div style="font-size:calc(14px*var(--ts));line-height:1.42;color:var(--ink2)">{{ x.en }}</div></sc-if>
+                            <sc-if value="{{ x.showZh }}"><div style="font-size:calc(14px*var(--ts));line-height:1.5;color:var(--ink2)">{{ x.zh }}</div></sc-if>
+                          </div>
+                        </sc-for>
+                        <sc-if value="{{ s.hasXref }}">
+                          <button onClick="{{ s.openXref }}" style="margin-top:10px;display:flex;align-items:center;gap:4px;border:0;background:transparent;padding:0;font-family:inherit;font-size:calc(15px*var(--ts));color:var(--tint);cursor:pointer">{{ s.seeLabel }}: <span style="text-decoration:underline;text-underline-offset:3px">{{ s.xref }}</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+                        </sc-if>
+                        <sc-for list="{{ s.subs }}" as="u" hint-placeholder-count="0">
+                          <div style="display:grid;grid-template-columns:34px minmax(0,1fr);column-gap:2px;margin-top:14px">
+                            <div style="font-size:calc(15px*var(--ts));font-weight:700;color:var(--tint);line-height:1.5;font-variant-numeric:tabular-nums">{{ u.n }}</div>
+                            <div style="min-width:0">
+                              <div style="font-size:calc(17px*var(--ts));line-height:1.42;text-wrap:pretty">{{ u.def }}</div>
+                              <sc-if value="{{ u.showEn }}"><div style="display:grid;grid-template-columns:24px minmax(0,1fr);margin-top:3px;font-size:calc(15px*var(--ts));line-height:1.42;color:var(--ink2)"><span style="font-size:10px;font-weight:700;letter-spacing:.3px;color:var(--ink3);padding-top:4px">EN</span><span style="text-wrap:pretty">{{ u.en }}</span></div></sc-if>
+                              <sc-if value="{{ u.showZh }}"><div style="display:grid;grid-template-columns:24px minmax(0,1fr);margin-top:2px;font-size:calc(15px*var(--ts));line-height:1.5;color:var(--ink2)"><span style="font-size:10px;font-weight:700;color:var(--ink3);padding-top:4px">中</span><span>{{ u.zh }}</span></div></sc-if>
+                              <sc-for list="{{ u.ex }}" as="y" hint-placeholder-count="1">
+                                <div style="margin-top:10px;display:flex;flex-direction:column;gap:1px">
+                                  <div style="font-size:calc(16px*var(--ts));font-style:italic;line-height:1.42">{{ y.no }}</div>
+                                  <sc-if value="{{ y.showEn }}"><div style="font-size:calc(14px*var(--ts));line-height:1.42;color:var(--ink2)">{{ y.en }}</div></sc-if>
+                                  <sc-if value="{{ y.showZh }}"><div style="font-size:calc(14px*var(--ts));line-height:1.5;color:var(--ink2)">{{ y.zh }}</div></sc-if>
+                                </div>
+                              </sc-for>
+                              <sc-if value="{{ u.hasXref }}">
+                                <button onClick="{{ u.openXref }}" style="margin-top:10px;display:flex;align-items:center;gap:4px;border:0;background:transparent;padding:0;font-family:inherit;font-size:calc(15px*var(--ts));color:var(--tint);cursor:pointer">{{ u.seeLabel }}: <span style="text-decoration:underline;text-underline-offset:3px">{{ u.xref }}</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+                              </sc-if>
+                            </div>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-for>
+
+                  <sc-if value="{{ c.hasFixed }}">
+                    <button onClick="{{ c.toggleFixed }}" style="display:flex;width:100%;align-items:center;gap:8px;padding:18px 0 12px;border:0;background:transparent;font-family:inherit;color:var(--ink);text-align:left;cursor:pointer">
+                      <span style="font-size:calc(17px*var(--ts));font-weight:600">{{ t.fixed }}</span>
+                      <span style="font-size:15px;color:var(--ink3)">{{ c.fixedCount }}</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="{{ c.chevF }}"><path d="m9 18 6-6-6-6"></path></svg>
+                    </button>
+                    <sc-if value="{{ c.openFixed }}">
+                      <sc-for list="{{ c.fixed }}" as="f" hint-placeholder-count="2">
+                        <div style="padding:11px 0 12px;border-top:0.5px solid var(--sep)">
+                          <div style="font-size:calc(17px*var(--ts));font-weight:600;font-style:italic">{{ f.x }}</div>
+                          <div style="font-size:calc(16px*var(--ts));line-height:1.42;margin-top:2px;text-wrap:pretty">{{ f.def }}</div>
+                          <sc-if value="{{ f.showEn }}"><div style="display:grid;grid-template-columns:24px minmax(0,1fr);margin-top:3px;font-size:calc(15px*var(--ts));line-height:1.42;color:var(--ink2)"><span style="font-size:10px;font-weight:700;letter-spacing:.3px;color:var(--ink3);padding-top:4px">EN</span><span style="text-wrap:pretty">{{ f.en }}</span></div></sc-if>
+                          <sc-if value="{{ f.showZh }}"><div style="display:grid;grid-template-columns:24px minmax(0,1fr);margin-top:2px;font-size:calc(15px*var(--ts));line-height:1.5;color:var(--ink2)"><span style="font-size:10px;font-weight:700;color:var(--ink3);padding-top:4px">中</span><span>{{ f.zh }}</span></div></sc-if>
+                        </div>
+                      </sc-for>
+                    </sc-if>
+                  </sc-if>
+
+                  <button onClick="{{ c.toggleInfl }}" style="display:flex;width:100%;align-items:center;gap:8px;padding:18px 0 12px;border:0;border-top:0.5px solid var(--sep);background:transparent;font-family:inherit;color:var(--ink);text-align:left;cursor:pointer">
+                    <span style="font-size:calc(17px*var(--ts));font-weight:600">{{ t.infl }}</span>
+                    <sc-if value="{{ c.inflHint }}"><span style="font-size:15px;color:var(--ink3)">{{ c.inflPreview }}</span></sc-if>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="{{ c.chevI }}"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <sc-if value="{{ c.openInfl }}">
+                    <div style="border:0.5px solid var(--sep2);border-radius:12px;overflow:hidden;margin:0 0 8px">
+                      <div style="{{ c.tb.grid }}">
+                        <sc-for list="{{ c.tb.cells }}" as="k" hint-placeholder-count="9">
+                          <sc-if value="{{ k.isHead }}"><div style="padding:8px 10px;font-size:12px;font-weight:600;color:var(--ink2);background:var(--fill)">{{ k.label }}</div></sc-if>
+                          <sc-if value="{{ k.isLabel }}"><div style="padding:10px;font-size:13px;color:var(--ink2);border-top:0.5px solid var(--sep)">{{ k.label }}</div></sc-if>
+                          <sc-if value="{{ k.isCell }}"><div style="padding:9px 10px;font-size:calc(16px*var(--ts));border-top:0.5px solid var(--sep)"><sc-for list="{{ k.lines }}" as="ln"><div>{{ ln }}</div></sc-for></div></sc-if>
+                          <sc-if value="{{ k.isHl }}"><div style="padding:9px 10px;font-size:calc(16px*var(--ts));font-weight:600;color:var(--tint);background:var(--tintBg);border-top:0.5px solid var(--sep)"><sc-for list="{{ k.lines }}" as="ln"><div>{{ ln }}</div></sc-for></div></sc-if>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-if>
+                  <div style="padding:22px 0 8px;font-size:12px;line-height:1.5;color:var(--ink3)">{{ c.source }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showSources }}">
+          <div style="padding:var(--top) 0 var(--bot)">
+            <sc-if value="{{ isPhone }}">
+              <div style="height:44px;display:flex;align-items:center;padding:0 8px">
+                <button onClick="{{ closeSources }}" style="display:flex;align-items:center;gap:4px;border:0;background:transparent;padding:0 8px;font-family:inherit;font-size:17px;color:var(--tint);cursor:pointer"><svg width="12" height="20" viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2 2 10l8 8"></path></svg>{{ t.settings }}</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ isPad }}"><div style="height:30px"></div></sc-if>
+            <div style="padding:4px var(--padX) 14px;font-size:34px;font-weight:700;letter-spacing:.3px">{{ t.sources }}</div>
+            <div style="margin:0 16px;border-radius:10px;background:var(--card);overflow:hidden;max-width:620px">
+              <sc-for list="{{ sources }}" as="o" hint-placeholder-count="4">
+                <div style="padding:14px 16px;border-bottom:0.5px solid var(--sep)">
+                  <div style="font-size:17px;font-weight:600">{{ o.title }}</div>
+                  <div style="font-size:15px;line-height:1.45;color:var(--ink2);margin-top:4px;text-wrap:pretty">{{ o.body }}</div>
+                  <sc-if value="{{ o.hasLic }}"><div style="margin-top:8px;display:inline-flex;font-size:12px;font-weight:600;color:var(--ink2);padding:2px 7px;border-radius:5px;background:var(--fill)">{{ o.lic }}</div></sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showPlaceholder }}">
+          <div style="height:100%;display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:17px">{{ t.selectWord }}</div>
+        </sc-if>
+      </div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{ isPhone }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:0;right:0;bottom:0;height:83px;z-index:25;background:var(--bar);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:0.5px solid var(--sep);display:grid;grid-template-columns:repeat(4,1fr);padding-top:7px">
+      <button onClick="{{ goSearch }}" style="{{ tabSt.search }}"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="11" cy="11" r="7.5"></circle><path d="m20.5 20.5-4.2-4.2"></path></svg>{{ t.search }}</button>
+      <button onClick="{{ goBook }}" style="{{ tabSt.bookmarks }}"><svg width="25" height="25" viewBox="0 0 24 24" fill="{{ tabFillBook }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>{{ t.bookmarks }}</button>
+      <button onClick="{{ goHist }}" style="{{ tabSt.history }}"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M12 7v5l4 2"></path></svg>{{ t.history }}</button>
+      <button onClick="{{ goSet }}" style="{{ tabSt.settings }}"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>{{ t.settings }}</button>
+    </div>
+    <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--ink);z-index:26"></div>
+  </sc-if>
+
+  <sc-if value="{{ hasToast }}">
+    <div style="position:absolute;left:50%;bottom:var(--toastB);transform:translateX(-50%);z-index:40;max-width:340px;padding:11px 16px;border-radius:14px;background:rgba(40,40,42,.94);color:#fff;font-size:14px;line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,.2)">{{ toast }}</div>
+  </sc-if>
+
+  <sc-if value="{{ confirmClear }}">
+    <div style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:50;background:rgba(0,0,0,.32);display:flex;align-items:center;justify-content:center">
+      <div style="width:270px;border-radius:14px;background:var(--alertBg);backdrop-filter:blur(30px);overflow:hidden;text-align:center">
+        <div style="padding:19px 16px 16px">
+          <div style="font-size:17px;font-weight:600">{{ t.clearTitle }}</div>
+          <div style="font-size:13px;line-height:1.4;margin-top:4px">{{ t.clearMsg }}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;border-top:0.5px solid var(--sep2)">
+          <button onClick="{{ cancelClear }}" style="height:44px;border:0;border-right:0.5px solid var(--sep2);background:transparent;font-family:inherit;font-size:17px;color:var(--tint);cursor:pointer">{{ t.cancel }}</button>
+          <button onClick="{{ doClear }}" style="height:44px;border:0;background:transparent;font-family:inherit;font-size:17px;font-weight:600;color:#FF3B30;cursor:pointer">{{ t.clear }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:413,&quot;height&quot;:872},&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;phone&quot;,&quot;pad&quot;,&quot;kit&quot;],&quot;default&quot;:&quot;phone&quot;,&quot;tsType&quot;:&quot;'phone'|'pad'|'kit'&quot;},&quot;dark&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;white&quot;,&quot;paper&quot;,&quot;grey&quot;,&quot;sage&quot;,&quot;mist&quot;],&quot;default&quot;:&quot;white&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;ui&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;zh&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;'en'|'zh'&quot;},&quot;tab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;search&quot;,&quot;bookmarks&quot;,&quot;history&quot;,&quot;settings&quot;],&quot;default&quot;:&quot;search&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;query&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;submitted&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;entry&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;dictTab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;bm&quot;,&quot;nn&quot;],&quot;default&quot;:&quot;bm&quot;,&quot;tsType&quot;:&quot;'bm'|'nn'&quot;},&quot;searched&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showEn&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showZh&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;openFixed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;openInfl&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;textSize&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;min&quot;:0,&quot;max&quot;:4,&quot;default&quot;:1,&quot;tsType&quot;:&quot;number&quot;},&quot;appearance&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;system&quot;,&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;system&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;settingsSub&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;revealed&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;scrollTop&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:0,&quot;tsType&quot;:&quot;number&quot;}}">
+const FONT='-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Helvetica Neue", sans-serif';
+const THEMES={
+ white:{en:'White',zh:'白色',l:['#FFFFFF','#F2F2F7','#FFFFFF'],d:['#000000','#000000','#1C1C1E']},
+ paper:{en:'Paper',zh:'纸张',l:['#FAF6EE','#F1EBDF','#FFFDF8'],d:['#1B1813','#14120E','#28241D']},
+ grey:{en:'Grey',zh:'浅灰',l:['#F3F3F4','#E8E8EA','#FCFCFC'],d:['#1C1C1E','#121213','#2C2C2E']},
+ sage:{en:'Sage',zh:'青绿',l:['#EDF4F1','#E0EBE6','#F9FCFA'],d:['#121B18','#0D1412','#1E2B27']},
+ mist:{en:'Mist',zh:'雾蓝',l:['#EEF2F8','#E1E7F0','#F9FAFD'],d:['#131821','#0E1219','#1F2632']}
+};
+const SIZES=[0.88,1,1.12,1.26,1.42];
+const T={
+ en:{appTitle:'Slå opp',search:'Search',bookmarks:'Bookmarks',history:'History',settings:'Settings',placeholder:'Any form of a word',cancel:'Cancel',recent:'Recent',clear:'Clear',tip:'Type any form of a word: “gikk” finds gå, “bøkene” finds bok, “augo” finds auge.',similar:'Similar headwords',noResults:'No matches. Check the spelling or try the base form.',swipeHint:'Swipe to switch dictionary',fixed:'Fixed expressions',infl:'Inflection',mt:'Machine-translated',report:'Report error',see:'see',sg:'Singular',pl:'Plural',indef:'Indefinite',def:'Definite',inf:'Infinitive',pres:'Present',past:'Past',perf:'Perfect',appearance:'Appearance',theme:'Theme',light:'Light',dark:'Dark',system:'System',trHead:'Show translations by default',trFoot:'Translations appear under each definition and example. You can also switch them on any entry.',enName:'English',zhName:'中文 Chinese',uiLang:'Interface language',textSize:'Text size',sampleTr:'a good friend of mine',about:'About',sources:'Sources',articles:'Articles',version:'Version',clearTitle:'Clear history?',clearMsg:'All recent lookups will be removed from this device.',today:'Today',yesterday:'Yesterday',sat:'Saturday 26 September',remove:'Remove',bmHint:'Swipe left on a word to remove it.',bmEmpty:'No bookmarks yet',histEmpty:'No history',reported:'Report saved. It will be sent next time you’re online.',selectWord:'Search for a word to see its entry',offline:'Offline · 186 912 articles',date:'Tue 29 Sep',noIn:'No entries in ',bmFull:'Bokmålsordboka',nnFull:'Nynorskordboka'},
+ zh:{appTitle:'Slå opp 查词',search:'查词',bookmarks:'收藏',history:'历史',settings:'设置',placeholder:'输入单词的任意形式',cancel:'取消',recent:'最近搜索',clear:'清除',tip:'可以输入任意词形：输入 gikk 可查到 gå，输入 bøkene 可查到 bok，输入 augo 可查到 auge。',similar:'相近词条',noResults:'没有找到结果。请检查拼写，或尝试输入原形。',swipeHint:'左右轻扫切换词典',fixed:'固定表达',infl:'词形变化',mt:'机器翻译',report:'报告错误',see:'参见',sg:'单数',pl:'复数',indef:'不定形',def:'定形',inf:'不定式',pres:'现在时',past:'过去时',perf:'完成时',appearance:'外观',theme:'主题',light:'浅色',dark:'深色',system:'跟随系统',trHead:'默认显示翻译',trFoot:'翻译显示在每条释义和例句下方。也可以在任意词条页中切换。',enName:'English 英语',zhName:'中文',uiLang:'界面语言',textSize:'字体大小',sampleTr:'我的一个好朋友',about:'关于',sources:'数据来源',articles:'词条数',version:'版本',clearTitle:'清除历史记录？',clearMsg:'此设备上的所有查询记录都将被删除。',today:'今天',yesterday:'昨天',sat:'9月26日 星期六',remove:'移除',bmHint:'向左轻扫单词即可移除。',bmEmpty:'还没有收藏',histEmpty:'没有历史记录',reported:'报告已保存，将在联网后发送。',selectWord:'搜索单词以查看词条',offline:'离线可用 · 186 912 个词条',date:'9月29日 周二',noIn:'没有词条：',bmFull:'Bokmålsordboka 书面语词典',nnFull:'Nynorskordboka 新挪威语词典'}
+};
+const ML={en:{pl_indef:'plural indefinite',pl_def:'plural definite',sg_def:'singular definite',sg_indef:'singular',past:'past tense',pres:'present tense',perf:'past participle',inf:'infinitive'},zh:{pl_indef:'复数不定形',pl_def:'复数定形',sg_def:'单数定形',sg_indef:'单数',past:'过去时',pres:'现在时',perf:'过去分词',inf:'不定式'}};
+const P={nm:{en:'noun · masculine',zh:'名词 · 阳性'},nf:{en:'noun · feminine',zh:'名词 · 阴性'},nmf:{en:'noun · masculine or feminine',zh:'名词 · 阳性或阴性'},nn:{en:'noun · neuter',zh:'名词 · 中性'},v:{en:'verb',zh:'动词'}};
+const S=(n,def,en,zh,ex=[],subs=[],xref=null)=>({n,def,en,zh,ex,subs,xref});
+const F=(x,def,en,zh)=>({x,def,en,zh});
+const N=(a,b,c,d)=>({k:'n',c:[[a,'sg_indef'],[b,'sg_def'],[c,'pl_indef'],[d,'pl_def']]});
+const V=(a,b,c,d)=>({k:'v',c:[[a,'inf'],[b,'pres'],[c,'past'],['har '+d,'perf']]});
+const D={
+ bok:{
+  bm:{hw:'bok',pos:'nmf',ipa:'/buːk/',gl:['book','书'],senses:[
+   S('1','sammenheftede ark med tekst og/eller bilder på','sheets of paper with text and/or pictures, bound together','装订成册、印有文字和／或图片的纸页；书',[['lese en bok','read a book','读一本书'],['slå opp i en bok','look something up in a book','在书里查找']],[S('1.1','innbundet samling blanke ark','bound set of blank sheets; notebook','空白纸页装订成的本子；笔记本',[['notere noe i boka','note something down in the book','把某事记在本子上']])]),
+   S('2','litterært verk','literary work','文学作品；著作',[['hun har skrevet tre bøker','she has written three books','她写了三本书']]),
+   S('3','del av et større skriftverk','part of a larger written work','大部头著作中的一卷或一部分',[['Første Mosebok','the Book of Genesis','《创世记》']])],
+   fixed:[F('som en åpen bok','lett å forstå, lett å gjennomskue','like an open book; easy to understand or see through','像一本打开的书；容易看透'),F('føre bøker','føre regnskap','keep accounts','记账')],
+   infl:N('bok','boka/boken','bøker','bøkene')},
+  nn:{hw:'bok',pos:'nf',ipa:'/buːk/',gl:['book','书'],senses:[
+   S('1','samanhefta ark med tekst og/eller bilete på','sheets of paper with text and/or pictures, bound together','装订成册、印有文字和／或图片的纸页；书',[['lese ei bok','read a book','读一本书']]),
+   S('2','litterært verk','literary work','文学作品；著作',[['ho har skrive tre bøker','she has written three books','她写了三本书']])],
+   fixed:[F('som ei open bok','lett å forstå, lett å sjå gjennom','like an open book; easy to understand or see through','像一本打开的书；容易看透')],
+   infl:N('bok','boka','bøker','bøkene')}
+ },
+ bøk:{bm:{hw:'bøk',pos:'nm',ipa:'/bøːk/',gl:['beech','山毛榉'],senses:[
+   S('1','løvtre med glatt, grå bark','deciduous tree with smooth grey bark; beech','树皮光滑呈灰色的落叶乔木；山毛榉',[['en skog av bøk','a beech forest','一片山毛榉林']]),
+   S('2','ved eller trevirke av bøk','wood or timber from this tree; beech','山毛榉木材',[['et bord i bøk','a table made of beech','一张山毛榉木桌子']])],
+   fixed:[],infl:N('bøk','bøken','bøker','bøkene')}},
+ bøkker:{bm:{hw:'bøkker',pos:'nm',ipa:'/ˈbøkːər/',gl:['cooper','制桶匠'],senses:[
+   S('1','håndverker som lager tønner og kar','craftsman who makes barrels and tubs; cooper','制作木桶和木盆的工匠；制桶匠',[['bøkkeren laget nye tønner','the cooper made new barrels','制桶匠做了新木桶']])],
+   fixed:[],infl:N('bøkker','bøkkeren','bøkkere','bøkkerne')}},
+ bøkkar:{nn:{hw:'bøkkar',pos:'nm',ipa:'/ˈbøkːɑr/',gl:['cooper','制桶匠'],senses:[
+   S('1','handverkar som lagar tønner og kar','craftsman who makes barrels and tubs; cooper','制作木桶和木盆的工匠；制桶匠',[['bøkkaren laga nye tønner','the cooper made new barrels','制桶匠做了新木桶']])],
+   fixed:[],infl:N('bøkkar','bøkkaren','bøkkarar','bøkkarane')}},
+ venn:{
+  bm:{hw:'venn',pos:'nm',ipa:'/ven/',gl:['friend, pal','朋友'],senses:[
+   S('1','person som en har et nært forhold til','person one is close to; friend, pal','关系亲近的人；朋友',[['en god venn av meg','a good friend of mine','我的一个好朋友'],['skal vi være venner?','shall we be friends?','我们做朋友好吗？']],[S('1.1','kjæreste','boyfriend or girlfriend','恋人；男朋友或女朋友',[['hun har fått seg en fast venn','she has got herself a steady boyfriend','她有了一个固定的男朋友']],[],'venninne')]),
+   S('2','tilhenger av noe','supporter or lover of something','某事物的支持者或爱好者',[['en venn av god mat','a lover of good food','一个爱好美食的人']]),
+   S('3','brukt som (ironisk) tiltale','used as a (sometimes ironic) form of address','用作（有时带讽刺意味的）称呼',[['hør her, min venn','listen here, my friend','听好了，我的朋友']])],
+   fixed:[F('vår venn','brukt spøkefullt om en som alle kjenner','our friend; used jokingly about someone everyone knows','咱们那位；戏称大家都认识的人'),F('være gode venner med noen','ha et godt forhold til noen','be good friends with someone; be on good terms','与某人关系很好'),F('en venn i nøden','en som hjelper når det trengs','a friend in need','患难之交')],
+   infl:N('venn','vennen','venner','vennene')},
+  nn:{hw:'ven, venn',pos:'nm',ipa:'/veːn/, /ven/',gl:['friend, pal','朋友'],senses:[
+   S('1','person som ein har eit nært forhold til','person one is close to; friend, pal','关系亲近的人；朋友',[['ein god ven av meg','a good friend of mine','我的一个好朋友'],['skal vi vere vener?','shall we be friends?','我们做朋友好吗？']]),
+   S('2','tilhengjar av noko','supporter or lover of something','某事物的支持者或爱好者',[['ein ven av god mat','a lover of good food','一个爱好美食的人']])],
+   fixed:[F('vår ven','brukt skjemtande om ein som alle kjenner','our friend; used jokingly about someone everyone knows','咱们那位；戏称大家都认识的人')],
+   infl:N('ven/venn','venen/vennen','vener/venner','venene/vennene')}
+ },
+ venninne:{bm:{hw:'venninne',pos:'nf',ipa:'/venˈinːə/',gl:['female friend','女性朋友'],senses:[
+   S('1','kvinnelig venn','female friend','女性朋友',[['hun var på kafé med ei venninne','she was at a café with a friend','她和一位女性朋友在咖啡馆']],[],'venn')],
+   fixed:[],infl:N('venninne','venninna/venninnen','venninner','venninnene')}},
+ gå:{
+  bm:{hw:'gå',pos:'v',ipa:'/ɡoː/',gl:['go, walk','走；去'],senses:[
+   S('1','bevege seg til fots','move on foot; walk','步行；走',[['gå til skolen','walk to school','走路去学校'],['barnet har begynt å gå','the child has started to walk','孩子开始会走路了']],[S('1.1','bevege seg bort fra et sted','leave, go away','离开；走开',[['nå må jeg gå','I have to go now','我现在得走了']])]),
+   S('2','være i drift, fungere','run, work, function','运转；运行',[['klokka går ikke','the clock isn’t working','钟不走了']]),
+   S('3','om transportmiddel: gå etter rute','of transport: depart, run','（交通工具）按班次开出；运行',[['toget går klokka ti','the train leaves at ten','火车十点开']])],
+   fixed:[F('gå an','være mulig eller akseptabelt','be possible or acceptable','行得通；可以接受'),F('gå med på','samtykke i','agree to','同意')],
+   infl:V('gå','går','gikk','gått')},
+  nn:{hw:'gå',pos:'v',ipa:'/ɡoː/',gl:['go, walk','走；去'],senses:[
+   S('1','røre seg til fots','move on foot; walk','步行；走',[['gå til skulen','walk to school','走路去学校']]),
+   S('2','vere i drift, fungere','run, work, function','运转；运行',[['klokka går ikkje','the clock isn’t working','钟不走了']])],
+   fixed:[F('gå an','vere mogleg eller akseptabelt','be possible or acceptable','行得通；可以接受')],
+   infl:V('gå','går','gjekk','gått')}
+ },
+ auge:{nn:{hw:'auge',pos:'nn',ipa:'/ˈæʉɡə/',gl:['eye','眼睛'],senses:[
+   S('1','synsorgan','organ of sight; eye','视觉器官；眼睛',[['ho har blå augo','she has blue eyes','她有一双蓝眼睛']]),
+   S('2','evne til å sjå og leggje merke til','ability to see and notice; eye','眼光；眼力',[['ha auge for detaljar','have an eye for detail','对细节很有眼光']])],
+   fixed:[F('under fire augo','mellom to personar, i fortrulegheit','in private, between two people','私下；只在两人之间')],
+   infl:N('auge','auget','augo','auga')}},
+ stilling:{bm:{hw:'stilling',pos:'nmf',ipa:'/ˈstilːiŋ/',gl:['position; post, job','姿势；职位'],senses:[
+   S('1','måte å stå, sitte eller ligge på','way of standing, sitting or lying; position, posture','站、坐或躺的方式；姿势',[['sitte i en ubekvem stilling','sit in an uncomfortable position','以不舒服的姿势坐着']]),
+   S('2','arbeid, jobb','post, position, job','职位；工作',[['søke en ledig stilling','apply for a vacant position','申请一个空缺职位']])],
+   fixed:[F('ta stilling til','vurdere og bestemme seg om noe','consider and make up one’s mind about something','对某事表明态度；作出判断')],
+   infl:N('stilling','stillinga/stillingen','stillinger','stillingene')}}
+};
+const IDX=[],LEM=[];
+Object.keys(D).forEach(key=>['bm','nn'].forEach(dict=>{const e=D[key][dict];if(!e)return;LEM.push({key,dict,lem:e.hw.split(', ')});e.infl.c.forEach(([f,code])=>f.replace(/^har /,'').split('/').forEach(x=>IDX.push({f:x,key,dict,code})));}));
+function lev(a,b){const m=a.length,n=b.length,d=[];for(let i=0;i<=m;i++){d[i]=[i];}for(let j=1;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n];}
+function find(raw){const q=(raw||'').trim().toLowerCase();const out={bm:[],nn:[],sim:[]};if(!q)return out;const seen=new Set();
+ IDX.filter(x=>x.f===q).forEach(x=>{const id=x.key+'|'+x.dict;if(seen.has(id))return;seen.add(id);const lem=D[x.key][x.dict].hw.split(', ');out[x.dict].push({key:x.key,dict:x.dict,note:lem.includes(q)?null:{form:q,hw:lem[0],code:x.code}});});
+ if(q.length>=2)LEM.forEach(l=>{const id=l.key+'|'+l.dict;if(seen.has(id))return;if(l.lem.some(w=>w.startsWith(q))){seen.add(id);out[l.dict].push({key:l.key,dict:l.dict,note:null});}});
+ if(q.length>=3)LEM.forEach(l=>{const id=l.key+'|'+l.dict;if(seen.has(id))return;if(l.lem.some(w=>lev(w,q)<=2)){seen.add(id);out.sim.push({key:l.key,dict:l.dict,note:null});}});
+ return out;}
+const HIST=[{day:'today',rows:[['gikk','gå','bm','14:02'],['venn','venn','bm','13:47'],['bøkene','bok','bm','09:15']]},{day:'yesterday',rows:[['augo','auge','nn','21:30'],['stilling','stilling','bm','18:05']]},{day:'sat',rows:[['bøkker','bøkker','bm','11:20'],['venninne','venninne','bm','10:58']]}];
+const RECENT=['gikk','bøkene','augo','venn','stilling'];
+const BMK=['venn|bm','bok|bm','gå|bm','auge|nn','stilling|bm','venn|nn'];
+const SRC={en:[{title:'Bokmålsordboka',body:'Definitions, examples and fixed expressions for Bokmål. Edited by Språkrådet (the Language Council of Norway) and the University of Bergen.'},{title:'Nynorskordboka',body:'Definitions, examples and fixed expressions for Nynorsk. Edited by Språkrådet and the University of Bergen.'},{title:'Norsk ordbank',body:'Inflection data used to find the base word from any form you type. Språkrådet and the University of Bergen.',lic:'CC BY 4.0'},{title:'Translations',body:'The English and Chinese translations of definitions and examples were added by machine translation. They are not part of the original dictionaries and may contain errors. Use “Report error” on any entry to flag one.'}],
+ zh:[{title:'Bokmålsordboka',body:'书面挪威语的释义、例句和固定表达。由挪威语言委员会（Språkrådet）与卑尔根大学编纂。'},{title:'Nynorskordboka',body:'新挪威语的释义、例句和固定表达。由 Språkrådet 与卑尔根大学编纂。'},{title:'Norsk ordbank',body:'词形变化数据，用于从你输入的任意词形找到原形。Språkrådet 与卑尔根大学。',lic:'CC BY 4.0'},{title:'翻译',body:'释义和例句的英文与中文翻译由机器翻译生成，不属于原词典内容，可能存在错误。可在任意词条页点击“报告错误”进行反馈。'}]};
+const bool=x=>x===true||x==='true';
+
+class Component extends DCLogic {
+  state={};
+  detailRef=React.createRef();
+  v(k,d){ if(this.state[k]!==undefined) return this.state[k]; const p=this.props[k]; return p!==undefined&&p!==null&&p!==''?p:d; }
+  componentDidMount(){ const st=parseFloat(this.props.scrollTop); if(st){ let n=0; const f=()=>{const el=this.detailRef.current; if(el) el.scrollTop=st; if(++n<12) this.sc=setTimeout(f,150);}; f(); } }
+  componentWillUnmount(){ clearTimeout(this.sc); clearTimeout(this.tt); clearTimeout(this.sp); }
+  toast(msg){ clearTimeout(this.tt); this.setState({toast:msg}); this.tt=setTimeout(()=>this.setState({toast:null}),2600); }
+  isPhone(){ return (this.props.device||'phone')==='phone'; }
+  openEntry(key,dict,searched){ if(!D[key])return; const d=D[key][dict]?dict:(D[key].bm?'bm':'nn'); this.setState({entry:key,dictTab:d,searched:searched||null,settingsSub:null}); const el=this.detailRef.current; if(el) el.scrollTop=0; }
+  setTab(tab){ this.setState(this.isPhone()?{tab,entry:null,settingsSub:null}:{tab}); }
+  segStyle(on,dark){ return {flex:1,display:'flex',alignItems:'center',justifyContent:'center',gap:6,border:0,borderRadius:7,fontFamily:'inherit',fontSize:13,fontWeight:on?600:500,color:'var(--ink)',background:on?(dark?'#636366':'var(--card)'):'transparent',boxShadow:on?'0 3px 8px rgba(0,0,0,.12), 0 0 0 .5px rgba(0,0,0,.04)':'none',cursor:'pointer',padding:0}; }
+  chip(on){ return {height:30,padding:'0 13px',borderRadius:15,border:on?'1px solid var(--tint)':'1px solid var(--sep2)',background:on?'var(--tint)':'transparent',color:on?'var(--onTint)':'var(--ink)',fontFamily:'inherit',fontSize:14,fontWeight:600,display:'flex',alignItems:'center',cursor:'pointer',flex:'none',whiteSpace:'nowrap'}; }
+  sw(on){ return [{width:51,height:31,borderRadius:16,border:0,padding:0,background:on?'#34C759':'var(--fill2)',position:'relative',cursor:'pointer',transition:'background .2s',flex:'none',display:'block'},{position:'absolute',top:2,left:on?22:2,width:27,height:27,borderRadius:14,background:'#fff',boxShadow:'0 3px 8px rgba(0,0,0,.15), 0 1px 1px rgba(0,0,0,.16)',transition:'left .2s'}]; }
+  table(infl,searched,t){
+    const mk=txt=>{const alts=txt.replace(/^har /,'').split('/');const hl=!!searched&&alts.includes(searched);return {isCell:!hl,isHl:hl,lines:txt.split('/')};};
+    const H=l=>({isHead:true,label:l}),L=l=>({isLabel:true,label:l});
+    const f=infl.c.map(x=>x[0]);
+    if(infl.k==='n') return {grid:{display:'grid',gridTemplateColumns:'minmax(0,.8fr) minmax(0,1fr) minmax(0,1fr)'},cells:[H(''),H(t.sg),H(t.pl),L(t.indef),mk(f[0]),mk(f[2]),L(t.def),mk(f[1]),mk(f[3])]};
+    return {grid:{display:'grid',gridTemplateColumns:'repeat(4,minmax(0,1fr))'},cells:[H(t.inf),H(t.pres),H(t.past),H(t.perf),mk(f[0]),mk(f[1]),mk(f[2]),mk(f[3])]};
+  }
+  swDown=e=>{this.sx=e.clientX;this.sy=e.clientY;};
+  swUp=e=>{ if(this.sx==null)return; const dx=e.clientX-this.sx,dy=e.clientY-this.sy; this.sx=null; if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5) this.setState({dictTab:dx<0?'nn':'bm'}); };
+  renderVals(){
+    const lang=this.v('ui','en')==='zh'?'zh':'en', t=T[lang], ml=ML[lang];
+    const device=this.props.device||'phone', pad=device==='pad', kit=device==='kit', phone=!pad&&!kit;
+    const appearance=this.v('appearance','system');
+    const dark=appearance==='dark'||(appearance==='system'&&bool(this.props.dark));
+    const themeKey=THEMES[this.v('theme','white')]?this.v('theme','white'):'white';
+    const [bg,grp,card]=THEMES[themeKey][dark?'d':'l'];
+    const tsIdx=Math.max(0,Math.min(4,parseInt(this.v('textSize',1),10)||0)); const ts=SIZES[tsIdx];
+    const tab=this.v('tab','search');
+    const showEN=bool(this.v('showEn',true)), showZH=bool(this.v('showZh',false));
+    const openFixed=bool(this.v('openFixed',false)), openInfl=bool(this.v('openInfl',false));
+    const entry=this.v('entry',null);
+    const settingsSub=this.v('settingsSub',null);
+    const marks=this.state.marks||BMK;
+    const listBg=tab==='settings'?grp:bg;
+    const showSources=tab==='settings'&&(pad||settingsSub==='sources');
+    const showEntry=!!entry&&D[entry]&&!showSources;
+    const showList=pad||(!showEntry&&!showSources);
+    const showDetail=pad||showEntry||showSources;
+    const vars={'--bg':bg,'--grp':grp,'--card':card,'--listBg':listBg,'--detailBg':showSources?grp:bg,'--f':FONT,'--ts':ts,
+      '--ink':dark?'#FFFFFF':'#1C1B1A','--ink2':dark?'rgba(235,235,245,.64)':'rgba(60,60,67,.72)','--ink3':dark?'rgba(235,235,245,.34)':'rgba(60,60,67,.36)',
+      '--sep':dark?'rgba(84,84,88,.6)':'rgba(60,60,67,.18)','--sep2':dark?'rgba(235,235,245,.22)':'rgba(60,60,67,.26)',
+      '--fill':dark?'rgba(118,118,128,.24)':'rgba(118,118,128,.12)','--fill2':dark?'rgba(120,120,128,.36)':'rgba(120,120,128,.18)',
+      '--tint':dark?'#FF6B50':'#C8341B','--tintBg':dark?'rgba(255,107,80,.16)':'rgba(200,52,27,.08)','--onTint':dark?'#1C0B07':'#FFFFFF',
+      '--bm':dark?'#FF8E7A':'#B03A26','--bmBg':dark?'rgba(255,120,100,.17)':'#FBE7E2','--nn':dark?'#86B8F2':'#1F5DA3','--nnBg':dark?'rgba(110,165,240,.18)':'#E2ECF8',
+      '--bar':dark?'rgba(22,22,24,.84)':'color-mix(in srgb, '+bg+' 86%, transparent)','--statusBg':dark?'rgba(0,0,0,.001)':'rgba(255,255,255,.001)',
+      '--alertBg':dark?'rgba(44,44,46,.96)':'rgba(242,242,242,.96)',
+      '--top':phone?'54px':'26px','--bot':phone?'100px':'30px','--listW':pad?'340px':'100%','--listBorder':pad?'0.5px solid var(--sep)':'0','--padX':pad?'28px':'20px','--toastB':phone?'100px':'30px',
+      '--statusMat':'color-mix(in srgb, '+(showSources?grp:(tab==='settings'&&showList?grp:bg))+' 90%, transparent)','--tabOff':dark?'#8D8D93':'#8A8A8E'};
+    const rootStyle={...vars,display:'inline-block',fontFamily:FONT,color:'var(--ink)'};
+    const frameStyle=pad?{position:'relative',width:1218,height:858,borderRadius:44,border:'12px solid #111',boxSizing:'border-box',overflow:'hidden',background:'var(--bg)',WebkitFontSmoothing:'antialiased',boxShadow:'0 0 0 1px #3a3a3a, 0 24px 60px rgba(0,0,0,.16)'}:{position:'relative',width:413,height:872,borderRadius:62,border:'10px solid #111',boxSizing:'border-box',overflow:'hidden',background:'var(--bg)',WebkitFontSmoothing:'antialiased',boxShadow:'0 0 0 1px #3a3a3a, 0 24px 60px rgba(0,0,0,.16)'};
+
+    const query=this.v('query','');
+    const submitted=bool(this.v('submitted',false));
+    const res=find(query); const qn=query.trim().toLowerCase();
+    const hasQuery=qn.length>0;
+    const gloss=e=>[showEN&&e.gl[0],showZH&&e.gl[1]].filter(Boolean).join('  ·  ');
+    const row=r=>{const e=D[r.key][r.dict];const g=gloss(e);return {hw:e.hw,isBm:r.dict==='bm',isNn:r.dict==='nn',pos:P[e.pos][lang],hasNote:!!r.note,nform:r.note?r.note.form:'',nhw:r.note?r.note.hw:'',nlabel:r.note?ml[r.note.code]:'',hasGloss:!!g,gloss:g,def1:e.senses[0].def,open:()=>this.openEntry(r.key,r.dict,qn)};};
+    const groups=[];
+    if(res.bm.length)groups.push({title:'Bokmål',sub:'',rows:res.bm.map(row)});
+    if(res.nn.length)groups.push({title:'Nynorsk',sub:'',rows:res.nn.map(row)});
+    if(res.sim.length)groups.push({title:t.similar,sub:'Lignende oppslagsord',rows:res.sim.map(row)});
+    let dictTab=this.v('dictTab','bm');
+    const resRows=(res[dictTab]||[]).map(row);
+    const dot=on=>({width:7,height:7,borderRadius:4,background:on?'var(--ink2)':'var(--ink3)',opacity:on?1:.5});
+
+    const recent=RECENT.map(f=>{const r=find(f);const m=r.bm[0]||r.nn[0];const e=D[m.key][m.dict];const hw=e.hw.split(', ')[0];return {form:f,hasHw:hw!==f,hw,isBm:m.dict==='bm',isNn:m.dict==='nn',open:()=>{const rr=find(f);this.setState({query:f,submitted:true,dictTab:rr.bm.length?'bm':'nn'});}};});
+
+    const T2=this.state.dragX, rev=this.v('revealed',null);
+    const bmRows=marks.filter(id=>{const [k,d]=id.split('|');return D[k]&&D[k][d];}).map(id=>{const [k,d]=id.split('|');const e=D[k][d];const x=T2&&T2.id===id?T2.x:(rev===id?-88:0);
+      return {hw:e.hw,isBm:d==='bm',isNn:d==='nn',en:e.gl[0],zh:e.gl[1],
+        st:{position:'relative',display:'flex',paddingLeft:16,background:'var(--bg)',transform:'translateX('+x+'px)',transition:T2&&T2.id===id?'none':'transform .25s ease',touchAction:'pan-y',cursor:'pointer',userSelect:'none'},
+        down:ev=>{this.drag={id,x0:ev.clientX,moved:false,base:rev===id?-88:0};try{ev.currentTarget.setPointerCapture(ev.pointerId);}catch(_){}} ,
+        move:ev=>{const g=this.drag;if(!g||g.id!==id)return;const dx=ev.clientX-g.x0;if(Math.abs(dx)>4)g.moved=true;if(g.moved)this.setState({dragX:{id,x:Math.max(-110,Math.min(0,g.base+dx))}});},
+        up:()=>{const g=this.drag;this.drag=null;if(!g)return;if(g.moved){const cx=this.state.dragX?this.state.dragX.x:g.base;this.setState({dragX:null,revealed:cx<-44?id:null});}else if(rev===id){this.setState({revealed:null});}else if(rev){this.setState({revealed:null});}else{this.openEntry(k,d,null);}},
+        remove:()=>this.setState({marks:marks.filter(m=>m!==id),revealed:null})};});
+
+    const histCleared=!!this.state.histCleared;
+    const histGroups=histCleared?[]:HIST.map(g=>({day:t[g.day],rows:g.rows.map(([f,k,d,time])=>{const hw=D[k][d].hw.split(', ')[0];return {form:f,hasHw:hw!==f,hw,isBm:d==='bm',isNn:d==='nn',time,open:()=>this.openEntry(k,d,f)};})}));
+
+    const swatches=Object.keys(THEMES).map(k=>{const th=THEMES[k],sel=k===themeKey;return {name:th[lang],pick:()=>this.setState({theme:k}),
+      st:{display:'block',width:44,height:44,borderRadius:22,background:'linear-gradient(135deg, '+th.l[0]+' 50%, '+th.d[0]+' 50%)',boxShadow:sel?'0 0 0 2px var(--card), 0 0 0 4.5px var(--tint)':'inset 0 0 0 1px rgba(128,128,128,.35)'},
+      lbl:{fontSize:12,color:sel?'var(--ink)':'var(--ink2)',fontWeight:sel?600:400}};});
+    const [swEN,knobEN]=this.sw(showEN),[swZH,knobZH]=this.sw(showZH);
+
+    const tabSt={};['search','bookmarks','history','settings'].forEach(k=>{tabSt[k]={display:'flex',flexDirection:'column',alignItems:'center',gap:3,border:0,background:'transparent',padding:0,fontFamily:'inherit',fontSize:10,fontWeight:500,color:tab===k?'var(--tint)':'var(--tabOff)',cursor:'pointer',height:50};});
+    const nav={};['search','bookmarks','history','settings'].forEach(k=>{const on=tab===k;nav[k]={display:'flex',alignItems:'center',gap:12,height:44,padding:'0 12px',borderRadius:10,border:0,width:'100%',fontFamily:'inherit',fontSize:17,background:on?'var(--tint)':'transparent',color:on?'var(--onTint)':'var(--ink)',cursor:'pointer',textAlign:'left'};});
+
+    let e={},cols=[],showEntrySeg=false,markOn=false,markKey=null;
+    const tr=o=>({...o,showEn:showEN&&!!o.en,showZh:showZH&&!!o.zh});
+    const sense=s=>({...tr(s),ex:s.ex.map(x=>tr({no:x[0],en:x[1],zh:x[2]})),subs:(s.subs||[]).map(sense),hasXref:!!s.xref,xref:s.xref,seeLabel:t.see,openXref:()=>this.openEntry(s.xref,'bm',s.xref)});
+    const searched=this.v('searched',null);
+    if(showEntry){
+      const g=D[entry];const dicts=['bm','nn'].filter(d=>g[d]);
+      if(!g[dictTab])dictTab=dicts[0];
+      const colKeys=pad?dicts:[dictTab];
+      const main=g[colKeys[0]];
+      markKey=entry+'|'+colKeys[0]; markOn=marks.includes(markKey);
+      const speaking=!!this.state.speaking;
+      e={title:pad?main.hw.split(', ').pop():main.hw,pos:P[main.pos][lang],ipa:main.ipa};
+      showEntrySeg=phone&&dicts.length>1;
+      cols=colKeys.map((d,i)=>{const c=g[d];const f=c.infl.c.map(x=>x[0].split('/')[0]);
+        return {head:pad,isBm:d==='bm',isNn:d==='nn',hw:c.hw,dictName:d==='bm'?t.bmFull:t.nnFull,
+          colStyle:{flex:1,minWidth:0,padding:pad?'0 28px':'0 20px',borderLeft:pad&&i>0?'0.5px solid var(--sep)':'0'},
+          senses:c.senses.map(sense),fixed:c.fixed.map(tr),hasFixed:c.fixed.length>0,fixedCount:String(c.fixed.length),openFixed,
+          toggleFixed:()=>this.setState({openFixed:!openFixed}),chevF:{marginLeft:'auto',color:'var(--ink3)',transform:openFixed?'rotate(90deg)':'none',transition:'transform .2s'},
+          openInfl,inflHint:!openInfl,inflPreview:c.infl.k==='n'?[f[0],f[1],f[2],f[3]].join(' · '):[f[0],f[1],f[2],f[3]].join(' · '),
+          toggleInfl:()=>this.setState({openInfl:!openInfl}),chevI:{marginLeft:'auto',flex:'none',color:'var(--ink3)',transform:openInfl?'rotate(90deg)':'none',transition:'transform .2s'},
+          tb:this.table(c.infl,searched,t),source:(d==='bm'?'Bokmålsordboka':'Nynorskordboka')+' · Språkrådet & Universitetet i Bergen'};});
+    }
+    const speaking=!!this.state.speaking;
+    const circ=on=>({width:40,height:40,borderRadius:20,border:0,flex:'none',display:'flex',alignItems:'center',justifyContent:'center',background:on?'var(--tint)':'var(--fill)',color:on?'var(--onTint)':'var(--tint)',cursor:'pointer',transition:'background .2s'});
+
+    const kitBase=D.venn.bm;
+    return {
+      rootStyle,frameStyle,t,isKit:kit,isDevice:!kit,isPhone:phone,isPad:pad,
+      chipOn:this.chip(true),chipOff:this.chip(false),segOnStyle:this.segStyle(true,dark),segOffStyle:this.segStyle(false,dark),
+      kitPos:P.nmf[lang],kitLabel:ml.pl_indef,kitTable:this.table(kitBase.infl,'vennen',t),
+      swOn:this.sw(true)[0],knobOn:this.sw(true)[1],swOff:this.sw(false)[0],knobOff:this.sw(false)[1],
+      nav,tabSt,tabFillBook:tab==='bookmarks'?'currentColor':'none',
+      goSearch:()=>this.setTab('search'),goBook:()=>this.setTab('bookmarks'),goHist:()=>this.setTab('history'),goSet:()=>this.setTab('settings'),
+      showList,showDetail,showEntry,showSources,showPlaceholder:pad&&!showEntry&&!showSources,
+      onSearch:tab==='search',onBook:tab==='bookmarks',onHist:tab==='history',onSet:tab==='settings',
+      query,hasQuery,sHome:!hasQuery,sTyping:hasQuery&&!submitted,sResults:hasQuery&&submitted,
+      onQuery:ev=>this.setState({query:ev.target.value,submitted:false}),
+      onKey:ev=>{if(ev.key==='Enter'&&ev.target.value.trim()){const rr=find(ev.target.value);this.setState({submitted:true,dictTab:rr[this.v('dictTab','bm')].length?this.v('dictTab','bm'):(rr.bm.length?'bm':'nn')});}},
+      clearQuery:()=>this.setState({query:'',submitted:false}),
+      recent,groups,noResults:hasQuery&&!groups.length,
+      segBm:this.segStyle(dictTab==='bm',dark),segNn:this.segStyle(dictTab==='nn',dark),
+      pickBm:()=>this.setState({dictTab:'bm'}),pickNn:()=>this.setState({dictTab:'nn'}),
+      countBm:String(res.bm.length),countNn:String(res.nn.length),
+      resRows,resEmpty:!resRows.length,resEmptyMsg:t.noIn+(dictTab==='bm'?'Bokmålsordboka':'Nynorskordboka'),
+      dotBm:dot(dictTab==='bm'),dotNn:dot(dictTab==='nn'),swDown:this.swDown,swUp:this.swUp,
+      bmRows,bmEmpty:!bmRows.length,
+      histGroups,hasHist:!histCleared,histEmpty:histCleared,
+      askClear:()=>this.setState({confirmClear:true}),cancelClear:()=>this.setState({confirmClear:false}),doClear:()=>this.setState({confirmClear:false,histCleared:true}),confirmClear:!!this.state.confirmClear,
+      swatches,
+      segL:this.segStyle(appearance==='light',dark),segD:this.segStyle(appearance==='dark',dark),segS:this.segStyle(appearance==='system',dark),
+      apL:()=>this.setState({appearance:'light'}),apD:()=>this.setState({appearance:'dark'}),apS:()=>this.setState({appearance:'system'}),
+      swEN,knobEN,swZH,knobZH,toggleEN:()=>this.setState({showEn:!showEN}),toggleZH:()=>this.setState({showZh:!showZH}),
+      uiEn:lang==='en',uiZh:lang==='zh',uiToEn:()=>this.setState({ui:'en'}),uiToZh:()=>this.setState({ui:'zh'}),
+      tsIdx,onTs:ev=>this.setState({textSize:parseInt(ev.target.value,10)}),
+      openSources:()=>this.setState({settingsSub:'sources'}),closeSources:()=>this.setState({settingsSub:null}),
+      sources:SRC[lang].map(o=>({...o,hasLic:!!o.lic})),
+      detailRef:this.detailRef,
+      e,cols,showEntrySeg,
+      back:()=>this.setState({entry:null}),backLabel:t[tab]||t.search,
+      speakSt:circ(speaking),markSt:circ(false),markFill:markOn?'currentColor':'none',
+      speak:()=>{try{const u=new SpeechSynthesisUtterance((e.title||'').split(', ')[0]);u.lang='nb-NO';window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}catch(_){} this.setState({speaking:true});clearTimeout(this.sp);this.sp=setTimeout(()=>this.setState({speaking:false}),1400);},
+      toggleMark:()=>{if(!markKey)return;this.setState({marks:markOn?marks.filter(m=>m!==markKey):[markKey,...marks]});},
+      chipEN:this.chip(showEN),chipZH:this.chip(showZH),anyTr:showEN||showZH,
+      report:()=>this.toast(t.reported),
+      hasToast:!!this.state.toast,toast:this.state.toast||''
+    };
+  }
+}
+</script>
+</body>
+</html>

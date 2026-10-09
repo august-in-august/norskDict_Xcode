@@ -1,0 +1,26 @@
+# Xcode
+build/
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+## User settings
+xcuserdata/
+
+## Obj-C/Swift specific
+*.moved-aside
+*.xcuserstate
+
+## App packaging
+*.ipa
+
+.DS_Store
+
+# Dictionary database — build artifact, rebuilt from scripts/build_db.py
+# (see DATABASE.md). Bundled into the app target locally but not tracked in git.
+norskdict.sqlite
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
