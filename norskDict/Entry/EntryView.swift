@@ -118,7 +118,7 @@ struct EntryView: View {
                     .padding(.vertical, 2)
                     .background(theme.fill)
                     .clipShape(RoundedRectangle(cornerRadius: 5))
-                Button(strings.report) { report(entry) }
+                Button(strings.report) { report() }
                     .font(.system(size: 12))
                     .foregroundStyle(theme.tint)
             }
@@ -213,20 +213,15 @@ struct EntryView: View {
 
     // MARK: - Report error
 
-    private func report(_ entry: Entry) {
-        var components = URLComponents()
-        components.scheme = "mailto"
-        components.path = "ord@uib.no"
-        components.queryItems = [
-            URLQueryItem(
-                name: "subject",
-                value: "Translation error: \(entry.headword) (\(entry.dict.rawValue)/\(entry.uibId))"
-            ),
-            URLQueryItem(name: "body", value: "Describe the error:\n\n\n---\nEntry: \(entry.dict.rawValue)/\(entry.uibId) — \(entry.headword)"),
-        ]
-        if let url = components.url {
-            openURL(url)
-        }
+    /// Reports funnel into one tracking issue on GitHub rather than a mailto draft. GitHub
+    /// doesn't support pre-filling a *comment* on an existing issue via URL (only a brand-new
+    /// issue's title/body, via `/issues/new?title=&body=`), so the entry's dict/id/headword
+    /// context that the old mailto subject/body carried can't be auto-filled here — the toast
+    /// asks the user to add it manually when they comment.
+    private static let reportIssueURL = URL(string: "https://github.com/august-in-august/norskDict_Xcode/issues/1")!
+
+    private func report() {
+        openURL(Self.reportIssueURL)
         withAnimation { toastMessage = strings.reported }
         Task {
             try? await Task.sleep(for: .seconds(2.6))

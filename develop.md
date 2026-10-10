@@ -307,3 +307,26 @@ table's "Singular"/"Plural" header had a visible white gap in the grey band (sho
   correct. Recorded in memory: when a verification result looks surprising, check the source
   for the literal reported strings before concluding a fix failed.
 - 22 unit tests pass (no regressions); both fixes verified against a confirmed-fresh build.
+
+### 2026-10-10 (and later still) — GitHub repo, report-error destination
+- **Pushed to GitHub**: created a private repo `august-in-august/norskDict_Xcode` via `gh repo
+  create`, added as `origin`, pushed `main`.
+- **"Report error" now opens a GitHub issue instead of a mailto draft.** Tapping it opens
+  `https://github.com/august-in-august/norskDict_Xcode/issues/1` directly (the user's chosen
+  tracking issue for translation error reports). GitHub's URL-based pre-fill
+  (`?title=&body=`) only works for the *new issue* composer, not for adding a comment to an
+  existing issue, so the dict/id/headword context the old mailto subject/body carried can't be
+  auto-filled here — confirmed with the user this tradeoff is acceptable (no pre-fill; the
+  toast now asks the user to name the word/error manually when commenting).
+- **Diagnosed (not yet fixed) a scroll-performance issue on the Search results page**: the
+  Bokmål/Nynorsk swipeable results nest a `List` inside a `TabView(.page)` style — a known
+  SwiftUI combination that's slow because the page-style TabView keeps both pages' `List`s
+  (each independently a scroll view) alive and laid out simultaneously, and the horizontal
+  (page-swipe) and vertical (list-scroll) gesture recognizers have to disambiguate on every
+  touch. This matches the user's exact complaint (lag specifically scrolling the results page,
+  not the home/typing screens, which use a single plain `List` with no nested `TabView`).
+  **Not fixed yet** — offered to replace the nested-scroll-view structure with a single scroll
+  surface + manual swipe handling; awaiting the user's go-ahead.
+- 22 unit tests pass; the report-error change verified in the simulator (confirmed it opens the
+  exact issue URL, confirmed via a forced-fresh-install re-check after the stale-build lesson
+  from the previous session).
