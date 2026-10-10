@@ -60,15 +60,26 @@ private struct GroupHeaderCell: View {
     /// backgrounds — it visibly fails to paint the spanned cell's leading column, see commit
     /// history) still want the fill, so this defaults to `true`.
     var showBackground: Bool = true
+    /// Lets a title that groups 2 equal columns (e.g. "Singular" over `Sing Ind`/`Sing Def`)
+    /// lean toward the shared boundary with `.trailing`/`.leading` instead of centering within
+    /// just its own cell — the same span-avoidance as `showBackground`'s doc comment means
+    /// there's no single cell exactly at the group's center for an even column count, so this
+    /// is the closest approximation available without `Grid`'s broken multi-column spanning.
+    var alignment: HorizontalAlignment = .center
     @Environment(\.appTheme) private var theme
 
     var body: some View {
         Text(title)
             .font(.system(size: 12, weight: .semibold))
             .foregroundStyle(theme.ink2)
-            .frame(maxWidth: .infinity)
             .multilineTextAlignment(.center)
             .padding(.vertical, 8)
+            // `maxHeight: .infinity` before the background (not just `maxWidth` before padding):
+            // when a GridRow mixes a 2-line label (e.g. "Masculine/\nfeminine") with 1-line
+            // siblings, Grid stretches the row to the tall cell's height, but a short cell's
+            // fill would otherwise stay sized to its own text — floating short of the row's
+            // top/bottom edges instead of meeting its neighbors' fill flush.
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: Alignment(horizontal: alignment, vertical: .center))
             .background(showBackground ? theme.fill : Color.clear)
     }
 }
@@ -107,6 +118,10 @@ private struct DataCell: View {
     var searchedForm: String?
     var prefix: String = ""
     var suffix: String = ""
+    /// `.leading` for `GenericInflectionTable`'s label + value rows (no column header above to
+    /// match); `.center` for the Noun/Adjective tables, whose data cells sit under centered
+    /// `GroupHeaderCell` titles.
+    var alignment: HorizontalAlignment = .leading
     @Environment(\.appTheme) private var theme
     @Environment(\.textScale) private var textScale
 
@@ -116,7 +131,8 @@ private struct DataCell: View {
         joinedFormsText(
             forms, prefix: prefix, suffix: suffix, searchedForm: searchedForm, theme: theme, size: 16 * textScale
         )
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .multilineTextAlignment(alignment == .center ? .center : .leading)
+        .frame(maxWidth: .infinity, alignment: Alignment(horizontal: alignment, vertical: .center))
         .padding(.horizontal, 10)
         .padding(.vertical, 9)
         .background(highlighted ? theme.tintBg : Color.clear)
@@ -195,16 +211,18 @@ struct NounInflectionTable: View {
         let strings = Strings.for(ui)
         let groups = Paradigm.standardGroups(from: paradigms)
         TableCard {
+            // "Singular"/"Plural" each group exactly 2 of the 4 columns below (Sing Ind/Sing
+            // Def and Plur Ind/Plur Def), a perfect 50/50 split — so unlike the uneven 3:1
+            // split in AdjectiveInflectionTable, this row doesn't need Grid's (background-
+            // breaking) multi-column spanning at all: a plain 2-cell `HStack` of equally
+            // flexible cells splits the card's width exactly in half, lining up with the 2+2
+            // columns underneath without any extra alignment tricks.
+            HStack(spacing: 0) {
+                GroupHeaderCell(title: strings.singular)
+                GroupHeaderCell(title: strings.plural)
+            }
+            Hairline()
             Grid(horizontalSpacing: 0, verticalSpacing: 0) {
-                GridRow {
-                    // Non-spanning, same reason as AdjectiveInflectionTable: Grid doesn't
-                    // paint a spanning cell's background over its leading column.
-                    GroupHeaderCell(title: strings.singular)
-                    GroupHeaderCell(title: "")
-                    GroupHeaderCell(title: strings.plural)
-                    GroupHeaderCell(title: "")
-                }
-                Hairline()
                 GridRow {
                     GroupHeaderCell(title: strings.indefinite)
                     GroupHeaderCell(title: strings.definite)
@@ -216,11 +234,11 @@ struct NounInflectionTable: View {
                     GridRow {
                         DataCell(
                             forms: group.rows.forms("Sing Ind"), searchedForm: searchedForm,
-                            prefix: article.map { "\($0) " } ?? ""
+                            prefix: article.map { "\($0) " } ?? "", alignment: .center
                         )
-                        DataCell(forms: group.rows.forms("Sing Def"), searchedForm: searchedForm)
-                        DataCell(forms: group.rows.forms("Plur Ind"), searchedForm: searchedForm)
-                        DataCell(forms: group.rows.forms("Plur Def"), searchedForm: searchedForm)
+                        DataCell(forms: group.rows.forms("Sing Def"), searchedForm: searchedForm, alignment: .center)
+                        DataCell(forms: group.rows.forms("Plur Ind"), searchedForm: searchedForm, alignment: .center)
+                        DataCell(forms: group.rows.forms("Plur Def"), searchedForm: searchedForm, alignment: .center)
                     }
                 }
             }
@@ -250,9 +268,12 @@ struct AdjectiveInflectionTable: View {
                         // Not `.gridCellColumns(3)`: Grid fails to paint a spanning cell's
                         // background over its leading column (confirmed visually — the grey
                         // fill left a white gap under column 1), so this uses 4 equal,
-                        // non-spanning cells instead, with "Singular" only in the first.
-                        GroupHeaderCell(title: strings.singular)
+                        // non-spanning cells instead. "Singular" sits in the middle of its
+                        // 3-cell group (not the first cell) so it lands exactly centered over
+                        // that span rather than hugging its left edge; "Plural" is alone in a
+                        // 1-cell group, already centered.
                         GroupHeaderCell(title: "")
+                        GroupHeaderCell(title: strings.singular)
                         GroupHeaderCell(title: "")
                         GroupHeaderCell(title: strings.plural)
                     }
@@ -265,10 +286,10 @@ struct AdjectiveInflectionTable: View {
                     }
                     Hairline()
                     GridRow {
-                        DataCell(forms: merged.forms("Pos Masc/Fem Ind Sing"), searchedForm: searchedForm)
-                        DataCell(forms: merged.forms("Pos Neuter Ind Sing"), searchedForm: searchedForm)
-                        DataCell(forms: merged.forms("Pos Def Sing"), searchedForm: searchedForm)
-                        DataCell(forms: merged.forms("Pos Plur"), searchedForm: searchedForm)
+                        DataCell(forms: merged.forms("Pos Masc/Fem Ind Sing"), searchedForm: searchedForm, alignment: .center)
+                        DataCell(forms: merged.forms("Pos Neuter Ind Sing"), searchedForm: searchedForm, alignment: .center)
+                        DataCell(forms: merged.forms("Pos Def Sing"), searchedForm: searchedForm, alignment: .center)
+                        DataCell(forms: merged.forms("Pos Plur"), searchedForm: searchedForm, alignment: .center)
                     }
                 }
             }
@@ -277,10 +298,11 @@ struct AdjectiveInflectionTable: View {
                 TableCard {
                     Grid(horizontalSpacing: 0, verticalSpacing: 0) {
                         // Same reason as above: 3 equal non-spanning cells instead of one
-                        // `.gridCellColumns(3)` cell, so the grey fill paints correctly.
+                        // `.gridCellColumns(3)` cell, so the grey fill paints correctly, with
+                        // the title in the middle cell so it's centered over the full span.
                         GridRow {
-                            GroupHeaderCell(title: TableLabel.text("comparison", ui: ui))
                             GroupHeaderCell(title: "")
+                            GroupHeaderCell(title: TableLabel.text("comparison", ui: ui))
                             GroupHeaderCell(title: "")
                         }
                         Hairline()
@@ -291,9 +313,9 @@ struct AdjectiveInflectionTable: View {
                         }
                         Hairline()
                         GridRow {
-                            DataCell(forms: merged.forms("Cmp"), searchedForm: searchedForm)
-                            DataCell(forms: merged.forms("Sup Ind"), searchedForm: searchedForm)
-                            DataCell(forms: merged.forms("Sup Def"), searchedForm: searchedForm)
+                            DataCell(forms: merged.forms("Cmp"), searchedForm: searchedForm, alignment: .center)
+                            DataCell(forms: merged.forms("Sup Ind"), searchedForm: searchedForm, alignment: .center)
+                            DataCell(forms: merged.forms("Sup Def"), searchedForm: searchedForm, alignment: .center)
                         }
                     }
                 }

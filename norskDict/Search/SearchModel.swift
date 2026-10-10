@@ -52,10 +52,6 @@ final class SearchModel {
         submitted = true
     }
 
-    func pick(_ dict: Dict) {
-        dictTab = dict
-    }
-
     private func relaunchSearch() {
         searchTask?.cancel()
         guard hasQuery else {

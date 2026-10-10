@@ -97,6 +97,33 @@ struct SettingsView: View {
                 .padding(.vertical, 4)
             }
 
+            if Pronouncer.isVoiceAvailable {
+                Section(strings.speechSpeed) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "tortoise").font(.system(size: 15)).foregroundStyle(theme.ink2)
+                            Slider(
+                                value: Binding(
+                                    get: { settings.speechRateMultiplier },
+                                    set: { settings.speechRateMultiplier = $0 }
+                                ),
+                                in: AppSettings.speechRateMultiplierRange,
+                                step: 0.1
+                            )
+                            Image(systemName: "hare").font(.system(size: 17)).foregroundStyle(theme.ink2)
+                            CircleIconButton(systemImage: "speaker.wave.2", isOn: Pronouncer.shared.isSpeaking, fillWhenOn: true) {
+                                Pronouncer.shared.speak("en god venn av meg", rate: settings.speechRate)
+                            }
+                        }
+                        Text(String(format: "%.1fx", settings.speechRateMultiplier))
+                            .font(.system(size: 13))
+                            .foregroundStyle(theme.ink2)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                    }
+                    .padding(.vertical, 4)
+                }
+            }
+
             Section(strings.about) {
                 Button { open(.sources) } label: {
                     HStack {

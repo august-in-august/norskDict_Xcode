@@ -10,24 +10,25 @@ import SwiftData
 
 @main
 struct norskDictApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Bookmark.self,
-            HistoryEntry.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
+    var bookmarksContainer: ModelContainer = {
+        let schema = Schema([Bookmark.self])
+        let configuration = ModelConfiguration(
+            schema: schema, cloudKitDatabase: .private("iCloud.augustyang.norskDict")
+        )
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            return try ModelContainer(for: schema, configurations: [configuration])
         } catch {
-            fatalError("Could not create ModelContainer: \(error)")
+            fatalError("Could not create Bookmarks ModelContainer: \(error)")
         }
     }()
+
+    @State private var historyStore = HistoryStore()
 
     var body: some Scene {
         WindowGroup {
             RootView()
+                .environment(historyStore)
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(bookmarksContainer)
     }
 }

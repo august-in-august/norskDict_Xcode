@@ -7,10 +7,13 @@ struct RootView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.colorScheme) private var systemColorScheme
     @State private var settings = AppSettings()
+    @State private var isDatabaseReady = false
 
     var body: some View {
         Group {
-            if horizontalSizeClass == .compact {
+            if !isDatabaseReady {
+                LaunchSplashView()
+            } else if horizontalSizeClass == .compact {
                 CompactRootView()
             } else {
                 RegularRootView()
@@ -24,6 +27,19 @@ struct RootView: View {
         .environment(\.textScale, settings.textScale)
         .preferredColorScheme(preferredColorScheme)
         .tint(AppTheme(palette: settings.theme, isDark: settings.resolvedIsDark(systemColorScheme: systemColorScheme)).tint)
+        .task {
+            // Opening `DictionaryDatabase.shared` for the first time opens the bundled SQLite
+            // file, and `SimilarHeadwords.warmUp()` loads its ~190k-row fold index — both cold
+            // and slow on a fresh install. Doing both here means the first real search (which
+            // would otherwise pay for them lazily, mid-interaction) is already fast once the
+            // splash dismisses. Off the main actor so the splash above keeps animating instead
+            // of freezing for that stretch.
+            await Task.detached(priority: .userInitiated) {
+                _ = DictionaryDatabase.shared.totalArticleCount()
+                await SimilarHeadwords.shared.warmUp()
+            }.value
+            withAnimation(.easeInOut(duration: 0.25)) { isDatabaseReady = true }
+        }
     }
 
     private var preferredColorScheme: ColorScheme? {

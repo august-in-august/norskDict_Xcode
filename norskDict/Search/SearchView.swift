@@ -1,15 +1,13 @@
 import SwiftUI
-import SwiftData
 
 struct SearchView: View {
     var open: (AppRoute) -> Void
 
     @Environment(\.appTheme) private var theme
     @Environment(AppSettings.self) private var settings
-    @Environment(\.modelContext) private var modelContext
+    @Environment(HistoryStore.self) private var historyStore
     @State private var model = SearchModel(initialDictTab: .bm)
     @State private var confirmClear = false
-    @Query(sort: \HistoryEntry.timestamp, order: .reverse) private var history: [HistoryEntry]
     @FocusState private var searchFieldFocused: Bool
 
     private var strings: Strings { settings.strings }
@@ -18,7 +16,7 @@ struct SearchView: View {
     private var recent: [HistoryEntry] {
         var seen = Set<String>()
         var result: [HistoryEntry] = []
-        for entry in history {
+        for entry in historyStore.entries {
             guard seen.insert(entry.typedForm).inserted else { continue }
             result.append(entry)
             if result.count >= 8 { break }
@@ -103,7 +101,7 @@ struct SearchView: View {
     private var homeContent: some View {
         List {
             Section {
-                ForEach(recent, id: \.persistentModelID) { entry in
+                ForEach(recent) { entry in
                     Button {
                         model.query = entry.typedForm
                         model.submit()
@@ -180,27 +178,15 @@ struct SearchView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 6)
 
-            // A single List with a manual swipe gesture, not `TabView(.page)` wrapping two
-            // Lists: nesting a List inside a page-style TabView is a known slow combination
-            // (both pages' Lists stay alive and laid out at once, and the page-swipe and
-            // list-scroll gesture recognizers have to disambiguate on every touch) — it was
-            // the cause of reported scroll lag on this screen. `.id(model.dictTab)` resets
-            // scroll position when switching dictionaries, matching the old per-page behavior.
+            // A single List, not `TabView(.page)` wrapping two Lists: nesting a List inside a
+            // page-style TabView is a known slow combination (both pages' Lists stay alive and
+            // laid out at once) — it was the cause of reported scroll lag on this screen.
+            // Switching is tap-only via the segmented pill above; an earlier swipe-to-switch
+            // gesture was removed because `highPriorityGesture` made every scroll touch wait to
+            // be disambiguated against it first, which felt like scrolling was catching/sticking.
+            // `.id(model.dictTab)` resets scroll position when switching dictionaries.
             resultsList(for: model.dictTab, model: model)
                 .id(model.dictTab)
-                .highPriorityGesture(swipeGesture(model: model))
-
-            HStack(spacing: 6) {
-                Circle().frame(width: 7, height: 7)
-                    .foregroundStyle(model.dictTab == .bm ? theme.ink2 : theme.ink3.opacity(0.5))
-                Circle().frame(width: 7, height: 7)
-                    .foregroundStyle(model.dictTab == .nn ? theme.ink2 : theme.ink3.opacity(0.5))
-            }
-            .padding(.top, 2)
-            Text(strings.swipeHint)
-                .font(.system(size: 12))
-                .foregroundStyle(theme.ink3)
-                .padding(.bottom, 4)
         }
     }
 
@@ -226,24 +212,12 @@ struct SearchView: View {
         }
     }
 
-    /// Swipe left/right to switch between Bokmål and Nynorsk — same thresholds as the
-    /// equivalent gesture on the entry screen.
-    private func swipeGesture(model: SearchModel) -> some Gesture {
-        DragGesture(minimumDistance: 40)
-            .onEnded { value in
-                let dx = value.translation.width
-                let dy = value.translation.height
-                guard abs(dx) > 60, abs(dx) > abs(dy) * 1.5 else { return }
-                model.pick(dx < 0 ? .nn : .bm)
-            }
-    }
-
     private func openEntry(_ hit: SearchHit) {
         let searchedForm = hit.hint?.matchedForm ?? model.query.trimmingCharacters(in: .whitespaces)
         open(.entry(rowid: hit.article.rowid, searchedForm: searchedForm))
     }
 
     private func clearHistory() {
-        for entry in history { modelContext.delete(entry) }
+        historyStore.clear()
     }
 }

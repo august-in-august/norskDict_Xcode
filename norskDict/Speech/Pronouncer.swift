@@ -21,11 +21,14 @@ final class Pronouncer: NSObject {
         synthesizer.delegate = self
     }
 
-    func speak(_ text: String) {
+    /// `rate` is AVSpeechSynthesizer's 0...1 scale (`AVSpeechUtteranceDefaultSpeechRate` = 0.5);
+    /// callers pass the user's Settings > speech speed preference.
+    func speak(_ text: String, rate: Double = Double(AVSpeechUtteranceDefaultSpeechRate)) {
         guard !text.isEmpty, let voice = AVSpeechSynthesisVoice(language: "nb-NO") else { return }
         synthesizer.stopSpeaking(at: .immediate)
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = voice
+        utterance.rate = Float(rate)
         isSpeaking = true
         synthesizer.speak(utterance)
     }

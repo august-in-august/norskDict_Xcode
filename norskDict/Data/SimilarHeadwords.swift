@@ -13,6 +13,13 @@ actor SimilarHeadwords {
 
     /// Returns up to `limit` article rowids whose lemma fold is within edit distance `maxDistance`
     /// of `query`, excluding rowids already present in `excluding`.
+    /// Forces the fold index to load now, off the search path — called during app launch's
+    /// warmup so the first real search (which would otherwise pay for this ~190k-row load) is
+    /// already fast by the time the launch splash dismisses.
+    func warmUp() async {
+        _ = await loadIfNeeded()
+    }
+
     func find(_ query: String, maxDistance: Int = 2, limit: Int = 20, excluding: Set<Int64>) async -> [Int64] {
         guard query.count >= 3 else { return [] }
         let buckets = await loadIfNeeded()

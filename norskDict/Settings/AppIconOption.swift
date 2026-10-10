@@ -4,13 +4,17 @@ import UIKit
 /// Assets.xcassets (from the Claude Design icon handoff: 9 icons across 3 styles, each with
 /// light/dark/tinted variants that iOS switches between automatically).
 enum AppIconOption: String, CaseIterable, Identifiable, Sendable {
-    case aTile = "AppIcon" // primary icon
+    // "Card Stack" is the default Home Screen icon, so its artwork lives in the "AppIcon"
+    // asset set (the one `ASSETCATALOG_COMPILER_APPICON_NAME` points to) — the original "Å
+    // Tile" design was moved into the "AppIcon-CardStack"-named set in its place. Only the
+    // artwork swapped; the two cases below just point at each other's old asset names.
+    case cardStack = "AppIcon" // primary icon
     case speechA = "AppIcon-SpeechA"
     case moose = "AppIcon-Moose"
     case happyBook = "AppIcon-HappyBook"
     case greetings = "AppIcon-Greetings"
     case themeSplit = "AppIcon-ThemeSplit"
-    case cardStack = "AppIcon-CardStack"
+    case aTile = "AppIcon-CardStack"
     case flagLens = "AppIcon-FlagLens"
     case lookup = "AppIcon-Lookup"
 
@@ -44,10 +48,10 @@ enum AppIconOption: String, CaseIterable, Identifiable, Sendable {
     var previewImageName: String { rawValue.replacingOccurrences(of: "AppIcon", with: "IconPreview") }
 
     /// The name passed to `setAlternateIconName` — nil means the primary icon.
-    var alternateName: String? { self == .aTile ? nil : rawValue }
+    var alternateName: String? { self == .cardStack ? nil : rawValue }
 
     init(alternateName: String?) {
-        self = alternateName.flatMap(AppIconOption.init(rawValue:)) ?? .aTile
+        self = alternateName.flatMap(AppIconOption.init(rawValue:)) ?? .cardStack
     }
 }
 

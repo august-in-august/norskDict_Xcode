@@ -4,6 +4,7 @@ import Foundation
 /// setting (independent of the system locale). Ported from the `T` table in the design spec.
 struct Strings {
     var appTitle: String
+    var firstLaunchHint: String
     var search: String
     var bookmarks: String
     var history: String
@@ -16,7 +17,6 @@ struct Strings {
     var similar: String
     var similarSubtitle: String
     var noResults: String
-    var swipeHint: String
     var fixed: String
     var infl: String
     var machineTranslated: String
@@ -47,6 +47,7 @@ struct Strings {
     var interfaceLanguage: String
     var textSize: String
     var sampleTranslation: String
+    var speechSpeed: String
     var about: String
     var sources: String
     var articles: String
@@ -87,13 +88,15 @@ struct Strings {
         switch language {
         case .en:
             Strings(
-                appTitle: "Slå opp", search: "Search", bookmarks: "Bookmarks", history: "History",
+                appTitle: "Slå opp",
+                firstLaunchHint: "Loading the dictionary for the first time — this may take a moment.",
+                search: "Search", bookmarks: "Bookmarks", history: "History",
                 settings: "Settings", placeholder: "Any form of a word", cancel: "Cancel", recent: "Recent",
                 clear: "Clear",
                 tip: "Type any form of a word: “gikk” finds gå, “bøkene” finds bok, “augo” finds auge.",
                 similar: "Similar headwords", similarSubtitle: "Lignende oppslagsord",
                 noResults: "No matches. Check the spelling or try the base form.",
-                swipeHint: "Swipe to switch dictionary", fixed: "Fixed expressions", infl: "Inflection",
+                fixed: "Fixed expressions", infl: "Inflection",
                 machineTranslated: "Machine-translated", report: "Report error",
                 reported: "Opening the GitHub issue — add a comment naming the word and the error.",
                 see: "see", singular: "Singular", plural: "Plural", indefinite: "Indefinite", definite: "Definite",
@@ -105,7 +108,8 @@ struct Strings {
                 translationsFooter: "Translations appear under each definition and example. "
                     + "You can also switch them on any entry.",
                 englishName: "English", chineseName: "中文 Chinese", interfaceLanguage: "Interface language",
-                textSize: "Text size", sampleTranslation: "a good friend of mine", about: "About",
+                textSize: "Text size", sampleTranslation: "a good friend of mine", speechSpeed: "Pronunciation speed",
+                about: "About",
                 sources: "Sources", articles: "articles", senses: "senses", examples: "examples",
                 searchableForms: "searchable forms", version: "Version",
                 clearHistoryTitle: "Clear history?",
@@ -118,11 +122,12 @@ struct Strings {
             )
         case .zh:
             Strings(
-                appTitle: "Slå opp 查词", search: "查词", bookmarks: "收藏", history: "历史", settings: "设置",
+                appTitle: "Slå opp", firstLaunchHint: "首次加载词典数据，请稍候…",
+                search: "查词", bookmarks: "收藏", history: "历史", settings: "设置",
                 placeholder: "输入单词的任意形式", cancel: "取消", recent: "最近搜索", clear: "清除",
                 tip: "可以输入任意词形：输入 gikk 可查到 gå，输入 bøkene 可查到 bok，输入 augo 可查到 auge。",
                 similar: "相近词条", similarSubtitle: "Lignende oppslagsord",
-                noResults: "没有找到结果。请检查拼写，或尝试输入原形。", swipeHint: "左右轻扫切换词典",
+                noResults: "没有找到结果。请检查拼写，或尝试输入原形。",
                 fixed: "固定表达", infl: "词形变化", machineTranslated: "机器翻译", report: "报告错误",
                 reported: "正在打开 GitHub issue，请在评论中说明是哪个词、什么错误。", see: "参见", singular: "单数", plural: "复数",
                 indefinite: "不定态", definite: "限定态", infinitive: "不定式", present: "现在时", past: "过去时",
@@ -132,7 +137,8 @@ struct Strings {
                 translationsHeader: "默认显示翻译",
                 translationsFooter: "翻译显示在每条释义和例句下方。也可以在任意词条页中切换。",
                 englishName: "English 英语", chineseName: "中文", interfaceLanguage: "界面语言",
-                textSize: "字体大小", sampleTranslation: "我的一个好朋友", about: "关于", sources: "数据来源",
+                textSize: "字体大小", sampleTranslation: "我的一个好朋友", speechSpeed: "发音速度",
+                about: "关于", sources: "数据来源",
                 articles: "词条", senses: "释义", examples: "例句", searchableForms: "可搜索词形",
                 version: "版本", clearHistoryTitle: "清除历史记录？",
                 clearHistoryMessage: "此设备上的所有查询记录都将被删除。", today: "今天", yesterday: "昨天",

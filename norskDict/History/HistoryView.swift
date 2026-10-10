@@ -1,4 +1,3 @@
-import SwiftData
 import SwiftUI
 
 struct HistoryView: View {
@@ -6,11 +5,11 @@ struct HistoryView: View {
 
     @Environment(\.appTheme) private var theme
     @Environment(AppSettings.self) private var settings
-    @Environment(\.modelContext) private var modelContext
-    @Query(sort: \HistoryEntry.timestamp, order: .reverse) private var history: [HistoryEntry]
+    @Environment(HistoryStore.self) private var historyStore
     @State private var confirmClear = false
 
     private var strings: Strings { settings.strings }
+    private var history: [HistoryEntry] { historyStore.entries }
 
     /// History grouped by calendar day, most recent day first, matching the design's
     /// Today/Yesterday/date-header sections.
@@ -103,6 +102,6 @@ struct HistoryView: View {
     }
 
     private func clearHistory() {
-        for entry in history { modelContext.delete(entry) }
+        historyStore.clear()
     }
 }

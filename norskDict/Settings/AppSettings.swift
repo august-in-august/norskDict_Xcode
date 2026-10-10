@@ -1,3 +1,4 @@
+import AVFoundation
 import SwiftUI
 
 /// Appearance mode: Light / Dark / System, per the Settings screen in the design.
@@ -25,6 +26,10 @@ enum NavigationHand: String, Codable, Sendable, CaseIterable {
 @Observable
 final class AppSettings {
     static let textScales: [Double] = [0.88, 1.0, 1.12, 1.26, 1.42]
+    /// The pronounce button's speed slider, expressed as a multiplier of Apple's own
+    /// `AVSpeechUtteranceDefaultSpeechRate` rather than its raw 0...1 rate — "0.8x" is a more
+    /// legible unit for a speed control than "0.4".
+    static let speechRateMultiplierRange: ClosedRange<Double> = 0.2...1.2
 
     var showEnglish: Bool { didSet { UserDefaults.standard.set(showEnglish, forKey: Keys.showEnglish) } }
     var showChinese: Bool { didSet { UserDefaults.standard.set(showChinese, forKey: Keys.showChinese) } }
@@ -34,11 +39,16 @@ final class AppSettings {
     var theme: ThemePalette { didSet { UserDefaults.standard.set(theme.rawValue, forKey: Keys.theme) } }
     var appearance: AppearanceMode { didSet { UserDefaults.standard.set(appearance.rawValue, forKey: Keys.appearance) } }
     var textSizeIndex: Int { didSet { UserDefaults.standard.set(textSizeIndex, forKey: Keys.textSizeIndex) } }
+    var speechRateMultiplier: Double { didSet { UserDefaults.standard.set(speechRateMultiplier, forKey: Keys.speechRateMultiplier) } }
     var uiLanguage: UILanguage { didSet { UserDefaults.standard.set(uiLanguage.rawValue, forKey: Keys.uiLanguage) } }
     var navigationHand: NavigationHand { didSet { UserDefaults.standard.set(navigationHand.rawValue, forKey: Keys.navigationHand) } }
 
     var textScale: Double {
         Self.textScales[min(max(textSizeIndex, 0), Self.textScales.count - 1)]
+    }
+
+    var speechRate: Double {
+        Double(AVSpeechUtteranceDefaultSpeechRate) * speechRateMultiplier
     }
 
     var strings: Strings { .for(uiLanguage) }
@@ -50,9 +60,10 @@ final class AppSettings {
         lastDictTab = Dict(rawValue: d.string(forKey: Keys.lastDictTab) ?? "") ?? .bm
         openFixed = d.object(forKey: Keys.openFixed) as? Bool ?? false
         openInflection = d.object(forKey: Keys.openInflection) as? Bool ?? false
-        theme = ThemePalette(rawValue: d.string(forKey: Keys.theme) ?? "") ?? .white
-        appearance = AppearanceMode(rawValue: d.string(forKey: Keys.appearance) ?? "") ?? .system
+        theme = ThemePalette(rawValue: d.string(forKey: Keys.theme) ?? "") ?? .grey
+        appearance = AppearanceMode(rawValue: d.string(forKey: Keys.appearance) ?? "") ?? .light
         textSizeIndex = d.object(forKey: Keys.textSizeIndex) as? Int ?? 1
+        speechRateMultiplier = d.object(forKey: Keys.speechRateMultiplier) as? Double ?? 0.8
         uiLanguage = UILanguage(rawValue: d.string(forKey: Keys.uiLanguage) ?? "") ?? .en
         navigationHand = NavigationHand(rawValue: d.string(forKey: Keys.navigationHand) ?? "") ?? .left
     }
@@ -74,6 +85,7 @@ final class AppSettings {
         static let theme = "theme"
         static let appearance = "appearance"
         static let textSizeIndex = "textSizeIndex"
+        static let speechRateMultiplier = "speechRateMultiplier"
         static let uiLanguage = "uiLanguage"
         static let navigationHand = "navigationHand"
     }

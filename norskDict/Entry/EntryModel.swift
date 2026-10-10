@@ -1,7 +1,7 @@
 import Foundation
 
 /// Loads one entry and (if it exists) the same headword's entry in the other dictionary, for
-/// the BM/NN segmented-or-swipe switch on iPhone and the side-by-side columns on iPad.
+/// the BM/NN segmented pill switch on iPhone and the side-by-side columns on iPad.
 @MainActor
 @Observable
 final class EntryModel {
@@ -47,10 +47,5 @@ final class EntryModel {
         if let primary { present.insert(primary.dict) }
         if let counterpart { present.insert(counterpart.dict) }
         return [.bm, .nn].filter { present.contains($0) }
-    }
-
-    func swipe(toward dict: Dict) {
-        guard availableDicts.contains(dict) else { return }
-        dictTab = dict
     }
 }
