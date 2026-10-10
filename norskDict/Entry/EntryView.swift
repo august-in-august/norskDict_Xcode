@@ -99,7 +99,10 @@ struct EntryView: View {
         .padding(.top, 8)
 
         if isPad == false, model.availableDicts.count > 1 {
-            SegmentedPill(items: model.availableDicts, selection: $model.dictTab) { dict in
+            SegmentedPill(
+                items: model.availableDicts, selection: $model.dictTab,
+                selectedTint: { $0 == .bm ? theme.bm : theme.nn }
+            ) { dict in
                 Text(dict == .bm ? strings.bokmaal : strings.nynorsk)
             }
             .padding(.horizontal, 20)

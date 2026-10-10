@@ -168,7 +168,10 @@ struct SearchView: View {
     private func resultsContent(model: SearchModel) -> some View {
         @Bindable var model = model
         VStack(spacing: 0) {
-            SegmentedPill(items: [Dict.bm, Dict.nn], selection: $model.dictTab) { dict in
+            SegmentedPill(
+                items: [Dict.bm, Dict.nn], selection: $model.dictTab,
+                selectedTint: { $0 == .bm ? theme.bm : theme.nn }
+            ) { dict in
                 HStack(spacing: 4) {
                     Text(dict == .bm ? strings.bokmaal : strings.nynorsk)
                     Text("\(model.groups.count(for: dict))").foregroundStyle(theme.ink2)
@@ -177,11 +180,15 @@ struct SearchView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 6)
 
-            TabView(selection: $model.dictTab) {
-                resultsList(for: .bm, model: model).tag(Dict.bm)
-                resultsList(for: .nn, model: model).tag(Dict.nn)
-            }
-            .tabViewStyle(.page(indexDisplayMode: .never))
+            // A single List with a manual swipe gesture, not `TabView(.page)` wrapping two
+            // Lists: nesting a List inside a page-style TabView is a known slow combination
+            // (both pages' Lists stay alive and laid out at once, and the page-swipe and
+            // list-scroll gesture recognizers have to disambiguate on every touch) — it was
+            // the cause of reported scroll lag on this screen. `.id(model.dictTab)` resets
+            // scroll position when switching dictionaries, matching the old per-page behavior.
+            resultsList(for: model.dictTab, model: model)
+                .id(model.dictTab)
+                .highPriorityGesture(swipeGesture(model: model))
 
             HStack(spacing: 6) {
                 Circle().frame(width: 7, height: 7)
@@ -217,6 +224,18 @@ struct SearchView: View {
             }
             .listStyle(.plain)
         }
+    }
+
+    /// Swipe left/right to switch between Bokmål and Nynorsk — same thresholds as the
+    /// equivalent gesture on the entry screen.
+    private func swipeGesture(model: SearchModel) -> some Gesture {
+        DragGesture(minimumDistance: 40)
+            .onEnded { value in
+                let dx = value.translation.width
+                let dy = value.translation.height
+                guard abs(dx) > 60, abs(dx) > abs(dy) * 1.5 else { return }
+                model.pick(dx < 0 ? .nn : .bm)
+            }
     }
 
     private func openEntry(_ hit: SearchHit) {

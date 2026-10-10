@@ -330,3 +330,29 @@ table's "Singular"/"Plural" header had a visible white gap in the grey band (sho
 - 22 unit tests pass; the report-error change verified in the simulator (confirmed it opens the
   exact issue URL, confirmed via a forced-fresh-install re-check after the stale-build lesson
   from the previous session).
+
+### 2026-10-10 (final) — Scroll-lag fix, BM/NN tab legibility
+- **Fixed the search-results scroll lag**: replaced the `TabView(.page)` wrapping two `List`s
+  with a single `List` (keyed by `model.dictTab`'s `.id()` so scroll position resets per
+  dictionary) plus a manual swipe `DragGesture`, the same pattern already used successfully on
+  the entry screen's BM/NN swipe. Confirmed scrolling, swiping, and direct pill taps all still
+  work correctly on a fresh install.
+- **Fixed low-contrast Bokmål/Nynorsk tab selection**: `SegmentedPill` (shared by the entry
+  screen, search results, and Settings' Light/Dark/System and Left/Right-handed controls)
+  previously signaled selection only via a card-background swap — in the "White" theme's dark
+  variant (`bg`/`grp` both pure black, `card` only #1C1C1E) that's a ~2-3% brightness
+  difference, nearly invisible. Added a `selectedTint` closure parameter (defaults to `nil`,
+  falling back to the existing `theme.ink`/`theme.ink2` behavior for Settings' other uses) and
+  wired the two BM/NN call sites (`EntryView`, `SearchView`) to tint the selected segment's
+  text with `theme.bm`/`theme.nn`. Also dimmed unselected segments to `theme.ink2` generally
+  (benefits every `SegmentedPill` use, not just BM/NN). Verified: selected text now reads
+  reddish-orange for Bokmål / blue for Nynorsk in both Light and Dark, clearly distinct from
+  the dimmed unselected segment.
+- **Re-investigated the reported "white background gap" in the inflection table** (a screenshot
+  the user attached alongside this round's feedback, showing "pen"'s Comparison table in the
+  White theme's dark variant). Could not reproduce it on a fresh install, in either Light or
+  Dark — pixel-sampled the header bands directly and found no anomaly. This is almost certainly
+  the same bug already fixed in the previous commit (`dbc0623`, the `Grid` column-span
+  background fix); the screenshot was likely taken before that fix reached the user's device.
+  No further code change made for this one.
+- 22 unit tests pass; all three items verified together on a confirmed-fresh install.

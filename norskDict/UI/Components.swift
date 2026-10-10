@@ -67,9 +67,19 @@ struct DictBadge: View {
 
 /// A rounded, pill-shaped segmented control matching the design's `segStyle`: a filled track
 /// with a raised, shadowed capsule behind the selected segment.
+///
+/// The selected segment's text uses `selectedTint(item) ?? theme.ink` and the unselected
+/// segments use the dimmer `theme.ink2`, rather than every segment sharing one color —
+/// selection used to be signaled only by the card-background swap, which is barely visible in
+/// low-contrast themes (e.g. the "White" palette's dark variant sets both `bg` and `grp` to
+/// pure black, so the selected segment's `card` fill is only a few percent lighter). Passing
+/// `selectedTint` lets a specific pair of segments (Bokmål/Nynorsk) get their own accent color
+/// on top of that, for an even clearer cue; other uses (Light/Dark/System, Left/Right-handed)
+/// just rely on the ink/ink2 contrast.
 struct SegmentedPill<Value: Hashable, Content: View>: View {
     var items: [Value]
     @Binding var selection: Value
+    var selectedTint: (Value) -> Color? = { _ in nil }
     var label: (Value) -> Content
 
     @Environment(\.appTheme) private var theme
@@ -77,16 +87,17 @@ struct SegmentedPill<Value: Hashable, Content: View>: View {
     var body: some View {
         HStack(spacing: 0) {
             ForEach(items, id: \.self) { item in
+                let isSelected = selection == item
                 Button {
                     selection = item
                 } label: {
                     label(item)
-                        .font(.system(size: 13, weight: selection == item ? .semibold : .medium))
-                        .foregroundStyle(theme.ink)
+                        .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
+                        .foregroundStyle(isSelected ? (selectedTint(item) ?? theme.ink) : theme.ink2)
                         .frame(maxWidth: .infinity)
                         .frame(height: 28)
                         .background {
-                            if selection == item {
+                            if isSelected {
                                 RoundedRectangle(cornerRadius: 7)
                                     .fill(theme.card)
                                     .shadow(color: .black.opacity(0.12), radius: 4, y: 3)
