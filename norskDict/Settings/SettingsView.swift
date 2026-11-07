@@ -1,3 +1,4 @@
+import AVFoundation
 import SwiftUI
 
 struct SettingsView: View {
@@ -7,6 +8,7 @@ struct SettingsView: View {
     @Environment(AppSettings.self) private var settings
 
     private var strings: Strings { settings.strings }
+    private var isZh: Bool { settings.uiLanguage == .zh }
 
     var body: some View {
         Form {
@@ -42,6 +44,16 @@ struct SettingsView: View {
             }
 
             AppIconSection()
+
+            Section {
+                Toggle(isZh ? "iCloud 同步" : "iCloud Sync", isOn: Binding(
+                    get: { settings.iCloudSyncEnabled }, set: { settings.iCloudSyncEnabled = $0 }
+                ))
+            } footer: {
+                Text(isZh
+                    ? "通过 iCloud 在你的设备间同步收藏和收藏夹。更改在重新启动应用后生效。"
+                    : "Sync bookmarks and folders across your devices with iCloud. Changes take effect the next time the app launches.")
+            }
 
             Section {
                 Toggle(strings.englishName, isOn: Binding(get: { settings.showEnglish }, set: { settings.showEnglish = $0 }))
@@ -112,7 +124,7 @@ struct SettingsView: View {
                             )
                             Image(systemName: "hare").font(.system(size: 17)).foregroundStyle(theme.ink2)
                             CircleIconButton(systemImage: "speaker.wave.2", isOn: Pronouncer.shared.isSpeaking, fillWhenOn: true) {
-                                Pronouncer.shared.speak("en god venn av meg", rate: settings.speechRate)
+                                Pronouncer.shared.speak("en god venn av meg", rate: settings.speechRate, voiceIdentifier: settings.speechVoiceIdentifier)
                             }
                         }
                         Text(String(format: "%.1fx", settings.speechRateMultiplier))
@@ -121,6 +133,20 @@ struct SettingsView: View {
                             .frame(maxWidth: .infinity, alignment: .center)
                     }
                     .padding(.vertical, 4)
+                }
+
+                Section {
+                    Picker(strings.speechVoice, selection: Binding(
+                        get: { settings.speechVoiceIdentifier },
+                        set: { settings.speechVoiceIdentifier = $0 }
+                    )) {
+                        Text(strings.automaticVoice).tag(String?.none)
+                        ForEach(Pronouncer.availableVoices, id: \.identifier) { voice in
+                            Text(voiceLabel(voice)).tag(Optional(voice.identifier))
+                        }
+                    }
+                } footer: {
+                    Text(strings.speechVoiceFooter)
                 }
             }
 
@@ -135,13 +161,29 @@ struct SettingsView: View {
                 HStack {
                     Text(strings.version)
                     Spacer()
-                    Text("1.0").foregroundStyle(theme.ink2)
+                    Text(appVersion).foregroundStyle(theme.ink2)
                 }
             }
         }
         .scrollContentBackground(.hidden)
         .background(theme.grp)
         .navigationTitle(strings.settings)
+    }
+
+    /// Marketing version and build from the app's Info.plist (MARKETING_VERSION / CURRENT_PROJECT_VERSION).
+    private var appVersion: String {
+        let info = Bundle.main.infoDictionary
+        let version = info?["CFBundleShortVersionString"] as? String ?? "?"
+        let build = info?["CFBundleVersion"] as? String ?? "?"
+        return "\(version) (\(build))"
+    }
+
+    private func voiceLabel(_ voice: AVSpeechSynthesisVoice) -> String {
+        switch voice.quality {
+        case .premium: "\(voice.name) · \(strings.voicePremium)"
+        case .enhanced: "\(voice.name) · \(strings.voiceEnhanced)"
+        default: voice.name
+        }
     }
 
     private func label(for mode: AppearanceMode) -> String {

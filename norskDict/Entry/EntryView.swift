@@ -21,6 +21,8 @@ struct EntryView: View {
 
     @State private var model: EntryModel
     @State private var toastMessage: String?
+    /// The entry awaiting a folder choice in `BookmarkFolderPicker`.
+    @State private var pendingBookmarkEntry: Entry?
     @State private var availableWidth: CGFloat = 0
     /// Guards `recordHistory()` against duplicate entries: `.task(id: rowid)` reruns on every
     /// reappearance of this view (e.g. switching tabs away and back), not just when `rowid`
@@ -93,6 +95,13 @@ struct EntryView: View {
         }
         .navigationTitle(headEntry?.headword ?? "")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: Binding(
+            get: { pendingBookmarkEntry != nil }, set: { if !$0 { pendingBookmarkEntry = nil } }
+        )) {
+            BookmarkFolderPicker { folderId in
+                if let entry = pendingBookmarkEntry { addBookmark(entry, folderId: folderId) }
+            }
+        }
         .task(id: rowid) {
             model = EntryModel(rowid: rowid, searchedForm: searchedForm, initialDict: .bm)
             await model.load()
@@ -114,7 +123,7 @@ struct EntryView: View {
             Spacer(minLength: 8)
             if Pronouncer.isVoiceAvailable {
                 CircleIconButton(systemImage: "speaker.wave.2", isOn: Pronouncer.shared.isSpeaking, fillWhenOn: true) {
-                    Pronouncer.shared.speak(entry.headword, rate: settings.speechRate)
+                    Pronouncer.shared.speak(entry.headword, rate: settings.speechRate, voiceIdentifier: settings.speechVoiceIdentifier)
                 }
             }
             CircleIconButton(systemImage: "bookmark", isOn: isBookmarked(entry), fillWhenOn: true) {
@@ -203,15 +212,20 @@ struct EntryView: View {
         bookmarks.contains { $0.dictValue == entry.dict && $0.uibId == entry.uibId }
     }
 
+    /// Removing is immediate; adding first asks which folder to put the word in.
     private func toggleBookmark(_ entry: Entry) {
         if let existing = bookmarks.first(where: { $0.dictValue == entry.dict && $0.uibId == entry.uibId }) {
             modelContext.delete(existing)
         } else {
-            modelContext.insert(Bookmark(
-                dict: entry.dict, uibId: entry.uibId, headword: entry.headword,
-                glossEn: entry.glossEn, glossZh: entry.glossZh
-            ))
+            pendingBookmarkEntry = entry
         }
+    }
+
+    private func addBookmark(_ entry: Entry, folderId: String) {
+        modelContext.insert(Bookmark(
+            dict: entry.dict, uibId: entry.uibId, headword: entry.headword,
+            glossEn: entry.glossEn, glossZh: entry.glossZh, folderId: folderId
+        ))
     }
 
     // MARK: - History

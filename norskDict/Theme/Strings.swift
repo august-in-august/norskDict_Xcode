@@ -48,6 +48,11 @@ struct Strings {
     var textSize: String
     var sampleTranslation: String
     var speechSpeed: String
+    var speechVoice: String
+    var automaticVoice: String
+    var speechVoiceFooter: String
+    var voiceEnhanced: String
+    var voicePremium: String
     var about: String
     var sources: String
     var articles: String
@@ -69,6 +74,7 @@ struct Strings {
     var nynorskFull: String
     var bokmaal: String
     var nynorsk: String
+
 
     func offline(articleCount: Int) -> String {
         let formatted = Self.groupedNumberFormatter.string(from: NSNumber(value: articleCount)) ?? "\(articleCount)"
@@ -109,6 +115,10 @@ struct Strings {
                     + "You can also switch them on any entry.",
                 englishName: "English", chineseName: "中文 Chinese", interfaceLanguage: "Interface language",
                 textSize: "Text size", sampleTranslation: "a good friend of mine", speechSpeed: "Pronunciation speed",
+                speechVoice: "Voice", automaticVoice: "Automatic (best available)",
+                speechVoiceFooter: "To get more voices, open iOS Settings › Accessibility and look for the spoken "
+                    + "content / voices option (its name varies by iOS version). Enhanced and Premium voices sound more natural.",
+                voiceEnhanced: "Enhanced", voicePremium: "Premium",
                 about: "About",
                 sources: "Sources", articles: "articles", senses: "senses", examples: "examples",
                 searchableForms: "searchable forms", version: "Version",
@@ -118,7 +128,8 @@ struct Strings {
                 bookmarksHint: "Swipe left on a word to remove it.", bookmarksEmpty: "No bookmarks yet",
                 historyEmpty: "No history", selectWord: "Search for a word to see its entry",
                 noEntriesIn: "No entries in ", bokmaalFull: "Bokmålsordboka", nynorskFull: "Nynorskordboka",
-                bokmaal: "Bokmål", nynorsk: "Nynorsk", offlineTemplate: "Offline · %@ articles"
+                bokmaal: "Bokmål", nynorsk: "Nynorsk",
+                offlineTemplate: "Offline · %@ articles"
             )
         case .zh:
             Strings(
@@ -138,6 +149,9 @@ struct Strings {
                 translationsFooter: "翻译显示在每条释义和例句下方。也可以在任意词条页中切换。",
                 englishName: "English 英语", chineseName: "中文", interfaceLanguage: "界面语言",
                 textSize: "字体大小", sampleTranslation: "我的一个好朋友", speechSpeed: "发音速度",
+                speechVoice: "声音", automaticVoice: "自动（最佳可用）",
+                speechVoiceFooter: "如需更多声音，请前往 iOS 设置 › 辅助功能，找到朗读内容 / 声音相关选项（名称因 iOS 版本而异）。增强和高品质声音更自然。",
+                voiceEnhanced: "增强", voicePremium: "高品质",
                 about: "关于", sources: "数据来源",
                 articles: "词条", senses: "释义", examples: "例句", searchableForms: "可搜索词形",
                 version: "版本", clearHistoryTitle: "清除历史记录？",
@@ -145,7 +159,8 @@ struct Strings {
                 remove: "移除", bookmarksHint: "向左轻扫单词即可移除。", bookmarksEmpty: "还没有收藏",
                 historyEmpty: "没有历史记录", selectWord: "搜索单词以查看词条", noEntriesIn: "没有词条：",
                 bokmaalFull: "Bokmålsordboka 书面语词典", nynorskFull: "Nynorskordboka 新挪威语词典",
-                bokmaal: "Bokmål", nynorsk: "Nynorsk", offlineTemplate: "离线可用 · %@ 个词条"
+                bokmaal: "Bokmål", nynorsk: "Nynorsk",
+                offlineTemplate: "离线可用 · %@ 个词条"
             )
         }
     }

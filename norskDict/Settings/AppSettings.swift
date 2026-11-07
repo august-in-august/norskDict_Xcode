@@ -40,8 +40,14 @@ final class AppSettings {
     var appearance: AppearanceMode { didSet { UserDefaults.standard.set(appearance.rawValue, forKey: Keys.appearance) } }
     var textSizeIndex: Int { didSet { UserDefaults.standard.set(textSizeIndex, forKey: Keys.textSizeIndex) } }
     var speechRateMultiplier: Double { didSet { UserDefaults.standard.set(speechRateMultiplier, forKey: Keys.speechRateMultiplier) } }
+    /// `AVSpeechSynthesisVoice.identifier` of the chosen voice; nil means "best installed".
+    var speechVoiceIdentifier: String? { didSet { UserDefaults.standard.set(speechVoiceIdentifier, forKey: Keys.speechVoiceIdentifier) } }
     var uiLanguage: UILanguage { didSet { UserDefaults.standard.set(uiLanguage.rawValue, forKey: Keys.uiLanguage) } }
     var navigationHand: NavigationHand { didSet { UserDefaults.standard.set(navigationHand.rawValue, forKey: Keys.navigationHand) } }
+    /// Whether bookmarks and folders sync through iCloud. Applied at the next launch.
+    var iCloudSyncEnabled: Bool { didSet { UserDefaults.standard.set(iCloudSyncEnabled, forKey: Self.iCloudSyncKey) } }
+
+    nonisolated static let iCloudSyncKey = "iCloudSyncEnabled"
 
     var textScale: Double {
         Self.textScales[min(max(textSizeIndex, 0), Self.textScales.count - 1)]
@@ -64,8 +70,10 @@ final class AppSettings {
         appearance = AppearanceMode(rawValue: d.string(forKey: Keys.appearance) ?? "") ?? .light
         textSizeIndex = d.object(forKey: Keys.textSizeIndex) as? Int ?? 1
         speechRateMultiplier = d.object(forKey: Keys.speechRateMultiplier) as? Double ?? 0.8
+        speechVoiceIdentifier = d.string(forKey: Keys.speechVoiceIdentifier)
         uiLanguage = UILanguage(rawValue: d.string(forKey: Keys.uiLanguage) ?? "") ?? .en
         navigationHand = NavigationHand(rawValue: d.string(forKey: Keys.navigationHand) ?? "") ?? .left
+        iCloudSyncEnabled = d.object(forKey: Self.iCloudSyncKey) as? Bool ?? true
     }
 
     func resolvedIsDark(systemColorScheme: ColorScheme) -> Bool {
@@ -86,6 +94,7 @@ final class AppSettings {
         static let appearance = "appearance"
         static let textSizeIndex = "textSizeIndex"
         static let speechRateMultiplier = "speechRateMultiplier"
+        static let speechVoiceIdentifier = "speechVoiceIdentifier"
         static let uiLanguage = "uiLanguage"
         static let navigationHand = "navigationHand"
     }

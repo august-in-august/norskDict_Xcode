@@ -16,8 +16,13 @@ final class Bookmark {
     var glossEn: String = ""
     var glossZh: String = ""
     var createdAt: Date = Date.now
+    /// `BookmarkFolder.id` of the containing folder; empty means "not in a folder". A plain id
+    /// rather than a relationship so it syncs reliably and survives either side being deleted.
+    var folderId: String = ""
 
-    init(dict: Dict, uibId: Int64, headword: String, glossEn: String, glossZh: String, createdAt: Date = .now) {
+    init(dict: Dict, uibId: Int64, headword: String, glossEn: String, glossZh: String,
+         createdAt: Date = .now, folderId: String = "") {
+        self.folderId = folderId
         self.dict = dict.rawValue
         self.uibId = uibId
         self.headword = headword

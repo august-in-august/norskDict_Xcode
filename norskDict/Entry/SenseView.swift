@@ -22,7 +22,11 @@ struct SenseRowView: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 if !sense.def.isEmpty {
-                    Text(sense.def).font(.system(size: 17 * textScale)).foregroundStyle(theme.ink)
+                    HStack(alignment: .firstTextBaseline, spacing: 6) {
+                        Text(sense.def).font(.system(size: 17 * textScale)).foregroundStyle(theme.ink)
+                            .fixedSize(horizontal: false, vertical: true)  // wrap fully instead of truncating beside the button
+                        speakButton(for: sense.def)
+                    }
                 }
                 if settings.showEnglish, !sense.en.isEmpty {
                     translationLine(label: "EN", text: sense.en)
@@ -53,6 +57,24 @@ struct SenseRowView: View {
         }
     }
 
+    /// Small inline speaker that reads Norwegian text aloud; hidden when no nb-NO voice is installed.
+    @ViewBuilder
+    private func speakButton(for text: String) -> some View {
+        if Pronouncer.isVoiceAvailable {
+            Button {
+                Pronouncer.shared.speak(text, rate: settings.speechRate, voiceIdentifier: settings.speechVoiceIdentifier)
+            } label: {
+                Image(systemName: "speaker.wave.2")
+                    .font(.system(size: 13 * textScale, weight: .semibold))
+                    .foregroundStyle(theme.tint)
+                    .padding(4)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Pronounce")
+        }
+    }
+
     private func translationLine(label: String, text: String) -> some View {
         HStack(alignment: .top, spacing: 0) {
             Text(label)
@@ -65,7 +87,11 @@ struct SenseRowView: View {
 
     private func exampleView(_ example: ExampleRow) -> some View {
         VStack(alignment: .leading, spacing: 1) {
-            Text(example.text).italic().font(.system(size: 16 * textScale)).foregroundStyle(theme.ink)
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                Text(example.text).italic().font(.system(size: 16 * textScale)).foregroundStyle(theme.ink)
+                    .fixedSize(horizontal: false, vertical: true)
+                speakButton(for: example.text)
+            }
             if settings.showEnglish, !example.en.isEmpty {
                 Text(example.en).font(.system(size: 14 * textScale)).foregroundStyle(theme.ink2)
             }
